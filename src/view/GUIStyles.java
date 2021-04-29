@@ -7,30 +7,30 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class GUIStyles {
-   public static void labelStyle(JLabel label, Font font, String text) {
+   public static void setLabelStyle(JLabel label, Font font, String text) {
       label.setText(text);
       label.setForeground(Color.WHITE);
       label.setFont(font.deriveFont(20f));
    }
 
-   public static void textStyle(JTextField text, Font font) {
+   public static void setTextStyle(JTextField text, Font font) {
       text.setForeground(Color.BLACK);
       text.setFont(font.deriveFont(18f));
       text.setColumns(10);
    }
 
-   public static void selectionBoxStyle(JComboBox sBox, Font font) {
+   public static void setSelectionBoxStyle(JComboBox sBox, Font font) {
       sBox.setForeground(Color.BLACK);
       sBox.setFont(font.deriveFont(18f));
    }
 
-   public static void datePickerStyle(JXDatePicker jxDatePicker, Font font) {
+   public static void setDatePickerStyle(JXDatePicker jxDatePicker, Font font) {
       jxDatePicker.setForeground(Color.BLACK);
       jxDatePicker.setFont(font.deriveFont(18f));
       jxDatePicker.setFormats("yyyy-MM-dd");
    }
 
-   public static void spinnerStyle(JSpinner timeSpinner, Font font) {
+   public static void setSpinnerStyle(JSpinner timeSpinner, Font font) {
       Date date = new Date();
       SpinnerDateModel timeSpinnerModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
       timeSpinner.setModel(timeSpinnerModel);
@@ -55,7 +55,7 @@ public class GUIStyles {
       timeSpinner.setFont(font.deriveFont(18f));
    }
 
-   public static void activeButton(Font font, JButton activeBtn, JButton inactiveBtn1, JButton inactiveBtn2, JButton inactiveBtn3, JButton inactiveBtn4) {
+   public static void setActiveButton(Font font, JButton activeBtn, JButton inactiveBtn1, JButton inactiveBtn2, JButton inactiveBtn3, JButton inactiveBtn4) {
       activeBtn.setFont(font.deriveFont(Font.BOLD,20f));
       inactiveBtn1.setFont(new Font("Arial",Font.PLAIN,20));
       inactiveBtn2.setFont(new Font("Arial",Font.PLAIN,20));
@@ -63,7 +63,7 @@ public class GUIStyles {
       inactiveBtn4.setFont(new Font("Arial",Font.PLAIN,20));
    }
 
-   public static void navButtonStyles(JButton btn) {
+   public static void setNavButtonStyles(JButton btn) {
       btn.setAlignmentX(Component.CENTER_ALIGNMENT);
       btn.setBorderPainted(false);
       btn.setSize(200,130);
@@ -85,7 +85,7 @@ public class GUIStyles {
       });
    }
 
-   public static void handlerButtonStyles(JButton btn, Font font) {
+   public static void setHandlerButtonStyles(JButton btn, Font font) {
       btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
       btn.setFont(font.deriveFont(20f));
       btn.setForeground(Color.WHITE);

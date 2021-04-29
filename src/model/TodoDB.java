@@ -86,7 +86,7 @@ public class TodoDB {
          }
          return todoList;
       } catch (SQLException e) {
-         System.out.println("Query Execution Failed: " + e.getMessage());
+         System.out.println("Table Selection Query Failed: " + e.getMessage());
          e.printStackTrace();
          return null;
       }
@@ -103,7 +103,7 @@ public class TodoDB {
          }
          return todoIDs;
       } catch (SQLException e) {
-         System.out.println("Query Execution failed: " + e.getMessage());
+         System.out.println("ID Selection Query Failed: " + e.getMessage());
          return null;
       }
    }
@@ -113,7 +113,7 @@ public class TodoDB {
            ResultSet results = statement.executeQuery(rowCountQuery)) {
          return results.getInt("count");
       } catch (SQLException e) {
-         System.out.println("Query Execution failed: " + e.getMessage());
+         System.out.println("Row Count Query Failed: " + e.getMessage());
          return -1;
       }
    }
@@ -123,7 +123,7 @@ public class TodoDB {
            ResultSet results = statement.executeQuery("SELECT " + columnName + " AS item FROM " + TODO_TABLE + " WHERE " + TODO_ID + " = " + ID)) {
          return results.getString("item");
       } catch (SQLException e) {
-         System.out.println("Query Execution failed: " + e.getMessage());
+         System.out.println("Column Name Query Execution failed: " + e.getMessage());
          return null;
       }
    }

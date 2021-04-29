@@ -4,13 +4,13 @@ import javax.swing.*;
 
 public class Main {
    public static void main(String[] args) {
-      TodoDB dataModel = new TodoDB();
-      if (!dataModel.openConnection()) {
-         System.out.println("Can't connect to the database");
-         return;
+      TodoDB dataModel = new TodoDB(); // creates an instance of the todoDB class
+      if (!dataModel.openConnection()) { // checks if a database connection hasn't been established
+         System.out.println("Can't connect to the database"); // outputs a message saying there is no database connection
+         return; // breaks out of the main method
       }
-      dataModel.createTable();
-      dataModel.closeConnection();
-      SwingUtilities.invokeLater(GUI::new);
+      dataModel.createTable(); // executes the create table command, to create the database if it doesn't exist
+      dataModel.closeConnection(); // closes the database connection
+      SwingUtilities.invokeLater(GUI::new); // executes the GUI class as a new runnable
    }
 }

@@ -2,6 +2,7 @@ package view;
 import controller.Category;
 import model.Todo;
 import model.TodoDB;
+import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -11,7 +12,8 @@ import java.util.Calendar;
 
 public class GUIHelpers {
 
-   public static String greetingMessage() {
+   // sets the greeting message based on the time of the day
+   public static String setGreetingMessage() {
       String message;
       Calendar date = Calendar.getInstance();
       int hour = date.get(Calendar.HOUR_OF_DAY);
@@ -26,6 +28,7 @@ public class GUIHelpers {
       return message;
    }
 
+   // creates the jTable
    public static JTable createTodoTable(Font font, DefaultTableModel todoTableModel) {
       JTable todoTable = new JTable(todoTableModel) {
          @Override
@@ -38,25 +41,31 @@ public class GUIHelpers {
          public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
             Component comp = super.prepareRenderer(renderer, row, column);
             Object value = getModel().getValueAt(row, column);
+            Category red = Category.Red;
+            Category white = Category.White;
+            Category blue = Category.Blue;
+            Category purple = Category.Purple;
+            Category yellow = Category.Yellow;
+            Category green = Category.Green;
 
-            if (value.equals(Category.Red)) {
+            if (value.equals(red)) {
                comp.setForeground(Color.WHITE);
-               comp.setBackground(Color.RED);
-            } else if (value.equals(Category.White)) {
+               comp.setBackground(red.getColour());
+            } else if (value.equals(white)) {
                comp.setForeground(Color.WHITE);
-               comp.setBackground(Color.GRAY);
-            } else if (value.equals(Category.Blue)) {
+               comp.setBackground(white.getColour());
+            } else if (value.equals(blue)) {
                comp.setForeground(Color.WHITE);
-               comp.setBackground(new Color(0, 128, 255));
-            } else if (value.equals(Category.Purple)) {
+               comp.setBackground(blue.getColour());
+            } else if (value.equals(purple)) {
                comp.setForeground(Color.WHITE);
-               comp.setBackground(new Color(128, 0, 128));
-            } else if (value.equals(Category.Yellow)) {
+               comp.setBackground(purple.getColour());
+            } else if (value.equals(yellow)) {
                comp.setForeground(Color.WHITE);
-               comp.setBackground(new Color(230, 191, 0));
-            } else if (value.equals(Category.Green)) {
+               comp.setBackground(yellow.getColour());
+            } else if (value.equals(green)) {
                comp.setForeground(Color.WHITE);
-               comp.setBackground(new Color(39, 144, 39));
+               comp.setBackground(green.getColour());
             } else {
                comp.setForeground(Color.BLACK);
                comp.setBackground(Color.WHITE);
@@ -64,23 +73,28 @@ public class GUIHelpers {
             return comp;
          }
       };
-      TableColumn id = todoTable.getColumnModel().getColumn(0);
 
+      // customising the columns of the jTable
+      TableColumn id = todoTable.getColumnModel().getColumn(0);
       todoTable.setEnabled(false);
       todoTable.getTableHeader().setFont(font.deriveFont(20f));
       todoTable.setFont(font.deriveFont(15f));
       todoTable.getTableHeader().setReorderingAllowed(false);
 
+      // customising the rows of the jTable
       todoTable.setRowHeight(30);
       todoTable.setBackground(Color.WHITE);
       id.setMaxWidth(40);
       id.setResizable(false);
 
+      // aligning the cells the in the record to the center
       DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
       centerRenderer.setHorizontalAlignment(JLabel.CENTER);
       for (int i = 0; i < 6; i++) {
          todoTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
       }
+
+      // aligning the headers of the columns to the center
       JTableHeader header = todoTable.getTableHeader();
       header.setBackground(new Color(133,147,152));
       header.setForeground(Color.WHITE);
@@ -90,6 +104,7 @@ public class GUIHelpers {
       return todoTable;
    }
 
+   // retrieves all the records from the database and stores it inside an object to be displayed on the jTable
    public static void getTodoRows(DefaultTableModel todoTableModel) {
       Object[] rowData = new Object[6];
       TodoDB dataSource = new TodoDB();
@@ -116,29 +131,35 @@ public class GUIHelpers {
       dataSource.closeConnection();
    }
 
-   public static void addToGrid(GridBagConstraints gridConst, int x, int y, JPanel jPanel, JComponent component) {
+   // sets the coordinates of the grid constraints in the grid layout
+   public static void setGridCoord(GridBagConstraints gridConst, int x, int y, JPanel jPanel, JComponent component) {
       gridConst.gridx = x;
       gridConst.gridy = y;
       jPanel.add(component, gridConst);
    }
 
-//   public static void displayPanel(JLabel title, String text , JPanel todoTable, JPanel homeName, JPanel homeText, JPanel horizontalLine, JPanel quote,
-//                                   JPanel addInput, JPanel updateInput, JPanel deleteInput, JPanel addBtnPanel, JPanel updateBtnPanel, JPanel deleteBtnPanel) {
-//      title.setText(text);
-//      todoTable.setVisible(false);
-//      homeName.setVisible(false);
-//      homeText.setVisible(false);
-//      horizontalLine.setVisible(false);
-//      quote.setVisible(false);
-//      addInput.setVisible(false);
-//      updateInput.setVisible(true);
-//      deleteInput.setVisible(false);
-//      addBtnPanel.setVisible(false);
-//      updateBtnPanel.setVisible(true);
-//      deleteBtnPanel.setVisible(false);
-//   }
+   // displays a panel for a specific page each time the user navigates to it, by pressing its button
+   public static void displayPanel(JLabel title, String text, JPanel todoTable, boolean state1, JPanel homeName, boolean state2, JPanel homeText, boolean state3,
+                                   JPanel horizontalLine, boolean state4, JPanel quote, boolean state5, JPanel addInput, boolean state6, JPanel updateInput,
+                                   boolean state7, JPanel deleteInput, boolean state8, JPanel addBtnPanel, boolean state9, JPanel updateBtnPanel, boolean state10,
+                                   JPanel deleteBtnPanel, boolean state11) {
+      title.setText(text);
+      todoTable.setVisible(state1);
+      homeName.setVisible(state2);
+      homeText.setVisible(state3);
+      horizontalLine.setVisible(state4);
+      quote.setVisible(state5);
+      addInput.setVisible(state6);
+      updateInput.setVisible(state7);
+      deleteInput.setVisible(state8);
+      addBtnPanel.setVisible(state9);
+      updateBtnPanel.setVisible(state10);
+      deleteBtnPanel.setVisible(state11);
+   }
 
-   public static void enableUpdateInputs(JComponent text, JComponent dueDate, JComponent dueTime, JComponent category, JComponent importance, JComponent status, JComponent updateBtn) {
+   // enables all the components in the update panel
+   public static void enableUpdateInputs(JComponent text, JComponent dueDate, JComponent dueTime, JComponent category, JComponent importance,
+                                         JComponent status, JComponent updateBtn) {
       text.setEnabled(true);
       dueDate.setEnabled(true);
       dueTime.setEnabled(true);
@@ -148,7 +169,9 @@ public class GUIHelpers {
       updateBtn.setEnabled(true);
    }
 
-   public static void disableUpdateInputs(JComponent text, JComponent dueDate, JComponent dueTime, JComponent category, JComponent importance, JComponent status, JComponent updateBtn) {
+   // disables all the components in the update panel
+   public static void disableUpdateInputs(JComponent text, JComponent dueDate, JComponent dueTime, JComponent category, JComponent importance,
+                                          JComponent status, JComponent updateBtn) {
       text.setEnabled(false);
       dueDate.setEnabled(false);
       dueTime.setEnabled(false);
@@ -158,6 +181,18 @@ public class GUIHelpers {
       updateBtn.setEnabled(false);
    }
 
+   // clears all the components in the update panel
+   public static void clearUpdateInputs(JTextField id, String idText, JTextField text, JXDatePicker dueDate, JComboBox category,
+                                        JComboBox importance, JComboBox status) {
+      id.setText(idText);
+      text.setText("");
+      dueDate.getEditor().setText("");
+      category.setSelectedIndex(0);
+      importance.setSelectedIndex(0);
+      status.setSelectedIndex(0);
+   }
+
+   // checks if a localDateTime format is valid
    public static boolean isValid(String dateTime) {
       try {
          LocalDateTime.parse(dateTime);

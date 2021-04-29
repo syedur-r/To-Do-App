@@ -1,4 +1,7 @@
 package view;
+import controller.Category;
+import controller.Importance;
+import controller.Status;
 import model.TodoDB;
 import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
@@ -7,7 +10,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -30,6 +32,7 @@ public class GUI {
          @Override
          public void windowClosing(WindowEvent evt) {
             int exitApp = JOptionPane.showConfirmDialog(todoFrm,"Are you sure you wish to exit?", "Exit", JOptionPane.YES_NO_OPTION);
+
             if (exitApp == JOptionPane.YES_OPTION) {
                todoFrm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                todoFrm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -41,23 +44,23 @@ public class GUI {
 
       try {
          montserrat = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Montserrat.ttf"));
-         GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
-         g.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Montserrat.ttf")));
+         GraphicsEnvironment fontGraphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
+         fontGraphics.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Montserrat.ttf")));
       } catch (IOException | FontFormatException e) {
-         e.printStackTrace();
+         System.out.println("Couldn't register this font");
       }
 
       JPanel header = new JPanel() {
          @Override
-         protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+         protected void paintComponent(Graphics graphics) {
+            super.paintComponent(graphics);
+            Graphics2D graphics2D = (Graphics2D) graphics;
+            graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             Color darkColour = new Color(40,48,72);
             Color lightColour = new Color(133,147,152);
             GradientPaint gradientPaint = new GradientPaint(getWidth(), getHeight(), darkColour, 180, getHeight(), lightColour);
-            g2d.setPaint(gradientPaint);
-            g2d.fillRect(0, 0, getWidth(), getHeight());
+            graphics2D.setPaint(gradientPaint);
+            graphics2D.fillRect(0, 0, getWidth(), getHeight());
          }
       };
       JPanel navBar = new JPanel();
@@ -66,8 +69,9 @@ public class GUI {
       JPanel homeName = new JPanel();
       JPanel homeText = new JPanel();
       JPanel horizontalLine = new JPanel() {
-         protected void paintComponent(Graphics g) {
-            Graphics2D twoDimGraphics = (Graphics2D) g;
+         @Override
+         protected void paintComponent(Graphics graphics) {
+            Graphics2D twoDimGraphics = (Graphics2D) graphics;
             twoDimGraphics.setColor(Color.WHITE);
             twoDimGraphics.setStroke(new BasicStroke(5));
             twoDimGraphics.drawLine((getWidth() - getWidth()) + 100, 0, getWidth() - 100, 0);
@@ -148,11 +152,11 @@ public class GUI {
               "images/todo-bg9.png",
               "images/todo-bg10.png"
       };
-      Random random = new Random();
-      int randomImgIndex = random.nextInt(images.length);
+      Random randomImg = new Random();
+      int imageIdx = randomImg.nextInt(images.length);
 
       mainContent.setLayout(new BorderLayout());
-      JLabel backgroundImage = new JLabel(new ImageIcon(images[randomImgIndex]));
+      JLabel backgroundImage = new JLabel(new ImageIcon(images[imageIdx]));
       backgroundImage.setLayout(new BoxLayout(backgroundImage, BoxLayout.Y_AXIS));
       backgroundImage.add(Box.createRigidArea(new Dimension(100, 50)));
 
@@ -162,7 +166,7 @@ public class GUI {
       backgroundImage.add(todoTable, BorderLayout.CENTER);
       todoFrm.add(mainContent, BorderLayout.CENTER);
 
-      JLabel welcomeText = new JLabel(GUIHelpers.greetingMessage(), SwingConstants.CENTER);
+      JLabel welcomeText = new JLabel(GUIHelpers.setGreetingMessage(), SwingConstants.CENTER);
       welcomeText.setForeground(Color.WHITE);
       welcomeText.setFont(montserrat.deriveFont(Font.BOLD,70f));
       backgroundImage.add(homeName, BorderLayout.CENTER);
@@ -175,7 +179,6 @@ public class GUI {
       homeText.add(introText);
 
       backgroundImage.add(horizontalLine, BorderLayout.CENTER);
-
       String[] quotes = {
               "“The secret to getting things done is to act!” - Dante Alighieri",
               "“You can do anything, but not everything.” - David Allen",
@@ -183,10 +186,10 @@ public class GUI {
               "“The dream is free. The hustle is sold separately.” - Steve Harvey",
               "“Get things done: Think big but start small.” - Oumar Dieng",
       };
-      Random r = new Random();
-      int randomQuoteIndex = r.nextInt(quotes.length);
+      Random randomQuote = new Random();
+      int quoteIdx = randomQuote.nextInt(quotes.length);
 
-      JLabel quote = new JLabel(quotes[randomQuoteIndex], SwingConstants.CENTER);
+      JLabel quote = new JLabel(quotes[quoteIdx], SwingConstants.CENTER);
       quote.setForeground(Color.WHITE);
       quote.setFont(montserrat.deriveFont(14f));
       backgroundImage.add(inspirationalQuote, BorderLayout.CENTER);
@@ -213,16 +216,16 @@ public class GUI {
       JButton deleteTask = new JButton("Delete Task");
 
       // add styling to buttons
-      GUIStyles.navButtonStyles(homeBtn);
+      GUIStyles.setNavButtonStyles(homeBtn);
+      // since home page is the first active page upon loading, its button will be bold
       homeBtn.setFont(montserrat.deriveFont(Font.BOLD,20f));
-      GUIStyles.navButtonStyles(listBtn);
-      GUIStyles.navButtonStyles(addBtn);
-      GUIStyles.navButtonStyles(updateBtn);
-      GUIStyles.navButtonStyles(deleteBtn);
-
-      GUIStyles.handlerButtonStyles(addTask, montserrat);
-      GUIStyles.handlerButtonStyles(updateTask, montserrat);
-      GUIStyles.handlerButtonStyles(deleteTask, montserrat);
+      GUIStyles.setNavButtonStyles(listBtn);
+      GUIStyles.setNavButtonStyles(addBtn);
+      GUIStyles.setNavButtonStyles(updateBtn);
+      GUIStyles.setNavButtonStyles(deleteBtn);
+      GUIStyles.setHandlerButtonStyles(addTask, montserrat);
+      GUIStyles.setHandlerButtonStyles(updateTask, montserrat);
+      GUIStyles.setHandlerButtonStyles(deleteTask, montserrat);
 
       // add buttons onto navBar panel
       navBar.add(homeBtn);
@@ -231,9 +234,13 @@ public class GUI {
       navBar.add(updateBtn);
       navBar.add(deleteBtn);
 
-      String[] categories = {"Please select a category", "Red", "White", "Blue", "Purple", "Yellow", "Green"};
-      String[] importance = {"Please select an importance", "Low", "Normal", "High"};
-      String[] status = {"Please select a status", "Pending", "Started", "Partial", "Completed"};
+      String[] categories = {"Please select a category", String.valueOf(Category.Red),
+              String.valueOf(Category.White), String.valueOf(Category.Blue), String.valueOf(Category.Purple),
+              String.valueOf(Category.Yellow), String.valueOf(Category.Green)};
+      String[] importance = {"Please select an importance", String.valueOf(Importance.Low),
+              String.valueOf(Importance.Normal), String.valueOf(Importance.High)};
+      String[] status = {"Please select a status", String.valueOf(Status.Pending), String.valueOf(Status.Started),
+              String.valueOf(Status.Partial), String.valueOf(Status.Completed)};
 
       JLabel lblID = new JLabel();
       JTextField txtID = new JTextField();
@@ -244,11 +251,11 @@ public class GUI {
       JLabel lblDueTimeAdd = new JLabel();
       JSpinner spDueTimeAdd = new JSpinner();
       JLabel lblCategoryAdd = new JLabel();
-      JComboBox txtCategoryAdd = new JComboBox(categories);
+      JComboBox cmbCategoryAdd = new JComboBox(categories);
       JLabel lblImportanceAdd = new JLabel();
-      JComboBox txtImportanceAdd = new JComboBox(importance);
+      JComboBox cmbImportanceAdd = new JComboBox(importance);
       JLabel lblStatus = new JLabel();
-      JComboBox txtStatus = new JComboBox(status);
+      JComboBox cmbStatus = new JComboBox(status);
       JLabel lblTextUpdate = new JLabel();
       JTextField txtTextUpdate = new JTextField();
       JLabel lblDueDateUpdate = new JLabel();
@@ -256,44 +263,40 @@ public class GUI {
       JXDatePicker dtDueDateUpdate = new JXDatePicker();
       JSpinner spDueTimeUpdate = new JSpinner();
       JLabel lblCategoryUpdate = new JLabel();
-      JComboBox txtCategoryUpdate = new JComboBox(categories);
+      JComboBox cmbCategoryUpdate = new JComboBox(categories);
       JLabel lblImportanceUpdate = new JLabel();
-      JComboBox txtImportanceUpdate = new JComboBox(importance);
+      JComboBox cmbImportanceUpdate = new JComboBox(importance);
       JLabel lblDeleteId = new JLabel();
       JTextField txtDeleteId = new JTextField();
 
-      GUIStyles.labelStyle(lblID, montserrat, "To-Do ID");
-      GUIStyles.labelStyle(lblDeleteId, montserrat, "To-Do ID");
-      GUIStyles.labelStyle(lblTextAdd, montserrat, "To-Do text");
-      GUIStyles.labelStyle(lblDueDateAdd, montserrat, "Due Date");
-      GUIStyles.labelStyle(lblDueTimeAdd, montserrat, "Due Time");
-      GUIStyles.labelStyle(lblCategoryAdd, montserrat, "Category");
-      GUIStyles.labelStyle(lblImportanceAdd, montserrat, "Importance");
-      GUIStyles.labelStyle(lblStatus, montserrat, "Status");
-      GUIStyles.labelStyle(lblTextUpdate, montserrat, "To-Do text");
-      GUIStyles.labelStyle(lblDueDateUpdate, montserrat, "Due Date");
-      GUIStyles.labelStyle(lblDueTimeUpdate, montserrat, "Due Time");
-      GUIStyles.labelStyle(lblCategoryUpdate, montserrat, "Category");
-      GUIStyles.labelStyle(lblImportanceUpdate, montserrat, "Importance");
+      GUIStyles.setLabelStyle(lblID, montserrat, "To-Do ID");
+      GUIStyles.setLabelStyle(lblDeleteId, montserrat, "To-Do ID");
+      GUIStyles.setLabelStyle(lblTextAdd, montserrat, "To-Do text");
+      GUIStyles.setLabelStyle(lblDueDateAdd, montserrat, "Due Date");
+      GUIStyles.setLabelStyle(lblDueTimeAdd, montserrat, "Due Time");
+      GUIStyles.setLabelStyle(lblCategoryAdd, montserrat, "Category");
+      GUIStyles.setLabelStyle(lblImportanceAdd, montserrat, "Importance");
+      GUIStyles.setLabelStyle(lblStatus, montserrat, "Status");
+      GUIStyles.setLabelStyle(lblTextUpdate, montserrat, "To-Do text");
+      GUIStyles.setLabelStyle(lblDueDateUpdate, montserrat, "Due Date");
+      GUIStyles.setLabelStyle(lblDueTimeUpdate, montserrat, "Due Time");
+      GUIStyles.setLabelStyle(lblCategoryUpdate, montserrat, "Category");
+      GUIStyles.setLabelStyle(lblImportanceUpdate, montserrat, "Importance");
+      GUIStyles.setTextStyle(txtID, montserrat);
+      GUIStyles.setTextStyle(txtDeleteId, montserrat);
+      GUIStyles.setTextStyle(txtTextAdd, montserrat);
+      GUIStyles.setTextStyle(txtTextUpdate, montserrat);
+      GUIStyles.setSelectionBoxStyle(cmbCategoryAdd, montserrat);
+      GUIStyles.setSelectionBoxStyle(cmbImportanceAdd, montserrat);
+      GUIStyles.setSelectionBoxStyle(cmbCategoryUpdate, montserrat);
+      GUIStyles.setSelectionBoxStyle(cmbImportanceUpdate, montserrat);
+      GUIStyles.setSelectionBoxStyle(cmbStatus, montserrat);
+      GUIStyles.setDatePickerStyle(dtDueDateAdd, montserrat);
+      GUIStyles.setDatePickerStyle(dtDueDateUpdate, montserrat);
+      GUIStyles.setSpinnerStyle(spDueTimeAdd, montserrat);
+      GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat);
 
-      GUIStyles.textStyle(txtID, montserrat);
-      GUIStyles.textStyle(txtDeleteId, montserrat);
-      GUIStyles.textStyle(txtTextAdd, montserrat);
-      GUIStyles.textStyle(txtTextUpdate, montserrat);
-
-      GUIStyles.selectionBoxStyle(txtCategoryAdd, montserrat);
-      GUIStyles.selectionBoxStyle(txtImportanceAdd, montserrat);
-      GUIStyles.selectionBoxStyle(txtCategoryUpdate, montserrat);
-      GUIStyles.selectionBoxStyle(txtImportanceUpdate, montserrat);
-      GUIStyles.selectionBoxStyle(txtStatus, montserrat);
-
-      GUIStyles.datePickerStyle(dtDueDateAdd, montserrat);
-      GUIStyles.datePickerStyle(dtDueDateUpdate, montserrat);
-
-      GUIStyles.spinnerStyle(spDueTimeAdd, montserrat);
-      GUIStyles.spinnerStyle(spDueTimeUpdate, montserrat);
-
-      GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, txtCategoryUpdate, txtImportanceUpdate, txtStatus, updateTask);
+      GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
       txtID.addKeyListener(new KeyAdapter() {
          public void keyReleased(KeyEvent e) {
             TodoDB dataSource = new TodoDB();
@@ -302,68 +305,57 @@ public class GUI {
                return;
             }
             if (dataSource.getTodoCount() == 0) {
-               JOptionPane.showMessageDialog(todoFrm,"Your To-do List is Empty!","Empty", JOptionPane.WARNING_MESSAGE);
+               JOptionPane.showMessageDialog(todoFrm,"Your To-Do List is Empty!","Empty", JOptionPane.WARNING_MESSAGE);
+               txtID.setText("Enter a To-Do ID to Update");
             } else {
                if (e.getKeyChar() != KeyEvent.VK_BACK_SPACE) {
                   int index = -1;
-                  if (txtID.getText().equals("")) {
-                     e.consume();
-                  } else if (txtID.getText().equals("Enter a To-Do ID to Update")) {
+                  if (txtID.getText().equals("Enter a To-Do ID to Update")) {
                      txtID.setText("");
+                  }
+                  else if (txtID.getText().equals("")) {
+                     e.consume();
                   } else {
                      index = Integer.parseInt(txtID.getText());
                   }
 
                   ArrayList<Integer> recordID = dataSource.getAllTodoID();
                   if (Character.isDigit(e.getKeyChar()) && index > 0 && recordID.contains(index)) {
-                     GUIHelpers.enableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, txtCategoryUpdate, txtImportanceUpdate, txtStatus, updateTask);
+                     GUIHelpers.enableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
                      txtTextUpdate.setText(dataSource.getTodoColumns(TodoDB.TODO_NAME, index));
-                     String dbDate = dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index)
-                             .substring(0, dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index).lastIndexOf( "T"));
-                     DateFormat formatDbDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                     String dbDate = dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index).substring(0, dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index).lastIndexOf( "T"));
                      try {
-                        Date date = formatDbDate.parse(dbDate);
+                        Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dbDate);
                         dtDueDateUpdate.getEditor().setValue(date);
                      } catch (ParseException parseException) {
                         System.out.println("Unable to parse String object to Date");
                      }
 
                      String dbTime = dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index).substring(11);
-                     DateFormat formatDbTime = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
                      try {
-                        Date date = formatDbTime.parse(dbTime);
+                        Date date = new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(dbTime);
                         spDueTimeUpdate.getModel().setValue(date);
                      } catch (ParseException parseException) {
                         System.out.println("Unable to parse String object to Time");
                      }
 
-                     txtCategoryUpdate.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_CATEGORY, index));
-                     txtImportanceUpdate.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_IMPORTANCE, index));
-                     txtStatus.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_STATUS, index));
+                     cmbCategoryUpdate.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_CATEGORY, index));
+                     cmbImportanceUpdate.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_IMPORTANCE, index));
+                     cmbStatus.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_STATUS, index));
                      dataSource.closeConnection();
                   } else {
-                     txtID.setText("");
-                     txtTextUpdate.setText("");
-                     dtDueDateUpdate.getEditor().setText("");
-                     GUIStyles.spinnerStyle(spDueTimeUpdate, montserrat);
-                     txtCategoryUpdate.setSelectedIndex(0);
-                     txtImportanceUpdate.setSelectedIndex(0);
-                     txtStatus.setSelectedIndex(0);
-                     GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, txtCategoryUpdate, txtImportanceUpdate, txtStatus, updateTask);
+                     GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat);
+                     GUIHelpers.clearUpdateInputs(txtID, "", txtTextUpdate, dtDueDateUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus);
+                     GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
                      JOptionPane.showMessageDialog(todoFrm, "This To-Do Task Does Not Exist!", "Error", JOptionPane.ERROR_MESSAGE);
-                     JOptionPane.showMessageDialog(todoFrm, "Please Check List Task Page for To-Do ID", "Information", JOptionPane.INFORMATION_MESSAGE);
+                     JOptionPane.showMessageDialog(todoFrm, "Please Check the List Task Page for To-Do ID", "Information", JOptionPane.INFORMATION_MESSAGE);
                      txtID.setText("Enter a To-Do ID to Update");
                   }
                } else {
                   if (txtID.getText().equals("")) {
-                     txtID.setText("Enter a To-Do ID to Update");
-                     txtTextUpdate.setText("");
-                     dtDueDateUpdate.getEditor().setText("");
-                     GUIStyles.spinnerStyle(spDueTimeUpdate, montserrat);
-                     txtCategoryUpdate.setSelectedIndex(0);
-                     txtImportanceUpdate.setSelectedIndex(0);
-                     txtStatus.setSelectedIndex(0);
-                     GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, txtCategoryUpdate, txtImportanceUpdate, txtStatus, updateTask);
+                     GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat);
+                     GUIHelpers.clearUpdateInputs(txtID, "Enter a To-Do ID to Update", txtTextUpdate, dtDueDateUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus);
+                     GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
                   }
                }
             }
@@ -372,8 +364,7 @@ public class GUI {
          public void keyTyped(KeyEvent e) {
             if (!Character.isDigit(e.getKeyChar())) {
                e.consume();
-            }
-            else if (txtID.getText().equals("Enter a To-Do ID to Update")) {
+            } else if (txtID.getText().equals("Enter a To-Do ID to Update")) {
                txtID.setText("");
             }
          }
@@ -385,18 +376,50 @@ public class GUI {
          }
       });
 
+      txtDeleteId.addKeyListener(new KeyAdapter() {
+         public void keyReleased(KeyEvent e) {
+            if (e.getKeyChar() != KeyEvent.VK_BACK_SPACE) {
+               if (txtDeleteId.getText().equals("Enter a To-Do ID")) {
+                  txtDeleteId.setText("");
+               }
+               if (txtDeleteId.getText().equals("")) {
+                  e.consume();
+                  txtDeleteId.setText("Enter a To-Do ID");
+               }
+            } else {
+               if (txtDeleteId.getText().equals("")) {
+                  txtDeleteId.setText("Enter a To-Do ID");
+               }
+            }
+         }
+
+         public void keyTyped(KeyEvent e) {
+            if (!Character.isDigit(e.getKeyChar())) {
+               e.consume();
+            } else if (txtDeleteId.getText().equals("Enter a To-Do ID")) {
+               txtDeleteId.setText("");
+            }
+         }
+
+         public void keyPressed(KeyEvent e) {
+            if (txtDeleteId.getText().equals("Enter a To-Do ID")) {
+               txtDeleteId.setText("");
+            }
+         }
+      });
+
       // add task
       backgroundImage.add(addInput, BorderLayout.NORTH);
-      GUIHelpers.addToGrid(gridConst, 0, 0, addInput, lblTextAdd);
-      GUIHelpers.addToGrid(gridConst, 1, 0, addInput, txtTextAdd);
-      GUIHelpers.addToGrid(gridConst, 0, 1, addInput, lblDueDateAdd);
-      GUIHelpers.addToGrid(gridConst, 1, 1, addInput, dtDueDateAdd);
-      GUIHelpers.addToGrid(gridConst, 0, 2, addInput, lblDueTimeAdd);
-      GUIHelpers.addToGrid(gridConst, 1, 2, addInput, spDueTimeAdd);
-      GUIHelpers.addToGrid(gridConst, 0, 3, addInput, lblCategoryAdd);
-      GUIHelpers.addToGrid(gridConst, 1, 3, addInput, txtCategoryAdd);
-      GUIHelpers.addToGrid(gridConst, 0, 4, addInput, lblImportanceAdd);
-      GUIHelpers.addToGrid(gridConst, 1, 4, addInput, txtImportanceAdd);
+      GUIHelpers.setGridCoord(gridConst, 0, 0, addInput, lblTextAdd);
+      GUIHelpers.setGridCoord(gridConst, 1, 0, addInput, txtTextAdd);
+      GUIHelpers.setGridCoord(gridConst, 0, 1, addInput, lblDueDateAdd);
+      GUIHelpers.setGridCoord(gridConst, 1, 1, addInput, dtDueDateAdd);
+      GUIHelpers.setGridCoord(gridConst, 0, 2, addInput, lblDueTimeAdd);
+      GUIHelpers.setGridCoord(gridConst, 1, 2, addInput, spDueTimeAdd);
+      GUIHelpers.setGridCoord(gridConst, 0, 3, addInput, lblCategoryAdd);
+      GUIHelpers.setGridCoord(gridConst, 1, 3, addInput, cmbCategoryAdd);
+      GUIHelpers.setGridCoord(gridConst, 0, 4, addInput, lblImportanceAdd);
+      GUIHelpers.setGridCoord(gridConst, 1, 4, addInput, cmbImportanceAdd);
 
       // add button
       backgroundImage.add(addBtnPanel, BorderLayout.SOUTH);
@@ -404,20 +427,20 @@ public class GUI {
 
       // update task
       backgroundImage.add(updateInput, BorderLayout.NORTH);
-      GUIHelpers.addToGrid(gridConst, 0, 0, updateInput, lblID);
-      GUIHelpers.addToGrid(gridConst, 1, 0, updateInput, txtID);
-      GUIHelpers.addToGrid(gridConst, 0, 1, updateInput, lblTextUpdate);
-      GUIHelpers.addToGrid(gridConst, 1, 1, updateInput, txtTextUpdate);
-      GUIHelpers.addToGrid(gridConst, 0, 2, updateInput, lblDueDateUpdate);
-      GUIHelpers.addToGrid(gridConst, 1, 2, updateInput, dtDueDateUpdate);
-      GUIHelpers.addToGrid(gridConst, 0, 3, updateInput, lblDueTimeUpdate);
-      GUIHelpers.addToGrid(gridConst, 1, 3, updateInput, spDueTimeUpdate);
-      GUIHelpers.addToGrid(gridConst, 0, 4, updateInput, lblCategoryUpdate);
-      GUIHelpers.addToGrid(gridConst, 1, 4, updateInput, txtCategoryUpdate);
-      GUIHelpers.addToGrid(gridConst, 0, 5, updateInput, lblImportanceUpdate);
-      GUIHelpers.addToGrid(gridConst, 1, 5, updateInput, txtImportanceUpdate);
-      GUIHelpers.addToGrid(gridConst, 0, 6, updateInput, lblStatus);
-      GUIHelpers.addToGrid(gridConst, 1, 6, updateInput, txtStatus);
+      GUIHelpers.setGridCoord(gridConst, 0, 0, updateInput, lblID);
+      GUIHelpers.setGridCoord(gridConst, 1, 0, updateInput, txtID);
+      GUIHelpers.setGridCoord(gridConst, 0, 1, updateInput, lblTextUpdate);
+      GUIHelpers.setGridCoord(gridConst, 1, 1, updateInput, txtTextUpdate);
+      GUIHelpers.setGridCoord(gridConst, 0, 2, updateInput, lblDueDateUpdate);
+      GUIHelpers.setGridCoord(gridConst, 1, 2, updateInput, dtDueDateUpdate);
+      GUIHelpers.setGridCoord(gridConst, 0, 3, updateInput, lblDueTimeUpdate);
+      GUIHelpers.setGridCoord(gridConst, 1, 3, updateInput, spDueTimeUpdate);
+      GUIHelpers.setGridCoord(gridConst, 0, 4, updateInput, lblCategoryUpdate);
+      GUIHelpers.setGridCoord(gridConst, 1, 4, updateInput, cmbCategoryUpdate);
+      GUIHelpers.setGridCoord(gridConst, 0, 5, updateInput, lblImportanceUpdate);
+      GUIHelpers.setGridCoord(gridConst, 1, 5, updateInput, cmbImportanceUpdate);
+      GUIHelpers.setGridCoord(gridConst, 0, 6, updateInput, lblStatus);
+      GUIHelpers.setGridCoord(gridConst, 1, 6, updateInput, cmbStatus);
 
       // update button
       backgroundImage.add(updateBtnPanel, BorderLayout.SOUTH);
@@ -425,8 +448,8 @@ public class GUI {
 
       // delete task
       backgroundImage.add(deleteInput, BorderLayout.NORTH);
-      GUIHelpers.addToGrid(gridConst, 0, 0, deleteInput, lblDeleteId);
-      GUIHelpers.addToGrid(gridConst, 1, 0, deleteInput, txtDeleteId);
+      GUIHelpers.setGridCoord(gridConst, 0, 0, deleteInput, lblDeleteId);
+      GUIHelpers.setGridCoord(gridConst, 1, 0, deleteInput, txtDeleteId);
 
       // delete button
       backgroundImage.add(deleteBtnPanel, BorderLayout.SOUTH);
@@ -436,97 +459,58 @@ public class GUI {
       todoTable.add(new JScrollPane(GUIHelpers.createTodoTable(montserrat, todoTableModel))); // creates the JTable to view all the to-do list tasks
       GUIHelpers.getTodoRows(todoTableModel);
 
-      // adding event listeners
+      /* DISPLAY HOME PANEL */
       homeBtn.addActionListener(e -> {
-         GUIStyles.activeButton(montserrat, homeBtn, listBtn, addBtn, updateBtn, deleteBtn);
-         title.setText(currentDate);
-         todoTable.setVisible(false);
-         homeName.setVisible(true);
-         homeText.setVisible(true);
-         horizontalLine.setVisible(true);
-         inspirationalQuote.setVisible(true);
-         addInput.setVisible(false);
-         updateInput.setVisible(false);
-         deleteInput.setVisible(false);
-         addBtnPanel.setVisible(false);
-         updateBtnPanel.setVisible(false);
-         deleteBtnPanel.setVisible(false);
+         GUIStyles.setActiveButton(montserrat, homeBtn, listBtn, addBtn, updateBtn, deleteBtn);
+         GUIHelpers.displayPanel(title, currentDate, todoTable, false, homeName, true, homeText, true,
+                 horizontalLine, true, inspirationalQuote, true, addInput, false, updateInput, false,
+                 deleteInput, false, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, false);
       });
 
+      /* DISPLAY ADD TASK PANEL */
       addBtn.addActionListener(e -> {
-         GUIStyles.activeButton(montserrat, addBtn, listBtn, homeBtn, updateBtn, deleteBtn);
-         title.setText("Add Task");
-         todoTable.setVisible(false);
-         homeName.setVisible(false);
-         homeText.setVisible(false);
-         horizontalLine.setVisible(false);
-         inspirationalQuote.setVisible(false);
-         addInput.setVisible(true);
-         updateInput.setVisible(false);
-         deleteInput.setVisible(false);
-         addBtnPanel.setVisible(true);
-         updateBtnPanel.setVisible(false);
-         deleteBtnPanel.setVisible(false);
+         GUIStyles.setActiveButton(montserrat, addBtn, listBtn, homeBtn, updateBtn, deleteBtn);
+         GUIHelpers.displayPanel(title, "Add Task", todoTable, false, homeName, false, homeText, false,
+                 horizontalLine, false, inspirationalQuote, false, addInput, true, updateInput, false,
+                 deleteInput, false, addBtnPanel, true, updateBtnPanel, false, deleteBtnPanel, false);
       });
 
+      /* DISPLAY LIST TASKS PANEL */
       listBtn.addActionListener(e -> {
-         GUIStyles.activeButton(montserrat, listBtn, homeBtn, addBtn, updateBtn, deleteBtn);
-         title.setText("List Tasks");
-         todoTable.setVisible(true);
-         homeName.setVisible(false);
-         homeText.setVisible(false);
-         horizontalLine.setVisible(false);
-         inspirationalQuote.setVisible(false);
-         addInput.setVisible(false);
-         updateInput.setVisible(false);
-         deleteInput.setVisible(false);
-         addBtnPanel.setVisible(false);
-         updateBtnPanel.setVisible(false);
-         deleteBtnPanel.setVisible(false);
+         GUIStyles.setActiveButton(montserrat, listBtn, homeBtn, addBtn, updateBtn, deleteBtn);
+         GUIHelpers.displayPanel(title, "List Tasks", todoTable, true, homeName, false, homeText, false,
+                 horizontalLine, false, inspirationalQuote, false, addInput, false, updateInput, false,
+                 deleteInput, false, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, false);
       });
 
+      /* DISPLAY UPDATE TASK PANEL */
       updateBtn.addActionListener(e -> {
-         GUIStyles.activeButton(montserrat, updateBtn, addBtn, listBtn, homeBtn, deleteBtn);
-         title.setText("Update Task");
-         todoTable.setVisible(false);
-         homeName.setVisible(false);
-         homeText.setVisible(false);
-         horizontalLine.setVisible(false);
-         inspirationalQuote.setVisible(false);
-         addInput.setVisible(false);
-         updateInput.setVisible(true);
-         deleteInput.setVisible(false);
-         addBtnPanel.setVisible(false);
-         updateBtnPanel.setVisible(true);
-         deleteBtnPanel.setVisible(false);
-         txtID.setText("Enter a To-Do ID to Update");
+         GUIStyles.setActiveButton(montserrat, updateBtn, addBtn, listBtn, homeBtn, deleteBtn);
+         GUIHelpers.displayPanel(title, "Update Task", todoTable, false, homeName, false, homeText, false,
+                 horizontalLine, false, inspirationalQuote, false, addInput, false, updateInput, true,
+                 deleteInput, false, addBtnPanel, false, updateBtnPanel, true, deleteBtnPanel, false);
+         if (txtID.getText().equals("")) {
+            txtID.setText("Enter a To-Do ID to Update");
+         }
       });
 
+      /* DISPLAY DELETE TASK PANEL */
       deleteBtn.addActionListener(e -> {
-         GUIStyles.activeButton(montserrat, deleteBtn, updateBtn, addBtn, listBtn, homeBtn);
-         title.setText("Delete Task");
-         todoTable.setVisible(false);
-         homeName.setVisible(false);
-         homeText.setVisible(false);
-         horizontalLine.setVisible(false);
-         inspirationalQuote.setVisible(false);
-         addInput.setVisible(false);
-         updateInput.setVisible(false);
-         deleteInput.setVisible(true);
-         addBtnPanel.setVisible(false);
-         updateBtnPanel.setVisible(false);
-         deleteBtnPanel.setVisible(true);
+         GUIStyles.setActiveButton(montserrat, deleteBtn, updateBtn, addBtn, listBtn, homeBtn);
+         GUIHelpers.displayPanel(title, "Delete Task", todoTable, false, homeName, false, homeText, false,
+         horizontalLine, false, inspirationalQuote, false, addInput, false, updateInput, false,
+         deleteInput, true, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, true);
+         txtDeleteId.setText("Enter a To-Do ID");
       });
 
+      /* ADD TASK BUTTON */
       addTask.addActionListener(e -> {
          try {
             String todoText = txtTextAdd.getText();
-            DateFormat localDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String todoDueDate = localDateTimeFormat.format(dtDueDateAdd.getDate());
-            localDateTimeFormat = new SimpleDateFormat("HH:mm");
-            String todoDueTime = localDateTimeFormat.format(spDueTimeAdd.getValue());
-            String todoCategory = txtCategoryAdd.getItemAt(txtCategoryAdd.getSelectedIndex()).toString();
-            String todoImportance = txtImportanceAdd.getItemAt(txtImportanceAdd.getSelectedIndex()).toString();
+            String todoDueDate = new SimpleDateFormat("yyyy-MM-dd").format(dtDueDateAdd.getDate());
+            String todoDueTime = new SimpleDateFormat("HH:mm").format(spDueTimeAdd.getValue());
+            String todoCategory = cmbCategoryAdd.getItemAt(cmbCategoryAdd.getSelectedIndex()).toString();
+            String todoImportance = cmbImportanceAdd.getItemAt(cmbImportanceAdd.getSelectedIndex()).toString();
 
             TodoDB dataSource = new TodoDB();
             if (!dataSource.openConnection()) {
@@ -544,20 +528,21 @@ public class GUI {
                return;
             }
             dataSource.closeConnection();
+
             todoTableModel.setRowCount(0);
             GUIHelpers.getTodoRows(todoTableModel);
-
             txtTextAdd.setText("");
             dtDueDateAdd.getEditor().setText("");
-            GUIStyles.spinnerStyle(spDueTimeAdd, montserrat);
-            txtCategoryAdd.setSelectedIndex(0);
-            txtImportanceAdd.setSelectedIndex(0);
+            GUIStyles.setSpinnerStyle(spDueTimeAdd, montserrat);
+            cmbCategoryAdd.setSelectedIndex(0);
+            cmbImportanceAdd.setSelectedIndex(0);
             JOptionPane.showMessageDialog(todoFrm, "Task Has Successfully Been Added!", "Successful", JOptionPane.INFORMATION_MESSAGE);
          } catch (Exception exception) {
             JOptionPane.showMessageDialog(todoFrm, "Please Enter Valid Details","Error", JOptionPane.ERROR_MESSAGE);
          }
       });
 
+      /* UPDATE TASK BUTTON */
       updateTask.addActionListener(e -> {
          try {
             TodoDB dataSource = new TodoDB();
@@ -566,17 +551,15 @@ public class GUI {
                return;
             }
             if (dataSource.getTodoCount() == 0) {
-               JOptionPane.showMessageDialog(todoFrm,"Your To-do List is Empty!","Empty", JOptionPane.WARNING_MESSAGE);
+               JOptionPane.showMessageDialog(todoFrm,"Your To-Do List is Empty!","Empty", JOptionPane.WARNING_MESSAGE);
             } else {
                int getTodoIndex = Integer.parseInt(txtID.getText());
                String todoText = txtTextUpdate.getText();
-               DateFormat localDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
-               String todoDueDate = localDateTimeFormat.format(dtDueDateUpdate.getDate());
-               localDateTimeFormat = new SimpleDateFormat("HH:mm");
-               String todoDueTime = localDateTimeFormat.format(spDueTimeUpdate.getValue());
-               String todoCategory = txtCategoryUpdate.getItemAt(txtCategoryUpdate.getSelectedIndex()).toString();
-               String todoImportance = txtImportanceUpdate.getItemAt(txtImportanceUpdate.getSelectedIndex()).toString();
-               String todoStatus = txtStatus.getItemAt(txtStatus.getSelectedIndex()).toString();
+               String todoDueDate = new SimpleDateFormat("yyyy-MM-dd").format(dtDueDateUpdate.getDate());
+               String todoDueTime = new SimpleDateFormat("HH:mm").format(spDueTimeUpdate.getValue());
+               String todoCategory = cmbCategoryUpdate.getItemAt(cmbCategoryUpdate.getSelectedIndex()).toString();
+               String todoImportance = cmbImportanceUpdate.getItemAt(cmbImportanceUpdate.getSelectedIndex()).toString();
+               String todoStatus = cmbStatus.getItemAt(cmbStatus.getSelectedIndex()).toString();
 
                if (txtID.getText().equals("Enter a To-Do ID to Update")) {
                   JOptionPane.showMessageDialog(todoFrm, "Please Enter a Valid To-Do ID","Error", JOptionPane.ERROR_MESSAGE);
@@ -600,12 +583,9 @@ public class GUI {
 
                todoTableModel.setRowCount(0);
                GUIHelpers.getTodoRows(todoTableModel);
-               txtID.setText("");
-               txtTextUpdate.setText("");
-               txtCategoryUpdate.setSelectedIndex(0);
-               txtImportanceUpdate.setSelectedIndex(0);
-               txtStatus.setSelectedIndex(0);
-               GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, txtCategoryUpdate, txtImportanceUpdate, txtStatus, updateTask);
+               GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat);
+               GUIHelpers.clearUpdateInputs(txtID, "Enter a To-Do ID to Update", txtTextUpdate, dtDueDateUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus);
+               GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
                JOptionPane.showMessageDialog(todoFrm, "Task Has Successfully Been Updated!", "Successful", JOptionPane.INFORMATION_MESSAGE);
             }
          }  catch (Exception exception) {
@@ -614,6 +594,7 @@ public class GUI {
          }
       });
 
+      /* DELETE TASK BUTTON */
       deleteTask.addActionListener(e -> {
          TodoDB dataSource = new TodoDB();
          if (!dataSource.openConnection()) {
@@ -621,7 +602,8 @@ public class GUI {
             return;
          }
          if (dataSource.getTodoCount() == 0) {
-            JOptionPane.showMessageDialog(todoFrm,"Your To-do List is Empty!","Empty", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(todoFrm,"Your To-Do List is Empty!","Empty", JOptionPane.WARNING_MESSAGE);
+            txtDeleteId.setText("Enter a To-Do ID");
          } else {
             int todoIndex = -1;
             int confirmationBox;
@@ -634,21 +616,25 @@ public class GUI {
                      confirmationBox = JOptionPane.showConfirmDialog(todoFrm, "Are You Sure You Wish To Delete This Task?", "Delete", JOptionPane.YES_NO_OPTION);
                   } else {
                      JOptionPane.showMessageDialog(todoFrm, "This To-Do Task Does Not Exist!", "Error", JOptionPane.ERROR_MESSAGE);
-                     JOptionPane.showMessageDialog(todoFrm, "Please Check List Task Page for To-Do ID", "Information", JOptionPane.INFORMATION_MESSAGE);
+                     JOptionPane.showMessageDialog(todoFrm, "Please Check the List Task Page for To-Do ID", "Information", JOptionPane.INFORMATION_MESSAGE);
+                     txtDeleteId.setText("Enter a To-Do ID");
                      break;
                   }
 
                   if(confirmationBox == JOptionPane.YES_OPTION) {
                      dataSource.deleteTodo(todoIndex);
                      dataSource.closeConnection();
+
                      todoTableModel.setRowCount(0);
                      GUIHelpers.getTodoRows(todoTableModel);
                      txtDeleteId.setText("");
                      JOptionPane.showMessageDialog(todoFrm,"Task Has Successfully Been Deleted!", "Successful", JOptionPane.INFORMATION_MESSAGE);
+                     txtDeleteId.setText("Enter a To-Do ID");
                      break;
                   }
                } catch (Exception exception) {
                   JOptionPane.showMessageDialog(todoFrm, "Please Enter a Valid Number!", "Error", JOptionPane.ERROR_MESSAGE);
+                  txtDeleteId.setText("Enter a To-Do ID");
                   break;
                }
             }
