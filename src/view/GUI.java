@@ -540,7 +540,7 @@ public class GUI {
                     !todoImportance.equals("Please select an importance")) {
                dataSource.insertTodo(todoText, todoDueDate + "T" + todoDueTime, todoCategory, todoImportance);
             } else {
-               JOptionPane.showMessageDialog(todoFrm, "Please Select all Drop-Down Lists","Error", JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(todoFrm, "Please Select all Drop-Down Boxes","Error", JOptionPane.ERROR_MESSAGE);
                return;
             }
             dataSource.closeConnection();
@@ -587,7 +587,7 @@ public class GUI {
                } else if (todoCategory.equals("Please select a category") ||
                        todoImportance.equals("Please select an importance") ||
                        todoStatus.equals("Please select a status")) {
-                  JOptionPane.showMessageDialog(todoFrm, "Please Select all Drop-Down Lists","Error", JOptionPane.ERROR_MESSAGE);
+                  JOptionPane.showMessageDialog(todoFrm, "Please Select all Drop-Down Boxes","Error", JOptionPane.ERROR_MESSAGE);
                   return;
                }
 
