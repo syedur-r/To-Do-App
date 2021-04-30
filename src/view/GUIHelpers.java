@@ -192,7 +192,8 @@ public class GUIHelpers {
    }
 
    // enables all the components in the update panel
-   public static void enableUpdateInputs(JComponent text, JComponent dueDate, JComponent dueTime, JComponent category, JComponent importance,
+   public static void enableUpdateInputs(JComponent text, JComponent dueDate, JComponent dueTime,
+                                         JComponent category, JComponent importance,
                                          JComponent status, JComponent updateBtn) {
       text.setEnabled(true);
       dueDate.setEnabled(true);
@@ -204,7 +205,8 @@ public class GUIHelpers {
    }
 
    // disables all the components in the update panel
-   public static void disableUpdateInputs(JComponent text, JComponent dueDate, JComponent dueTime, JComponent category, JComponent importance,
+   public static void disableUpdateInputs(JComponent text, JComponent dueDate, JComponent dueTime,
+                                          JComponent category, JComponent importance,
                                           JComponent status, JComponent updateBtn) {
       text.setEnabled(false);
       dueDate.setEnabled(false);
@@ -216,7 +218,8 @@ public class GUIHelpers {
    }
 
    // clears all the components in the update panel
-   public static void clearUpdateInputs(JTextField id, String idText, JTextField text, JXDatePicker dueDate, JComboBox<String> category,
+   public static void clearUpdateInputs(JTextField id, String idText, JTextField text,
+                                        JXDatePicker dueDate, JComboBox<String> category,
                                         JComboBox<String> importance, JComboBox<String> status) {
       id.setText(idText);
       text.setText("");

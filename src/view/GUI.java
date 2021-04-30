@@ -151,40 +151,27 @@ public class GUI extends JFrame {
          System.out.println("Couldn't register this font");
       }
 
-      GUIStyles.setPanelSize(this, header, navBar, todoTable, homeName, homeText, horizontalLine,
-              inspirationalQuote, addInput, updateInput, deleteInput, addBtnPanel, updateBtnPanel,
-              deleteBtnPanel);
-
-      GUIStyles.setPanelLayout(header, navBar, mainContent, todoTable, homeText, homeName, horizontalLine,
-              inspirationalQuote, addInput, updateInput, deleteInput, addBtnPanel, updateBtnPanel,
-              deleteBtnPanel, backgroundImage);
-
-      GUIStyles.setPanelAsOpaque(navBar, homeText, homeName, horizontalLine, inspirationalQuote, addInput,
-              updateInput, deleteInput, addBtnPanel, updateBtnPanel, deleteBtnPanel);
-
-      GUIStyles.setPanelVisibility(todoTable, homeText, homeName, addInput, updateInput, deleteInput,
-              addBtnPanel, updateBtnPanel, deleteBtnPanel);
-
+      backgroundImage.setLayout(new BoxLayout(backgroundImage, BoxLayout.Y_AXIS));
       GUIStyles.setLabelForeground(welcomeText, introText, quote, title);
       GUIStyles.setLabelFont(title, welcomeText, introText, quote, montserrat);
 
-      add(mainContent, BorderLayout.CENTER);
-      mainContent.add(header, BorderLayout.NORTH);
+      add(GUIPanels.createMainContentPanel(mainContent), BorderLayout.CENTER);
+      mainContent.add(GUIPanels.createHeaderPanel(header), BorderLayout.NORTH);
       mainContent.add(backgroundImage, BorderLayout.CENTER);
-      header.add(navBar, BorderLayout.SOUTH);
+      header.add(GUIPanels.createNavBarPanel(navBar), BorderLayout.SOUTH);
       header.add(title, BorderLayout.CENTER);
       backgroundImage.add(Box.createRigidArea(new Dimension(100, 50)));
-      backgroundImage.add(todoTable, BorderLayout.CENTER);
-      backgroundImage.add(homeName, BorderLayout.CENTER);
-      backgroundImage.add(homeText, BorderLayout.CENTER);
-      backgroundImage.add(horizontalLine, BorderLayout.CENTER);
-      backgroundImage.add(inspirationalQuote, BorderLayout.CENTER);
-      backgroundImage.add(addInput, BorderLayout.NORTH); // add task
-      backgroundImage.add(updateInput, BorderLayout.NORTH); // update task
-      backgroundImage.add(deleteInput, BorderLayout.NORTH); // delete task
-      backgroundImage.add(addBtnPanel, BorderLayout.SOUTH); // add button
-      backgroundImage.add(updateBtnPanel, BorderLayout.SOUTH); // update button
-      backgroundImage.add(deleteBtnPanel, BorderLayout.SOUTH); // delete button
+      backgroundImage.add(GUIPanels.createTodoTablePanel(todoTable, this), BorderLayout.CENTER);
+      backgroundImage.add(GUIPanels.createHomeNamePanel(homeName, this), BorderLayout.CENTER);
+      backgroundImage.add(GUIPanels.createHomeTextPanel(homeText, this), BorderLayout.CENTER);
+      backgroundImage.add(GUIPanels.createHorizontalLinePanel(horizontalLine, this), BorderLayout.CENTER);
+      backgroundImage.add(GUIPanels.createQuotePanel(inspirationalQuote, this), BorderLayout.CENTER);
+      backgroundImage.add(GUIPanels.createAddInputPanel(addInput, this), BorderLayout.NORTH); // add task
+      backgroundImage.add(GUIPanels.createUpdateInputPanel(updateInput, this), BorderLayout.NORTH); // update task
+      backgroundImage.add(GUIPanels.createDeleteInputPanel(deleteInput, this), BorderLayout.NORTH); // delete task
+      backgroundImage.add(GUIPanels.createAddBtnPanel(addBtnPanel), BorderLayout.SOUTH); // add button
+      backgroundImage.add(GUIPanels.createUpdateBtnPanel(updateBtnPanel), BorderLayout.SOUTH); // update button
+      backgroundImage.add(GUIPanels.createDeleteBtnPanel(deleteBtnPanel), BorderLayout.SOUTH); // delete button
       homeName.add(welcomeText);
       homeText.add(introText);
       inspirationalQuote.add(quote);
@@ -279,7 +266,9 @@ public class GUI extends JFrame {
 
       /* DISPLAY HOME PANEL */
       homeBtn.addActionListener(e -> {
-         GUIStyles.setActiveButton(montserrat, homeBtn, listBtn, addBtn, updateBtn, deleteBtn);
+         GUIStyles.setActiveButton(montserrat, homeBtn);
+         GUIStyles.setInActiveButtons(new Font("Arial",Font.PLAIN,20), listBtn, addBtn, updateBtn, deleteBtn);
+
          GUIHelpers.displayPanel(title, GUIHelpers.getCurrentDate(), todoTable, false, homeName, true, homeText, true,
                  horizontalLine, true, inspirationalQuote, true, addInput, false, updateInput, false,
                  deleteInput, false, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, false);
@@ -287,7 +276,9 @@ public class GUI extends JFrame {
 
       /* DISPLAY ADD TASK PANEL */
       addBtn.addActionListener(e -> {
-         GUIStyles.setActiveButton(montserrat, addBtn, listBtn, homeBtn, updateBtn, deleteBtn);
+         GUIStyles.setActiveButton(montserrat, addBtn);
+         GUIStyles.setInActiveButtons(new Font("Arial",Font.PLAIN,20), listBtn, homeBtn, updateBtn, deleteBtn);
+
          GUIHelpers.displayPanel(title, "Add Task", todoTable, false, homeName, false, homeText, false,
                  horizontalLine, false, inspirationalQuote, false, addInput, true, updateInput, false,
                  deleteInput, false, addBtnPanel, true, updateBtnPanel, false, deleteBtnPanel, false);
@@ -295,7 +286,9 @@ public class GUI extends JFrame {
 
       /* DISPLAY LIST TASKS PANEL */
       listBtn.addActionListener(e -> {
-         GUIStyles.setActiveButton(montserrat, listBtn, homeBtn, addBtn, updateBtn, deleteBtn);
+         GUIStyles.setActiveButton(montserrat, listBtn);
+         GUIStyles.setInActiveButtons(new Font("Arial",Font.PLAIN,20), homeBtn, addBtn, updateBtn, deleteBtn);
+
          GUIHelpers.displayPanel(title, "List Tasks", todoTable, true, homeName, false, homeText, false,
                  horizontalLine, false, inspirationalQuote, false, addInput, false, updateInput, false,
                  deleteInput, false, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, false);
@@ -303,7 +296,9 @@ public class GUI extends JFrame {
 
       /* DISPLAY UPDATE TASK PANEL */
       updateBtn.addActionListener(e -> {
-         GUIStyles.setActiveButton(montserrat, updateBtn, addBtn, listBtn, homeBtn, deleteBtn);
+         GUIStyles.setActiveButton(montserrat, updateBtn);
+         GUIStyles.setInActiveButtons(new Font("Arial",Font.PLAIN,20), addBtn, listBtn, homeBtn, deleteBtn);
+
          GUIHelpers.displayPanel(title, "Update Task", todoTable, false, homeName, false, homeText, false,
                  horizontalLine, false, inspirationalQuote, false, addInput, false, updateInput, true,
                  deleteInput, false, addBtnPanel, false, updateBtnPanel, true, deleteBtnPanel, false);
@@ -314,10 +309,12 @@ public class GUI extends JFrame {
 
       /* DISPLAY DELETE TASK PANEL */
       deleteBtn.addActionListener(e -> {
-         GUIStyles.setActiveButton(montserrat, deleteBtn, updateBtn, addBtn, listBtn, homeBtn);
+         GUIStyles.setActiveButton(montserrat, deleteBtn);
+         GUIStyles.setInActiveButtons(new Font("Arial",Font.PLAIN,20), updateBtn, addBtn, listBtn, homeBtn);
+
          GUIHelpers.displayPanel(title, "Delete Task", todoTable, false, homeName, false, homeText, false,
-         horizontalLine, false, inspirationalQuote, false, addInput, false, updateInput, false,
-         deleteInput, true, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, true);
+                 horizontalLine, false, inspirationalQuote, false, addInput, false, updateInput, false,
+                 deleteInput, true, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, true);
          txtDeleteId.setText("Enter a To-Do ID");
       });
 
