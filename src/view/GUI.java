@@ -113,9 +113,9 @@ public class GUI extends JFrame {
    // JCOMBOBOXES
    JComboBox<String> cmbCategoryAdd = new JComboBox<>(categories);
    JComboBox<String> cmbImportanceAdd = new JComboBox<>(importance);
-   JComboBox<String> cmbStatus = new JComboBox<>(status);
    JComboBox<String> cmbCategoryUpdate = new JComboBox<>(categories);
    JComboBox<String> cmbImportanceUpdate = new JComboBox<>(importance);
+   JComboBox<String> cmbStatus = new JComboBox<>(status);
 
    // JBUTTONS
    JButton homeBtn = new JButton("Home");
