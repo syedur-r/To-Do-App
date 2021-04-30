@@ -182,8 +182,8 @@ public class GUIHelpers {
    }
 
    // clears all the components in the update panel
-   public static void clearUpdateInputs(JTextField id, String idText, JTextField text, JXDatePicker dueDate, JComboBox category,
-                                        JComboBox importance, JComboBox status) {
+   public static void clearUpdateInputs(JTextField id, String idText, JTextField text, JXDatePicker dueDate, JComboBox<String> category,
+                                        JComboBox<String> importance, JComboBox<String> status) {
       id.setText(idText);
       text.setText("");
       dueDate.getEditor().setText("");
