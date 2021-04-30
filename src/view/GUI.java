@@ -168,7 +168,7 @@ public class GUI extends JFrame {
       GUIStyles.setLabelForeground(welcomeText, introText, quote, title);
       GUIStyles.setLabelFont(title, welcomeText, introText, quote, montserrat);
 
-      this.add(mainContent, BorderLayout.CENTER);
+      add(mainContent, BorderLayout.CENTER);
       mainContent.add(header, BorderLayout.NORTH);
       mainContent.add(backgroundImage, BorderLayout.CENTER);
       header.add(navBar, BorderLayout.SOUTH);
@@ -324,8 +324,8 @@ public class GUI extends JFrame {
       addTask.addActionListener(e -> ActionEvents.addTaskPerformed(this, txtTextAdd, dtDueDateAdd, spDueTimeAdd, cmbCategoryAdd,
               cmbImportanceAdd, todoTableModel, montserrat)); // add task button event
 
-      updateTask.addActionListener(e -> ActionEvents.updateTaskPerformed(this, txtID, txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate,
-              cmbImportanceUpdate, cmbStatus, updateTask, todoTableModel, montserrat)); // update task button event
+      updateTask.addActionListener(e -> ActionEvents.updateTaskPerformed(this, txtID, txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate,
+              cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask, todoTableModel, montserrat)); // update task button event
 
       deleteTask.addActionListener(e -> ActionEvents.deleteTaskPerformed(this, txtDeleteId, todoTableModel)); // delete task button event
    }

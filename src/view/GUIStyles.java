@@ -7,9 +7,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class GUIStyles {
-   public static void setPanelSize(JFrame frame, JPanel header, JPanel navBar, JPanel todoTable, JPanel homeName, JPanel homeText, JPanel horizontalLine,
-                                   JPanel inspirationalQuote, JPanel addInput, JPanel updateInput, JPanel deleteInput, JPanel addBtnPanel, JPanel updateBtnPanel,
-                                   JPanel deleteBtnPanel) {
+   public static void setPanelSize(JFrame frame, JPanel header, JPanel navBar,
+                                   JPanel todoTable, JPanel homeName, JPanel homeText,
+                                   JPanel horizontalLine, JPanel inspirationalQuote, JPanel addInput,
+                                   JPanel updateInput, JPanel deleteInput, JPanel addBtnPanel,
+                                   JPanel updateBtnPanel, JPanel deleteBtnPanel) {
       header.setPreferredSize(new Dimension(100, 200));
       navBar.setPreferredSize(new Dimension(200, 40));
       todoTable.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight() + 200) / 2, 460));
@@ -25,9 +27,11 @@ public class GUIStyles {
       deleteBtnPanel.setMaximumSize(new Dimension(180, 50));
    }
 
-   public static void setPanelLayout(JPanel header, JPanel navBar, JPanel mainContent, JPanel todoTable, JPanel homeText, JPanel homeName, JPanel horizontalLine,
-                               JPanel inspirationalQuote, JPanel addInput, JPanel updateInput, JPanel deleteInput, JPanel addBtnPanel, JPanel updateBtnPanel,
-                               JPanel deleteBtnPanel, JLabel backgroundImage) {
+   public static void setPanelLayout(JPanel header, JPanel navBar, JPanel mainContent, JPanel todoTable,
+                                     JPanel homeText, JPanel homeName, JPanel horizontalLine,
+                                     JPanel inspirationalQuote, JPanel addInput, JPanel updateInput,
+                                     JPanel deleteInput, JPanel addBtnPanel, JPanel updateBtnPanel,
+                                     JPanel deleteBtnPanel, JLabel backgroundImage) {
       header.setLayout(new BorderLayout());
       navBar.setLayout(new FlowLayout());
       mainContent.setLayout(new BorderLayout());
@@ -45,8 +49,10 @@ public class GUIStyles {
       backgroundImage.setLayout(new BoxLayout(backgroundImage, BoxLayout.Y_AXIS));
    }
 
-   public static void setPanelAsOpaque(JPanel navBar, JPanel homeText, JPanel homeName, JPanel horizontalLine, JPanel inspirationalQuote, JPanel addInput,
-                                 JPanel updateInput, JPanel deleteInput, JPanel addBtnPanel, JPanel updateBtnPanel, JPanel deleteBtnPanel) {
+   public static void setPanelAsOpaque(JPanel navBar, JPanel homeText, JPanel homeName,
+                                       JPanel horizontalLine, JPanel inspirationalQuote, JPanel addInput,
+                                       JPanel updateInput, JPanel deleteInput, JPanel addBtnPanel,
+                                       JPanel updateBtnPanel, JPanel deleteBtnPanel) {
       navBar.setOpaque(false);
       homeText.setOpaque(false);
       homeName.setOpaque(false);
@@ -60,8 +66,9 @@ public class GUIStyles {
       deleteBtnPanel.setOpaque(false);
    }
 
-   public static void setPanelVisibility(JPanel todoTable, JPanel homeText, JPanel homeName, JPanel addInput, JPanel updateInput, JPanel deleteInput,
-                                   JPanel addBtnPanel, JPanel updateBtnPanel, JPanel deleteBtnPanel) {
+   public static void setPanelVisibility(JPanel todoTable, JPanel homeText, JPanel homeName,
+                                         JPanel addInput, JPanel updateInput, JPanel deleteInput,
+                                         JPanel addBtnPanel, JPanel updateBtnPanel, JPanel deleteBtnPanel) {
       todoTable.setVisible(false);
       homeText.setVisible(true);
       homeName.setVisible(true);
@@ -135,7 +142,8 @@ public class GUIStyles {
       timeSpinner.setFont(font.deriveFont(18f));
    }
 
-   public static void setActiveButton(Font font, JButton activeBtn, JButton inactiveBtn1, JButton inactiveBtn2, JButton inactiveBtn3, JButton inactiveBtn4) {
+   public static void setActiveButton(Font font, JButton activeBtn, JButton inactiveBtn1,
+                                      JButton inactiveBtn2, JButton inactiveBtn3, JButton inactiveBtn4) {
       activeBtn.setFont(font.deriveFont(Font.BOLD,20f));
       inactiveBtn1.setFont(new Font("Arial",Font.PLAIN,20));
       inactiveBtn2.setFont(new Font("Arial",Font.PLAIN,20));
