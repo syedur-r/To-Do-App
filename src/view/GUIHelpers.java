@@ -1,13 +1,8 @@
 package view;
-import controller.Category;
-import model.Todo;
-import model.TodoDB;
 import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
-import javax.swing.table.*;
 import java.awt.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GUIHelpers {
@@ -27,13 +22,20 @@ public class GUIHelpers {
       };
    }
 
-   public static String[] setQuote() {
+   public static String[] setMotivationalQuote() {
       return new String[] {
-              "“The secret to getting things done is to act!” - Dante Alighieri",
+              "“All growth starts at the end of your comfort zone” - Tony Robbins",
+              "“Doing less is not being lazy. Don’t give in to a culture that values personal sacrifice over personal productivity.” - Tim Ferriss",
+              "“Get things done: Think big but start small.” - Oumar Dieng",
+              "“Nothing is particularly hard if you divide it into small jobs.” - Henry Ford",
+              "“It always seems impossible until it’s done.” - Nelson Mandela",
+              "“Only put off until tomorrow what you are willing to die having left undone.” - Pablo Picasso",
+              "“Procrastination is opportunity’s assassin.” - Victor Kiam",
+              "“Until we can manage time, we can manage nothing else.” - Peter Drucker",
+              "“The secret to getting ahead is getting started.” - Mark Twain",
+              "“Your mind is for having ideas, not holding them.” - David Allen",
               "“You can do anything, but not everything.” - David Allen",
               "“Without hustle, talent will only carry you so far.” - Gary Vaynerchuk",
-              "“The dream is free. The hustle is sold separately.” - Steve Harvey",
-              "“Get things done: Think big but start small.” - Oumar Dieng",
       };
    }
 
@@ -60,109 +62,6 @@ public class GUIHelpers {
          message = "Good Evening,";
       }
       return message;
-   }
-
-   // creates the jTable
-   public static JTable createTodoTable(Font font, DefaultTableModel todoTableModel) {
-      JTable todoTable = new JTable(todoTableModel) {
-         @Override
-         public boolean isCellEditable(int row, int column) {
-            return false;
-         }
-
-         // overriding prepareRenderer to change the colour of the cell based on the category entered by the user
-         @Override
-         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-            Component comp = super.prepareRenderer(renderer, row, column);
-            Object value = getModel().getValueAt(row, column);
-            Category red = Category.Red;
-            Category white = Category.White;
-            Category blue = Category.Blue;
-            Category purple = Category.Purple;
-            Category yellow = Category.Yellow;
-            Category green = Category.Green;
-
-            if (value.equals(red)) {
-               comp.setForeground(Color.WHITE);
-               comp.setBackground(red.getColour());
-            } else if (value.equals(white)) {
-               comp.setForeground(Color.WHITE);
-               comp.setBackground(white.getColour());
-            } else if (value.equals(blue)) {
-               comp.setForeground(Color.WHITE);
-               comp.setBackground(blue.getColour());
-            } else if (value.equals(purple)) {
-               comp.setForeground(Color.WHITE);
-               comp.setBackground(purple.getColour());
-            } else if (value.equals(yellow)) {
-               comp.setForeground(Color.WHITE);
-               comp.setBackground(yellow.getColour());
-            } else if (value.equals(green)) {
-               comp.setForeground(Color.WHITE);
-               comp.setBackground(green.getColour());
-            } else {
-               comp.setForeground(Color.BLACK);
-               comp.setBackground(Color.WHITE);
-            }
-            return comp;
-         }
-      };
-
-      // customising the columns of the jTable
-      TableColumn id = todoTable.getColumnModel().getColumn(0);
-      todoTable.setEnabled(false);
-      todoTable.getTableHeader().setFont(font.deriveFont(20f));
-      todoTable.setFont(font.deriveFont(15f));
-      todoTable.getTableHeader().setReorderingAllowed(false);
-
-      // customising the rows of the jTable
-      todoTable.setRowHeight(30);
-      todoTable.setBackground(Color.WHITE);
-      id.setMaxWidth(40);
-      id.setResizable(false);
-
-      // aligning the cells the in the record to the center
-      DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-      centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-      for (int i = 0; i < 6; i++) {
-         todoTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-      }
-
-      // aligning the headers of the columns to the center
-      JTableHeader header = todoTable.getTableHeader();
-      header.setBackground(new Color(133,147,152));
-      header.setForeground(Color.WHITE);
-      header.setPreferredSize(new Dimension(100, 30));
-      DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) todoTable.getTableHeader().getDefaultRenderer();
-      renderer.setHorizontalAlignment(SwingConstants.CENTER);
-      return todoTable;
-   }
-
-   // retrieves all the records from the database and stores it inside an object to be displayed on the jTable
-   public static void getTodoRows(DefaultTableModel todoTableModel) {
-      Object[] rowData = new Object[6];
-      TodoDB dataSource = new TodoDB();
-      if (!dataSource.openConnection()) {
-         System.out.println("To-Do Database Connection Failed!");
-         return;
-      }
-
-      ArrayList<Todo> todoList = dataSource.queryTodoList();
-      if(todoList == null) {
-         System.out.println("Your To-Do List is Empty!");
-         return;
-      }
-
-      for (Todo todo : todoList) {
-         rowData[0] = todo.getTaskID();
-         rowData[1] = todo.getText();
-         rowData[2] = todo.getDue();
-         rowData[3] = todo.getCat();
-         rowData[4] = todo.getImportance();
-         rowData[5] = todo.getCompletion();
-         todoTableModel.addRow(rowData);
-      }
-      dataSource.closeConnection();
    }
 
    // sets the coordinates of the grid constraints in the grid layout
@@ -232,10 +131,10 @@ public class GUIHelpers {
    // checks if a localDateTime format is valid
    public static boolean isValid(String dateTime) {
       try {
-         LocalDateTime.parse(dateTime);
-         return true;
+         LocalDateTime.parse(dateTime); // parses the date string from the parameter into LocalDateTime
+         return true; // returns true if successful
       } catch (Exception e) {
-         return false;
+         return false; // otherwise returns false
       }
    }
 }

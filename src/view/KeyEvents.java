@@ -14,9 +14,10 @@ import java.util.Date;
 import java.util.Locale;
 
 public class KeyEvents {
-   public static void getUpdateIdKeyListener(JTextField txtID, JFrame frame, JTextField txtTextUpdate, JXDatePicker dtDueDateUpdate, JSpinner spDueTimeUpdate,
-                                             JComboBox<String> cmbCategoryUpdate, JComboBox<String> cmbImportanceUpdate, JComboBox<String> cmbStatus,
-                                             JComponent updateTask, Font montserrat) {
+   public static void getUpdateIdKeyListener(JTextField txtID, JFrame frame, JTextField txtTextUpdate,
+                                             JXDatePicker dtDueDateUpdate, JSpinner spDueTimeUpdate,
+                                             JComboBox<String> cmbCategoryUpdate, JComboBox<String> cmbImportanceUpdate,
+                                             JComboBox<String> cmbStatus, JComponent updateTask, Font montserrat) {
       txtID.addKeyListener(new KeyAdapter() {
          @Override
          public void keyReleased(KeyEvent e) {
@@ -108,7 +109,9 @@ public class KeyEvents {
                   txtDeleteId.setText("Enter a To-Do ID");
                }
             } else {
-               if (txtDeleteId.getText().equals("")) txtDeleteId.setText("Enter a To-Do ID");
+               if (txtDeleteId.getText().equals("")) {
+                  txtDeleteId.setText("Enter a To-Do ID");
+               }
             }
          }
 
@@ -117,6 +120,13 @@ public class KeyEvents {
             if (!Character.isDigit(e.getKeyChar())) {
                e.consume();
             } else if (txtDeleteId.getText().equals("Enter a To-Do ID")) {
+               txtDeleteId.setText("");
+            }
+         }
+
+         @Override
+         public void keyPressed(KeyEvent e) {
+            if (txtDeleteId.getText().equals("Enter a To-Do ID")) {
                txtDeleteId.setText("");
             }
          }

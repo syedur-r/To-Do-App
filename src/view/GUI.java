@@ -16,31 +16,6 @@ public class GUI extends JFrame {
    String[] columns = {"ID", "Text", "Due Date", "Category", "Importance", "Status"}; // creates the column names for the todo table
    DefaultTableModel todoTableModel = new DefaultTableModel(columns, 0); // creates the model of the todo table and passes the column names inside it
 
-   // an array of strings which contain all the category options for the drop-down box
-   String[] categories = {"Please select a category",
-           String.valueOf(Category.Red),
-           String.valueOf(Category.White),
-           String.valueOf(Category.Blue),
-           String.valueOf(Category.Purple),
-           String.valueOf(Category.Yellow),
-           String.valueOf(Category.Green)
-   };
-
-   // an array of strings which contain all the importance options for the drop-down box
-   String[] importance = {"Please select an importance",
-           String.valueOf(Importance.Low),
-           String.valueOf(Importance.Normal),
-           String.valueOf(Importance.High)
-   };
-
-   // an array of strings which contain all the status options for the drop-down box
-   String[] status = {"Please select a status",
-           String.valueOf(Status.Pending),
-           String.valueOf(Status.Started),
-           String.valueOf(Status.Partial),
-           String.valueOf(Status.Completed)
-   };
-
    // JPANELS
    JPanel header = new JPanel() {
       @Override
@@ -68,7 +43,7 @@ public class GUI extends JFrame {
          twoDimGraphics.drawLine((getWidth() - getWidth()) + 100, 0, getWidth() - 100, 0);
       }
    };
-   JPanel inspirationalQuote = new JPanel();
+   JPanel motivationalQuote = new JPanel();
    JPanel addInput = new JPanel();
    JPanel updateInput = new JPanel();
    JPanel addBtnPanel = new JPanel();
@@ -80,7 +55,7 @@ public class GUI extends JFrame {
    JLabel backgroundImage = new JLabel(new ImageIcon(GUIHelpers.setBackgroundImage()[new Random().nextInt(GUIHelpers.setBackgroundImage().length)]));
    JLabel welcomeText = new JLabel(GUIHelpers.setGreetingMessage(), SwingConstants.CENTER);
    JLabel introText = new JLabel("What are your tasks for today?", SwingConstants.CENTER);
-   JLabel quote = new JLabel(GUIHelpers.setQuote()[new Random().nextInt(GUIHelpers.setQuote().length)], SwingConstants.CENTER);
+   JLabel quote = new JLabel(GUIHelpers.setMotivationalQuote()[new Random().nextInt(GUIHelpers.setMotivationalQuote().length)], SwingConstants.CENTER);
    JLabel title = new JLabel(GUIHelpers.getCurrentDate(), SwingConstants.CENTER);
    JLabel lblID = new JLabel();
    JLabel lblTextAdd = new JLabel();
@@ -111,11 +86,11 @@ public class GUI extends JFrame {
    JSpinner spDueTimeAdd = new JSpinner();
 
    // JCOMBOBOXES
-   JComboBox<String> cmbCategoryAdd = new JComboBox<>(categories);
-   JComboBox<String> cmbImportanceAdd = new JComboBox<>(importance);
-   JComboBox<String> cmbCategoryUpdate = new JComboBox<>(categories);
-   JComboBox<String> cmbImportanceUpdate = new JComboBox<>(importance);
-   JComboBox<String> cmbStatus = new JComboBox<>(status);
+   JComboBox<String> cmbCategoryAdd = new JComboBox<>(Category.getAllCategories());
+   JComboBox<String> cmbImportanceAdd = new JComboBox<>(Importance.getAllImportance());
+   JComboBox<String> cmbCategoryUpdate = new JComboBox<>(Category.getAllCategories());
+   JComboBox<String> cmbImportanceUpdate = new JComboBox<>(Importance.getAllImportance());
+   JComboBox<String> cmbStatus = new JComboBox<>(Status.getAllStatuses());
 
    // JBUTTONS
    JButton homeBtn = new JButton("Home");
@@ -126,6 +101,7 @@ public class GUI extends JFrame {
    JButton addTask = new JButton("Add Task");
    JButton updateTask = new JButton("Update Task");
    JButton deleteTask = new JButton("Delete Task");
+
 
    // constructor
    public GUI() {
@@ -165,7 +141,7 @@ public class GUI extends JFrame {
       backgroundImage.add(GUIPanels.createHomeNamePanel(homeName, this), BorderLayout.CENTER);
       backgroundImage.add(GUIPanels.createHomeTextPanel(homeText, this), BorderLayout.CENTER);
       backgroundImage.add(GUIPanels.createHorizontalLinePanel(horizontalLine, this), BorderLayout.CENTER);
-      backgroundImage.add(GUIPanels.createQuotePanel(inspirationalQuote, this), BorderLayout.CENTER);
+      backgroundImage.add(GUIPanels.createQuotePanel(motivationalQuote, this), BorderLayout.CENTER);
       backgroundImage.add(GUIPanels.createAddInputPanel(addInput, this), BorderLayout.NORTH); // add task
       backgroundImage.add(GUIPanels.createUpdateInputPanel(updateInput, this), BorderLayout.NORTH); // update task
       backgroundImage.add(GUIPanels.createDeleteInputPanel(deleteInput, this), BorderLayout.NORTH); // delete task
@@ -174,11 +150,11 @@ public class GUI extends JFrame {
       backgroundImage.add(GUIPanels.createDeleteBtnPanel(deleteBtnPanel), BorderLayout.SOUTH); // delete button
       homeName.add(welcomeText);
       homeText.add(introText);
-      inspirationalQuote.add(quote);
+      motivationalQuote.add(quote);
       addBtnPanel.add(addTask, BorderLayout.SOUTH);
       updateBtnPanel.add(updateTask, BorderLayout.SOUTH); // update button
       deleteBtnPanel.add(deleteTask, BorderLayout.SOUTH);
-      todoTable.add(new JScrollPane(GUIHelpers.createTodoTable(montserrat, todoTableModel))); // creates the JTable to view all the to-do list tasks as rows
+      todoTable.add(new JScrollPane(GUITables.createTodoTable(montserrat, todoTableModel))); // creates the JTable to view all the to-do list tasks as rows
       navBar.add(homeBtn); // add buttons onto navBar panel
       navBar.add(addBtn);
       navBar.add(listBtn);
@@ -258,7 +234,7 @@ public class GUI extends JFrame {
       GUIHelpers.setGridCoord(gridConst, 1, 0, deleteInput, txtDeleteId);
 
       GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
-      GUIHelpers.getTodoRows(todoTableModel); // populates the jTable
+      GUITables.getTodoRows(todoTableModel); // populates the jTable
 
       KeyEvents.getUpdateIdKeyListener(txtID, this, txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate,
               cmbImportanceUpdate, cmbStatus, updateTask, montserrat); // adds a placeholder for the update panel ID text field
@@ -268,40 +244,76 @@ public class GUI extends JFrame {
       homeBtn.addActionListener(e -> {
          GUIStyles.setActiveButton(montserrat, homeBtn);
          GUIStyles.setInActiveButtons(new Font("Arial",Font.PLAIN,20), listBtn, addBtn, updateBtn, deleteBtn);
-
-         GUIHelpers.displayPanel(title, GUIHelpers.getCurrentDate(), todoTable, false, homeName, true, homeText, true,
-                 horizontalLine, true, inspirationalQuote, true, addInput, false, updateInput, false,
-                 deleteInput, false, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, false);
+         GUIHelpers.displayPanel(title, GUIHelpers.getCurrentDate(),
+                 todoTable, false,
+                 homeName, true,
+                 homeText, true,
+                 horizontalLine, true,
+                 motivationalQuote, true,
+                 addInput, false,
+                 updateInput, false,
+                 deleteInput, false,
+                 addBtnPanel, false,
+                 updateBtnPanel, false,
+                 deleteBtnPanel, false
+         );
       });
 
       /* DISPLAY ADD TASK PANEL */
       addBtn.addActionListener(e -> {
          GUIStyles.setActiveButton(montserrat, addBtn);
          GUIStyles.setInActiveButtons(new Font("Arial",Font.PLAIN,20), listBtn, homeBtn, updateBtn, deleteBtn);
-
-         GUIHelpers.displayPanel(title, "Add Task", todoTable, false, homeName, false, homeText, false,
-                 horizontalLine, false, inspirationalQuote, false, addInput, true, updateInput, false,
-                 deleteInput, false, addBtnPanel, true, updateBtnPanel, false, deleteBtnPanel, false);
+         GUIHelpers.displayPanel(title, "Add Task",
+                 todoTable, false,
+                 homeName, false,
+                 homeText, false,
+                 horizontalLine, false,
+                 motivationalQuote, false,
+                 addInput, true,
+                 updateInput, false,
+                 deleteInput, false,
+                 addBtnPanel, true,
+                 updateBtnPanel, false,
+                 deleteBtnPanel, false
+         );
       });
 
       /* DISPLAY LIST TASKS PANEL */
       listBtn.addActionListener(e -> {
          GUIStyles.setActiveButton(montserrat, listBtn);
          GUIStyles.setInActiveButtons(new Font("Arial",Font.PLAIN,20), homeBtn, addBtn, updateBtn, deleteBtn);
-
-         GUIHelpers.displayPanel(title, "List Tasks", todoTable, true, homeName, false, homeText, false,
-                 horizontalLine, false, inspirationalQuote, false, addInput, false, updateInput, false,
-                 deleteInput, false, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, false);
+         GUIHelpers.displayPanel(title, "List Tasks",
+                 todoTable, true,
+                 homeName, false,
+                 homeText, false,
+                 horizontalLine, false,
+                 motivationalQuote, false,
+                 addInput, false,
+                 updateInput, false,
+                 deleteInput, false,
+                 addBtnPanel, false,
+                 updateBtnPanel, false,
+                 deleteBtnPanel, false
+         );
       });
 
       /* DISPLAY UPDATE TASK PANEL */
       updateBtn.addActionListener(e -> {
          GUIStyles.setActiveButton(montserrat, updateBtn);
          GUIStyles.setInActiveButtons(new Font("Arial",Font.PLAIN,20), addBtn, listBtn, homeBtn, deleteBtn);
-
-         GUIHelpers.displayPanel(title, "Update Task", todoTable, false, homeName, false, homeText, false,
-                 horizontalLine, false, inspirationalQuote, false, addInput, false, updateInput, true,
-                 deleteInput, false, addBtnPanel, false, updateBtnPanel, true, deleteBtnPanel, false);
+         GUIHelpers.displayPanel(title, "Update Task",
+                 todoTable, false,
+                 homeName, false,
+                 homeText, false,
+                 horizontalLine, false,
+                 motivationalQuote, false,
+                 addInput, false,
+                 updateInput, true,
+                 deleteInput, false,
+                 addBtnPanel, false,
+                 updateBtnPanel, true,
+                 deleteBtnPanel, false
+         );
          if (txtID.getText().equals("")) {
             txtID.setText("Enter a To-Do ID to Update");
          }
@@ -311,18 +323,28 @@ public class GUI extends JFrame {
       deleteBtn.addActionListener(e -> {
          GUIStyles.setActiveButton(montserrat, deleteBtn);
          GUIStyles.setInActiveButtons(new Font("Arial",Font.PLAIN,20), updateBtn, addBtn, listBtn, homeBtn);
-
-         GUIHelpers.displayPanel(title, "Delete Task", todoTable, false, homeName, false, homeText, false,
-                 horizontalLine, false, inspirationalQuote, false, addInput, false, updateInput, false,
-                 deleteInput, true, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, true);
+         GUIHelpers.displayPanel(title, "Delete Task",
+                 todoTable, false,
+                 homeName, false,
+                 homeText, false,
+                 horizontalLine, false,
+                 motivationalQuote, false,
+                 addInput, false,
+                 updateInput, false,
+                 deleteInput, true,
+                 addBtnPanel, false,
+                 updateBtnPanel, false,
+                 deleteBtnPanel, true
+         );
          txtDeleteId.setText("Enter a To-Do ID");
       });
 
-      addTask.addActionListener(e -> ActionEvents.addTaskPerformed(this, txtTextAdd, dtDueDateAdd, spDueTimeAdd, cmbCategoryAdd,
-              cmbImportanceAdd, todoTableModel, montserrat)); // add task button event
+      addTask.addActionListener(e -> ActionEvents.addTaskPerformed(this, txtTextAdd, dtDueDateAdd,
+              spDueTimeAdd, cmbCategoryAdd, cmbImportanceAdd, todoTableModel, montserrat)); // add task button event
 
-      updateTask.addActionListener(e -> ActionEvents.updateTaskPerformed(this, txtID, txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate,
-              cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask, todoTableModel, montserrat)); // update task button event
+      updateTask.addActionListener(e -> ActionEvents.updateTaskPerformed(this, txtID, txtTextUpdate,
+              dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask,
+              todoTableModel, montserrat)); // update task button event
 
       deleteTask.addActionListener(e -> ActionEvents.deleteTaskPerformed(this, txtDeleteId, todoTableModel)); // delete task button event
    }

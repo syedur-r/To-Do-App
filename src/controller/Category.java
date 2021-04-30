@@ -1,5 +1,4 @@
 package controller;
-
 import java.awt.*;
 
 public enum Category {
@@ -20,5 +19,20 @@ public enum Category {
    // getter method for colour
    public Color getColour() {
       return colour; // returns colour as a string
+   }
+
+   // this method returns all the category options as a string array
+   public static String[] getAllCategories() {
+      String[] categories = new String[Category.values().length + 1]; // initialises the string array to the size of the number of values in Category + 1
+      String[] finalCategories = new String[categories.length]; // initialises a string array to store the final categories
+
+      for (int i = 0; i < Category.values().length; i++) { // iterates through the category values
+         categories[i] = String.valueOf(Category.values()[i]); // assigns each category into the array
+      }
+      categories[categories.length - 1] = "Please select a category"; // adds another element to the end of the categories array
+      // the finalCategories copies all the elements from the categories array
+      System.arraycopy(categories, 0, finalCategories, 1, categories.length - 1);
+      finalCategories[0] = categories[categories.length - 1]; // sets the last element as the first element
+      return finalCategories; // returns the finalCategories string with all the categories
    }
 }

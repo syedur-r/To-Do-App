@@ -74,8 +74,8 @@ public class GUIStyles {
       activeBtn.setFont(font.deriveFont(Font.BOLD,20f));
    }
 
-   public static void setInActiveButtons(Font font, JButton inactiveBtn1, JButton inactiveBtn2, JButton inactiveBtn3,
-                                         JButton inactiveBtn4) {
+   public static void setInActiveButtons(Font font, JButton inactiveBtn1, JButton inactiveBtn2,
+                                         JButton inactiveBtn3, JButton inactiveBtn4) {
       inactiveBtn1.setFont(font);
       inactiveBtn2.setFont(font);
       inactiveBtn3.setFont(font);

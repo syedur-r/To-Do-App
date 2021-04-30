@@ -8,8 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ActionEvents {
-   public static void addTaskPerformed(JFrame frame, JTextField txtTextAdd, JXDatePicker dtDueDateAdd, JSpinner spDueTimeAdd, JComboBox<String> cmbCategoryAdd,
-                                         JComboBox<String> cmbImportanceAdd, DefaultTableModel todoTableModel, Font montserrat) {
+   public static void addTaskPerformed(JFrame frame, JTextField txtTextAdd, JXDatePicker dtDueDateAdd, JSpinner spDueTimeAdd,
+                                       JComboBox<String> cmbCategoryAdd, JComboBox<String> cmbImportanceAdd,
+                                       DefaultTableModel todoTableModel, Font montserrat) {
       try {
          String todoText = txtTextAdd.getText();
          String todoDueDate = new SimpleDateFormat("yyyy-MM-dd").format(dtDueDateAdd.getDate());
@@ -35,7 +36,7 @@ public class ActionEvents {
          dataSource.closeConnection();
 
          todoTableModel.setRowCount(0);
-         GUIHelpers.getTodoRows(todoTableModel);
+         GUITables.getTodoRows(todoTableModel);
          txtTextAdd.setText("");
          dtDueDateAdd.getEditor().setText("");
          GUIStyles.setSpinnerStyle(spDueTimeAdd, montserrat);
@@ -47,8 +48,9 @@ public class ActionEvents {
       }
    }
 
-   public static void updateTaskPerformed(JFrame frame, JTextField txtID, JTextField txtTextUpdate, JXDatePicker dtDueDateUpdate, JSpinner spDueTimeUpdate, JComboBox<String> cmbCategoryUpdate,
-                                       JComboBox<String> cmbImportanceUpdate, JComboBox<String> cmbStatus, JComponent updateTask, DefaultTableModel todoTableModel, Font montserrat) {
+   public static void updateTaskPerformed(JFrame frame, JTextField txtID, JTextField txtTextUpdate, JXDatePicker dtDueDateUpdate,
+                                          JSpinner spDueTimeUpdate, JComboBox<String> cmbCategoryUpdate, JComboBox<String> cmbImportanceUpdate,
+                                          JComboBox<String> cmbStatus, JComponent updateTask, DefaultTableModel todoTableModel, Font montserrat) {
       try {
          TodoDB dataSource = new TodoDB();
          if (!dataSource.openConnection()) {
@@ -87,7 +89,7 @@ public class ActionEvents {
             dataSource.closeConnection();
 
             todoTableModel.setRowCount(0);
-            GUIHelpers.getTodoRows(todoTableModel);
+            GUITables.getTodoRows(todoTableModel);
             GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat);
             GUIHelpers.clearUpdateInputs(txtID, "Enter a To-Do ID to Update", txtTextUpdate, dtDueDateUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus);
             GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
@@ -130,7 +132,7 @@ public class ActionEvents {
                   dataSource.closeConnection();
 
                   todoTableModel.setRowCount(0);
-                  GUIHelpers.getTodoRows(todoTableModel);
+                  GUITables.getTodoRows(todoTableModel);
                   txtDeleteId.setText("");
                   JOptionPane.showMessageDialog(frame,"Task Has Successfully Been Deleted!", "Successful", JOptionPane.INFORMATION_MESSAGE);
                   txtDeleteId.setText("Enter a To-Do ID");

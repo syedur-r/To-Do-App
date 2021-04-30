@@ -52,11 +52,11 @@ public class GUIPanels {
       return horizontalLine;
    }
 
-   public static JPanel createQuotePanel(JPanel inspirationalQuote, JFrame frame) {
-      inspirationalQuote.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight()) / 2, 250));
-      inspirationalQuote.setLayout(new BorderLayout());
-      inspirationalQuote.setOpaque(false);
-      return inspirationalQuote;
+   public static JPanel createQuotePanel(JPanel quote, JFrame frame) {
+      quote.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight()) / 2, 250));
+      quote.setLayout(new BorderLayout());
+      quote.setOpaque(false);
+      return quote;
    }
 
    public static JPanel createAddInputPanel(JPanel addInput, JFrame frame) {
