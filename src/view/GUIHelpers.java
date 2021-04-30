@@ -12,6 +12,40 @@ import java.util.Calendar;
 
 public class GUIHelpers {
 
+   public static String[] setBackgroundImage() {
+      return new String[] {
+              "images/todo-bg.png",
+              "images/todo-bg2.png",
+              "images/todo-bg3.png",
+              "images/todo-bg4.png",
+              "images/todo-bg5.png",
+              "images/todo-bg6.png",
+              "images/todo-bg7.png",
+              "images/todo-bg8.png",
+              "images/todo-bg9.png",
+              "images/todo-bg10.png"
+      };
+   }
+
+   public static String[] setQuote() {
+      return new String[] {
+              "“The secret to getting things done is to act!” - Dante Alighieri",
+              "“You can do anything, but not everything.” - David Allen",
+              "“Without hustle, talent will only carry you so far.” - Gary Vaynerchuk",
+              "“The dream is free. The hustle is sold separately.” - Steve Harvey",
+              "“Get things done: Think big but start small.” - Oumar Dieng",
+      };
+   }
+
+   public static String getCurrentDate() {
+      LocalDateTime date = LocalDateTime.now();
+      return date.getDayOfWeek().toString().substring(0, 1).toUpperCase() +
+              date.getDayOfWeek().toString().substring(1).toLowerCase() + ", " +
+              date.getDayOfMonth() + " " +
+              date.getMonth().toString().substring(0, 1).toUpperCase() +
+              date.getMonth().toString().substring(1).toLowerCase() + " " + date.getYear();
+   }
+
    // sets the greeting message based on the time of the day
    public static String setGreetingMessage() {
       String message;

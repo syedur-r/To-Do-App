@@ -2,7 +2,6 @@ package view;
 import controller.Category;
 import controller.Importance;
 import controller.Status;
-import model.TodoDB;
 import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -10,11 +9,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class GUI extends JFrame implements KeyListener {
+public class GUI extends JFrame {
    Font montserrat; // creates a custom font called montserrat
    String[] columns = {"ID", "Text", "Due Date", "Category", "Importance", "Status"}; // creates the column names for the todo table
    DefaultTableModel todoTableModel = new DefaultTableModel(columns, 0); // creates the model of the todo table and passes the column names inside it
@@ -66,11 +63,11 @@ public class GUI extends JFrame implements KeyListener {
    JPanel deleteBtnPanel = new JPanel();
 
    // JLABELS
-   JLabel backgroundImage = new JLabel(new ImageIcon(GUIStyles.setBackgroundImage()[new Random().nextInt(GUIStyles.setBackgroundImage().length)]));
+   JLabel backgroundImage = new JLabel(new ImageIcon(GUIHelpers.setBackgroundImage()[new Random().nextInt(GUIHelpers.setBackgroundImage().length)]));
    JLabel welcomeText = new JLabel(GUIHelpers.setGreetingMessage(), SwingConstants.CENTER);
    JLabel introText = new JLabel("What are your tasks for today?", SwingConstants.CENTER);
-   JLabel quote = new JLabel(GUIStyles.setQuote()[new Random().nextInt(GUIStyles.setQuote().length)], SwingConstants.CENTER);
-   JLabel title = new JLabel(GUIStyles.getCurrentDate(), SwingConstants.CENTER);
+   JLabel quote = new JLabel(GUIHelpers.setQuote()[new Random().nextInt(GUIHelpers.setQuote().length)], SwingConstants.CENTER);
+   JLabel title = new JLabel(GUIHelpers.getCurrentDate(), SwingConstants.CENTER);
    JLabel lblID = new JLabel();
    JLabel lblTextAdd = new JLabel();
    JLabel lblDueDateAdd = new JLabel();
@@ -140,71 +137,22 @@ public class GUI extends JFrame implements KeyListener {
          System.out.println("Couldn't register this font");
       }
 
-      GridBagConstraints gridConst = new GridBagConstraints();
-      gridConst.insets = new Insets(10, 10, 10, 10);
-      gridConst.fill = GridBagConstraints.HORIZONTAL;
+      GUIStyles.setPanelSize(this, header, navBar, todoTable, homeName, homeText, horizontalLine,
+              inspirationalQuote, addInput, updateInput, deleteInput, addBtnPanel, updateBtnPanel,
+              deleteBtnPanel);
 
-      header.setPreferredSize(new Dimension(100, 200));
-      navBar.setPreferredSize(new Dimension(200, 40));
-      todoTable.setMaximumSize(new Dimension((getWidth() + this.getHeight() + 200) / 2, 460));
-      homeName.setMaximumSize(new Dimension((this.getWidth() + this.getHeight()) / 2, 200));
-      homeText.setMaximumSize(new Dimension((this.getWidth() + this.getHeight()) / 2, 400));
-      horizontalLine.setMaximumSize(new Dimension((this.getWidth() + this.getHeight()) / 2, 600));
-      inspirationalQuote.setMaximumSize(new Dimension((this.getWidth() + this.getHeight()) / 2, 250));
-      addInput.setMaximumSize(new Dimension(this.getWidth(), 250));
-      updateInput.setMaximumSize(new Dimension(this.getWidth(), 330));
-      deleteInput.setMaximumSize(new Dimension(this.getWidth(), 120));
-      addBtnPanel.setMaximumSize(new Dimension(150, 40));
-      updateBtnPanel.setMaximumSize(new Dimension(180, 70));
-      deleteBtnPanel.setMaximumSize(new Dimension(180, 50));
+      GUIStyles.setPanelLayout(header, navBar, mainContent, todoTable, homeText, homeName, horizontalLine,
+              inspirationalQuote, addInput, updateInput, deleteInput, addBtnPanel, updateBtnPanel,
+              deleteBtnPanel, backgroundImage);
 
-      header.setLayout(new BorderLayout());
-      navBar.setLayout(new FlowLayout());
-      mainContent.setLayout(new BorderLayout());
-      todoTable.setLayout(new BorderLayout());
-      homeText.setLayout(new BorderLayout());
-      homeName.setLayout(new BorderLayout());
-      horizontalLine.setLayout(new BorderLayout());
-      inspirationalQuote.setLayout(new BorderLayout());
-      addInput.setLayout(new GridBagLayout());
-      updateInput.setLayout(new GridBagLayout());
-      deleteInput.setLayout(new GridBagLayout());
-      addBtnPanel.setLayout(new BorderLayout());
-      updateBtnPanel.setLayout(new BorderLayout());
-      deleteBtnPanel.setLayout(new BorderLayout());
-      backgroundImage.setLayout(new BoxLayout(backgroundImage, BoxLayout.Y_AXIS));
+      GUIStyles.setPanelAsOpaque(navBar, homeText, homeName, horizontalLine, inspirationalQuote, addInput,
+              updateInput, deleteInput, addBtnPanel, updateBtnPanel, deleteBtnPanel);
 
-      navBar.setOpaque(false);
-      homeText.setOpaque(false);
-      homeName.setOpaque(false);
-      horizontalLine.setOpaque(false);
-      inspirationalQuote.setOpaque(false);
-      addInput.setOpaque(false);
-      updateInput.setOpaque(false);
-      deleteInput.setOpaque(false);
-      addBtnPanel.setOpaque(false);
-      updateBtnPanel.setOpaque(false);
-      deleteBtnPanel.setOpaque(false);
+      GUIStyles.setPanelVisibility(todoTable, homeText, homeName, addInput, updateInput, deleteInput,
+              addBtnPanel, updateBtnPanel, deleteBtnPanel);
 
-      todoTable.setVisible(false);
-      homeText.setVisible(true);
-      homeName.setVisible(true);
-      addInput.setVisible(false);
-      updateInput.setVisible(false);
-      deleteInput.setVisible(false);
-      addBtnPanel.setVisible(false);
-      updateBtnPanel.setVisible(false);
-      deleteBtnPanel.setVisible(false);
-
-      welcomeText.setForeground(Color.WHITE);
-      introText.setForeground(Color.WHITE);
-      quote.setForeground(Color.WHITE);
-      title.setForeground(Color.WHITE);
-      title.setFont(montserrat.deriveFont(Font.BOLD, 40f));
-
-      welcomeText.setFont(montserrat.deriveFont(Font.BOLD,70f));
-      introText.setFont(montserrat.deriveFont(40f));
-      quote.setFont(montserrat.deriveFont(14f));
+      GUIStyles.setLabelForeground(welcomeText, introText, quote, title);
+      GUIStyles.setLabelFont(title, welcomeText, introText, quote, montserrat);
 
       this.add(mainContent, BorderLayout.CENTER);
       mainContent.add(header, BorderLayout.NORTH);
@@ -230,8 +178,7 @@ public class GUI extends JFrame implements KeyListener {
       updateBtnPanel.add(updateTask, BorderLayout.SOUTH); // update button
       deleteBtnPanel.add(deleteTask, BorderLayout.SOUTH);
       todoTable.add(new JScrollPane(GUIHelpers.createTodoTable(montserrat, todoTableModel))); // creates the JTable to view all the to-do list tasks as rows
-      // add buttons onto navBar panel
-      navBar.add(homeBtn);
+      navBar.add(homeBtn); // add buttons onto navBar panel
       navBar.add(addBtn);
       navBar.add(listBtn);
       navBar.add(updateBtn);
@@ -274,31 +221,10 @@ public class GUI extends JFrame implements KeyListener {
       GUIStyles.setDatePickerStyle(dtDueDateUpdate, montserrat);
       GUIStyles.setSpinnerStyle(spDueTimeAdd, montserrat);
       GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat);
-      GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
 
-      txtID.addKeyListener(this); // adds a placeholder for the update panel ID text field
-      txtDeleteId.addKeyListener(new KeyAdapter() { // adds a placeholder for the delete panel ID text field
-         @Override
-         public void keyReleased(KeyEvent e) {
-            if (e.getKeyChar() != KeyEvent.VK_BACK_SPACE) {
-               if (txtDeleteId.getText().equals("")) {
-                  e.consume();
-                  txtDeleteId.setText("Enter a To-Do ID");
-               }
-            } else {
-               if (txtDeleteId.getText().equals("")) txtDeleteId.setText("Enter a To-Do ID");
-            }
-         }
-
-         @Override
-         public void keyTyped(KeyEvent e) {
-            if (!Character.isDigit(e.getKeyChar())) {
-               e.consume();
-            } else if (txtDeleteId.getText().equals("Enter a To-Do ID")) {
-               txtDeleteId.setText("");
-            }
-         }
-      });
+      GridBagConstraints gridConst = new GridBagConstraints();
+      gridConst.insets = new Insets(10, 10, 10, 10);
+      gridConst.fill = GridBagConstraints.HORIZONTAL;
 
       // add task components
       GUIHelpers.setGridCoord(gridConst, 0, 0, addInput, lblTextAdd);
@@ -329,13 +255,18 @@ public class GUI extends JFrame implements KeyListener {
       // delete task components
       GUIHelpers.setGridCoord(gridConst, 0, 0, deleteInput, lblDeleteId);
       GUIHelpers.setGridCoord(gridConst, 1, 0, deleteInput, txtDeleteId);
-      // populates the jTable
-      GUIHelpers.getTodoRows(todoTableModel);
+
+      GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
+      GUIHelpers.getTodoRows(todoTableModel); // populates the jTable
+
+      KeyEvents.getUpdateIdKeyListener(txtID, this, txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate,
+              cmbImportanceUpdate, cmbStatus, updateTask, montserrat); // adds a placeholder for the update panel ID text field
+      KeyEvents.getDeleteIdKeyListener(txtDeleteId); // adds a placeholder for the delete panel ID text field
 
       /* DISPLAY HOME PANEL */
       homeBtn.addActionListener(e -> {
          GUIStyles.setActiveButton(montserrat, homeBtn, listBtn, addBtn, updateBtn, deleteBtn);
-         GUIHelpers.displayPanel(title, GUIStyles.getCurrentDate(), todoTable, false, homeName, true, homeText, true,
+         GUIHelpers.displayPanel(title, GUIHelpers.getCurrentDate(), todoTable, false, homeName, true, homeText, true,
                  horizontalLine, true, inspirationalQuote, true, addInput, false, updateInput, false,
                  deleteInput, false, addBtnPanel, false, updateBtnPanel, false, deleteBtnPanel, false);
       });
@@ -383,83 +314,5 @@ public class GUI extends JFrame implements KeyListener {
               cmbImportanceUpdate, cmbStatus, updateTask, todoTableModel, montserrat)); // update task button event
 
       deleteTask.addActionListener(e -> ActionEvents.deleteTaskPerformed(this, txtDeleteId, todoTableModel)); // delete task button event
-   }
-
-   @Override
-   public void keyReleased(KeyEvent e) {
-      TodoDB dataSource = new TodoDB();
-      if (!dataSource.openConnection()) {
-         System.out.println("Can't connect to the database");
-         return;
-      }
-      if (dataSource.getTodoCount() == 0) {
-         JOptionPane.showMessageDialog(getParent(),"Your To-Do List is Empty!","Empty", JOptionPane.WARNING_MESSAGE);
-         txtID.setText("Enter a To-Do ID to Update");
-      } else {
-         if (e.getKeyChar() != KeyEvent.VK_BACK_SPACE) {
-            int index = -1;
-            if (txtID.getText().equals("Enter a To-Do ID to Update")) {
-               txtID.setText("");
-            }
-            else if (txtID.getText().equals("")) {
-               e.consume();
-            } else {
-               index = Integer.parseInt(txtID.getText());
-            }
-
-            ArrayList<Integer> recordID = dataSource.getAllTodoID();
-            if (Character.isDigit(e.getKeyChar()) && index > 0 && recordID.contains(index)) {
-               GUIHelpers.enableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
-               txtTextUpdate.setText(dataSource.getTodoColumns(TodoDB.TODO_NAME, index));
-               String dbDate = dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index).substring(0, dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index).lastIndexOf( "T"));
-               try {
-                  Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dbDate);
-                  dtDueDateUpdate.getEditor().setValue(date);
-               } catch (ParseException parseException) {
-                  System.out.println("Unable to parse String object to Date");
-               }
-
-               String dbTime = dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index).substring(11);
-               try {
-                  Date date = new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(dbTime);
-                  spDueTimeUpdate.getModel().setValue(date);
-               } catch (ParseException parseException) {
-                  System.out.println("Unable to parse String object to Time");
-               }
-
-               cmbCategoryUpdate.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_CATEGORY, index));
-               cmbImportanceUpdate.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_IMPORTANCE, index));
-               cmbStatus.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_STATUS, index));
-               dataSource.closeConnection();
-            } else {
-               GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat);
-               GUIHelpers.clearUpdateInputs(txtID, "", txtTextUpdate, dtDueDateUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus);
-               GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
-               JOptionPane.showMessageDialog(getParent(), "This To-Do Task Does Not Exist!", "Error", JOptionPane.ERROR_MESSAGE);
-               JOptionPane.showMessageDialog(getParent(), "Please Check the List Task Page for To-Do ID", "Information", JOptionPane.INFORMATION_MESSAGE);
-               txtID.setText("Enter a To-Do ID to Update");
-            }
-         } else {
-            if (txtID.getText().equals("")) {
-               GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat);
-               GUIHelpers.clearUpdateInputs(txtID, "Enter a To-Do ID to Update", txtTextUpdate, dtDueDateUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus);
-               GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
-            }
-         }
-      }
-   }
-
-   @Override
-   public void keyTyped(KeyEvent e) {
-      if (!Character.isDigit(e.getKeyChar())) {
-         e.consume();
-      } else if (txtID.getText().equals("Enter a To-Do ID to Update")) {
-         txtID.setText("");
-      }
-   }
-
-   @Override
-   public void keyPressed(KeyEvent e) {
-      if ("Enter a To-Do ID to Update".equals(txtID.getText())) txtID.setText("");
    }
 }

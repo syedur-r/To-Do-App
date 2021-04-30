@@ -3,43 +3,88 @@ import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
 public class GUIStyles {
-   public static String[] setBackgroundImage() {
-      return new String[] {
-              "images/todo-bg.png",
-              "images/todo-bg2.png",
-              "images/todo-bg3.png",
-              "images/todo-bg4.png",
-              "images/todo-bg5.png",
-              "images/todo-bg6.png",
-              "images/todo-bg7.png",
-              "images/todo-bg8.png",
-              "images/todo-bg9.png",
-              "images/todo-bg10.png"
-      };
+   public static void setPanelSize(JFrame frame, JPanel header, JPanel navBar, JPanel todoTable, JPanel homeName, JPanel homeText, JPanel horizontalLine,
+                                   JPanel inspirationalQuote, JPanel addInput, JPanel updateInput, JPanel deleteInput, JPanel addBtnPanel, JPanel updateBtnPanel,
+                                   JPanel deleteBtnPanel) {
+      header.setPreferredSize(new Dimension(100, 200));
+      navBar.setPreferredSize(new Dimension(200, 40));
+      todoTable.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight() + 200) / 2, 460));
+      homeName.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight()) / 2, 200));
+      homeText.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight()) / 2, 400));
+      horizontalLine.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight()) / 2, 600));
+      inspirationalQuote.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight()) / 2, 250));
+      addInput.setMaximumSize(new Dimension(frame.getWidth(), 250));
+      updateInput.setMaximumSize(new Dimension(frame.getWidth(), 330));
+      deleteInput.setMaximumSize(new Dimension(frame.getWidth(), 120));
+      addBtnPanel.setMaximumSize(new Dimension(150, 40));
+      updateBtnPanel.setMaximumSize(new Dimension(180, 70));
+      deleteBtnPanel.setMaximumSize(new Dimension(180, 50));
    }
 
-   public static String[] setQuote() {
-      return new String[] {
-              "“The secret to getting things done is to act!” - Dante Alighieri",
-              "“You can do anything, but not everything.” - David Allen",
-              "“Without hustle, talent will only carry you so far.” - Gary Vaynerchuk",
-              "“The dream is free. The hustle is sold separately.” - Steve Harvey",
-              "“Get things done: Think big but start small.” - Oumar Dieng",
-      };
+   public static void setPanelLayout(JPanel header, JPanel navBar, JPanel mainContent, JPanel todoTable, JPanel homeText, JPanel homeName, JPanel horizontalLine,
+                               JPanel inspirationalQuote, JPanel addInput, JPanel updateInput, JPanel deleteInput, JPanel addBtnPanel, JPanel updateBtnPanel,
+                               JPanel deleteBtnPanel, JLabel backgroundImage) {
+      header.setLayout(new BorderLayout());
+      navBar.setLayout(new FlowLayout());
+      mainContent.setLayout(new BorderLayout());
+      todoTable.setLayout(new BorderLayout());
+      homeText.setLayout(new BorderLayout());
+      homeName.setLayout(new BorderLayout());
+      horizontalLine.setLayout(new BorderLayout());
+      inspirationalQuote.setLayout(new BorderLayout());
+      addInput.setLayout(new GridBagLayout());
+      updateInput.setLayout(new GridBagLayout());
+      deleteInput.setLayout(new GridBagLayout());
+      addBtnPanel.setLayout(new BorderLayout());
+      updateBtnPanel.setLayout(new BorderLayout());
+      deleteBtnPanel.setLayout(new BorderLayout());
+      backgroundImage.setLayout(new BoxLayout(backgroundImage, BoxLayout.Y_AXIS));
    }
 
-   public static String getCurrentDate() {
-      LocalDateTime date = LocalDateTime.now();
-      return date.getDayOfWeek().toString().substring(0, 1).toUpperCase() +
-              date.getDayOfWeek().toString().substring(1).toLowerCase() + ", " +
-              date.getDayOfMonth() + " " +
-              date.getMonth().toString().substring(0, 1).toUpperCase() +
-              date.getMonth().toString().substring(1).toLowerCase() + " " + date.getYear();
+   public static void setPanelAsOpaque(JPanel navBar, JPanel homeText, JPanel homeName, JPanel horizontalLine, JPanel inspirationalQuote, JPanel addInput,
+                                 JPanel updateInput, JPanel deleteInput, JPanel addBtnPanel, JPanel updateBtnPanel, JPanel deleteBtnPanel) {
+      navBar.setOpaque(false);
+      homeText.setOpaque(false);
+      homeName.setOpaque(false);
+      horizontalLine.setOpaque(false);
+      inspirationalQuote.setOpaque(false);
+      addInput.setOpaque(false);
+      updateInput.setOpaque(false);
+      deleteInput.setOpaque(false);
+      addBtnPanel.setOpaque(false);
+      updateBtnPanel.setOpaque(false);
+      deleteBtnPanel.setOpaque(false);
+   }
+
+   public static void setPanelVisibility(JPanel todoTable, JPanel homeText, JPanel homeName, JPanel addInput, JPanel updateInput, JPanel deleteInput,
+                                   JPanel addBtnPanel, JPanel updateBtnPanel, JPanel deleteBtnPanel) {
+      todoTable.setVisible(false);
+      homeText.setVisible(true);
+      homeName.setVisible(true);
+      addInput.setVisible(false);
+      updateInput.setVisible(false);
+      deleteInput.setVisible(false);
+      addBtnPanel.setVisible(false);
+      updateBtnPanel.setVisible(false);
+      deleteBtnPanel.setVisible(false);
+   }
+
+   public static void setLabelForeground(JLabel welcomeText, JLabel introText, JLabel quote, JLabel title) {
+      welcomeText.setForeground(Color.WHITE);
+      introText.setForeground(Color.WHITE);
+      quote.setForeground(Color.WHITE);
+      title.setForeground(Color.WHITE);
+   }
+
+   public static void setLabelFont(JLabel title, JLabel welcomeText, JLabel introText, JLabel quote, Font montserrat) {
+      title.setFont(montserrat.deriveFont(Font.BOLD, 40f));
+      welcomeText.setFont(montserrat.deriveFont(Font.BOLD,70f));
+      introText.setFont(montserrat.deriveFont(40f));
+      quote.setFont(montserrat.deriveFont(14f));
    }
 
    public static void setLabelStyle(JLabel label, Font font, String text) {
