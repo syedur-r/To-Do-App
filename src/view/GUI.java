@@ -17,15 +17,29 @@ public class GUI extends JFrame {
    DefaultTableModel todoTableModel = new DefaultTableModel(columns, 0); // creates the model of the todo table and passes the column names inside it
 
    // an array of strings which contain all the category options for the drop-down box
-   String[] categories = {"Please select a category", String.valueOf(Category.Red), String.valueOf(Category.White), String.valueOf(Category.Blue),
-           String.valueOf(Category.Purple), String.valueOf(Category.Yellow), String.valueOf(Category.Green)};
+   String[] categories = {"Please select a category",
+           String.valueOf(Category.Red),
+           String.valueOf(Category.White),
+           String.valueOf(Category.Blue),
+           String.valueOf(Category.Purple),
+           String.valueOf(Category.Yellow),
+           String.valueOf(Category.Green)
+   };
 
    // an array of strings which contain all the importance options for the drop-down box
-   String[] importance = {"Please select an importance", String.valueOf(Importance.Low), String.valueOf(Importance.Normal), String.valueOf(Importance.High)};
+   String[] importance = {"Please select an importance",
+           String.valueOf(Importance.Low),
+           String.valueOf(Importance.Normal),
+           String.valueOf(Importance.High)
+   };
 
    // an array of strings which contain all the status options for the drop-down box
-   String[] status = {"Please select a status", String.valueOf(Status.Pending), String.valueOf(Status.Started), String.valueOf(Status.Partial),
-           String.valueOf(Status.Completed)};
+   String[] status = {"Please select a status",
+           String.valueOf(Status.Pending),
+           String.valueOf(Status.Started),
+           String.valueOf(Status.Partial),
+           String.valueOf(Status.Completed)
+   };
 
    // JPANELS
    JPanel header = new JPanel() {
