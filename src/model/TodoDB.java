@@ -43,7 +43,7 @@ public class TodoDB {
    private Connection dbConnect; // creates an instance of the database connection
 
    // this method will check if a database connection has been established
-   public boolean openConnection() {
+   public boolean isConnected() {
       try {
          dbConnect = DriverManager.getConnection(DATA_CONNECTION); // gets the database connection from the source of the database
          return true; // if a connection is established, the method will return true

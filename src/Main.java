@@ -5,7 +5,7 @@ import javax.swing.*;
 public class Main {
    public static void main(String[] args) {
       TodoDB dataModel = new TodoDB(); // creates an instance of the todoDB class
-      if (!dataModel.openConnection()) { // checks if a database connection hasn't been established
+      if (!dataModel.isConnected()) { // checks if a database connection hasn't been established
          System.out.println("Can't connect to the database"); // outputs a message saying there is no database connection
          return; // breaks out of the main method
       }

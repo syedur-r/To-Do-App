@@ -1,5 +1,4 @@
 package view;
-
 import model.TodoDB;
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -20,9 +19,23 @@ public class KeyEvents {
                                              JComboBox<String> cmbStatus, JComponent updateTask, Font montserrat) {
       txtID.addKeyListener(new KeyAdapter() {
          @Override
+         public void keyTyped(KeyEvent e) {
+            if (!Character.isDigit(e.getKeyChar())) {
+               e.consume();
+            } else if (txtID.getText().equals("Enter a To-Do ID to Update")) {
+               txtID.setText("");
+            }
+         }
+
+         @Override
+         public void keyPressed(KeyEvent e) {
+            if (txtID.getText().equals("Enter a To-Do ID to Update")) txtID.setText("");
+         }
+
+         @Override
          public void keyReleased(KeyEvent e) {
             TodoDB dataSource = new TodoDB();
-            if (!dataSource.openConnection()) {
+            if (!dataSource.isConnected()) {
                System.out.println("Can't connect to the database");
                return;
             }
@@ -46,21 +59,9 @@ public class KeyEvents {
                      GUIHelpers.enableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
                      txtTextUpdate.setText(dataSource.getTodoColumns(TodoDB.TODO_NAME, index));
                      String dbDate = dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index).substring(0, dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index).lastIndexOf( "T"));
-                     try {
-                        Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dbDate);
-                        dtDueDateUpdate.getEditor().setValue(date);
-                     } catch (ParseException parseException) {
-                        System.out.println("Unable to parse String object to Date");
-                     }
-
                      String dbTime = dataSource.getTodoColumns(TodoDB.TODO_DUE_DATE, index).substring(11);
-                     try {
-                        Date date = new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(dbTime);
-                        spDueTimeUpdate.getModel().setValue(date);
-                     } catch (ParseException parseException) {
-                        System.out.println("Unable to parse String object to Time");
-                     }
-
+                     populateDatePicker(dbDate, dtDueDateUpdate);
+                     populateTimeSpinner(dbTime, spDueTimeUpdate);
                      cmbCategoryUpdate.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_CATEGORY, index));
                      cmbImportanceUpdate.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_IMPORTANCE, index));
                      cmbStatus.setSelectedItem(dataSource.getTodoColumns(TodoDB.TODO_STATUS, index));
@@ -82,39 +83,29 @@ public class KeyEvents {
                }
             }
          }
-
-         @Override
-         public void keyTyped(KeyEvent e) {
-            if (!Character.isDigit(e.getKeyChar())) {
-               e.consume();
-            } else if (txtID.getText().equals("Enter a To-Do ID to Update")) {
-               txtID.setText("");
-            }
-         }
-
-         @Override
-         public void keyPressed(KeyEvent e) {
-            if (txtID.getText().equals("Enter a To-Do ID to Update")) txtID.setText("");
-         }
       });
+   }
+
+   private static void populateDatePicker(String dbDate, JXDatePicker datePicker) {
+      try {
+         Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dbDate);
+         datePicker.getEditor().setValue(date);
+      } catch (ParseException parseException) {
+         System.out.println("Unable to parse String object to Date");
+      }
+   }
+
+   private static void populateTimeSpinner(String dbTime, JSpinner timeSpinner) {
+      try {
+         Date date = new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(dbTime);
+         timeSpinner.getModel().setValue(date);
+      } catch (ParseException parseException) {
+         System.out.println("Unable to parse String object to Time Format");
+      }
    }
 
    public static void getDeleteIdKeyListener(JTextField txtDeleteId) {
       txtDeleteId.addKeyListener(new KeyAdapter() { // adds a placeholder for the delete panel ID text field
-         @Override
-         public void keyReleased(KeyEvent e) {
-            if (e.getKeyChar() != KeyEvent.VK_BACK_SPACE) {
-               if (txtDeleteId.getText().equals("")) {
-                  e.consume();
-                  txtDeleteId.setText("Enter a To-Do ID");
-               }
-            } else {
-               if (txtDeleteId.getText().equals("")) {
-                  txtDeleteId.setText("Enter a To-Do ID");
-               }
-            }
-         }
-
          @Override
          public void keyTyped(KeyEvent e) {
             if (!Character.isDigit(e.getKeyChar())) {
@@ -128,6 +119,20 @@ public class KeyEvents {
          public void keyPressed(KeyEvent e) {
             if (txtDeleteId.getText().equals("Enter a To-Do ID")) {
                txtDeleteId.setText("");
+            }
+         }
+
+         @Override
+         public void keyReleased(KeyEvent e) {
+            if (e.getKeyChar() != KeyEvent.VK_BACK_SPACE) {
+               if (txtDeleteId.getText().equals("")) {
+                  e.consume();
+                  txtDeleteId.setText("Enter a To-Do ID");
+               }
+            } else {
+               if (txtDeleteId.getText().equals("")) {
+                  txtDeleteId.setText("Enter a To-Do ID");
+               }
             }
          }
       });

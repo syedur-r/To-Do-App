@@ -120,9 +120,9 @@ public class GUI extends JFrame {
       });
 
       try {
-         montserrat = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Montserrat.ttf"));
          GraphicsEnvironment fontGraphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
-         fontGraphics.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Montserrat.ttf")));
+         montserrat = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Montserrat.ttf"));
+         fontGraphics.registerFont(montserrat);
       } catch (IOException | FontFormatException e) {
          System.out.println("Couldn't register this font");
       }
@@ -155,11 +155,11 @@ public class GUI extends JFrame {
       updateBtnPanel.add(updateTask, BorderLayout.SOUTH); // update button
       deleteBtnPanel.add(deleteTask, BorderLayout.SOUTH);
       todoTable.add(new JScrollPane(GUITables.createTodoTable(montserrat, todoTableModel))); // creates the JTable to view all the to-do list tasks as rows
-      navBar.add(homeBtn); // add buttons onto navBar panel
-      navBar.add(addBtn);
-      navBar.add(listBtn);
-      navBar.add(updateBtn);
-      navBar.add(deleteBtn);
+      navBar.add(homeBtn); // adds the home button onto navBar panel
+      navBar.add(addBtn); // adds the add button onto navBar panel
+      navBar.add(listBtn); // adds the list button onto navBar panel
+      navBar.add(updateBtn); // adds the update button onto navBar panel
+      navBar.add(deleteBtn); // adds the delete button onto navBar panel
 
       // add styling to buttons
       GUIStyles.setNavButtonStyles(homeBtn);

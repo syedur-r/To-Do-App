@@ -19,13 +19,13 @@ public class ActionEvents {
          String todoImportance = cmbImportanceAdd.getItemAt(cmbImportanceAdd.getSelectedIndex());
 
          TodoDB dataSource = new TodoDB();
-         if (!dataSource.openConnection()) {
+         if (!dataSource.isConnected()) {
             System.out.println("Can't connect to the database");
             return;
-         } else if (!GUIHelpers.isValid(todoDueDate + "T" + todoDueTime)) {
+         } else if (!GUIHelpers.isDateTimeValid(todoDueDate + "T" + todoDueTime)) {
             JOptionPane.showMessageDialog(frame, "Please Select a Valid Date and Time","Error", JOptionPane.ERROR_MESSAGE);
             return;
-         } else if (GUIHelpers.isValid(todoDueDate + "T" + todoDueTime) ||
+         } else if (GUIHelpers.isDateTimeValid(todoDueDate + "T" + todoDueTime) ||
                  !todoCategory.equals("Please select a category") ||
                  !todoImportance.equals("Please select an importance")) {
             dataSource.insertTodo(todoText, todoDueDate + "T" + todoDueTime, todoCategory, todoImportance);
@@ -53,7 +53,7 @@ public class ActionEvents {
                                           JComboBox<String> cmbStatus, JComponent updateTask, DefaultTableModel todoTableModel, Font montserrat) {
       try {
          TodoDB dataSource = new TodoDB();
-         if (!dataSource.openConnection()) {
+         if (!dataSource.isConnected()) {
             System.out.println("Can't connect to the database");
             return;
          }
@@ -64,14 +64,14 @@ public class ActionEvents {
             String todoText = txtTextUpdate.getText();
             String todoDueDate = new SimpleDateFormat("yyyy-MM-dd").format(dtDueDateUpdate.getDate());
             String todoDueTime = new SimpleDateFormat("HH:mm").format(spDueTimeUpdate.getValue());
-            String todoCategory = cmbCategoryUpdate.getItemAt(cmbCategoryUpdate.getSelectedIndex()).toString();
-            String todoImportance = cmbImportanceUpdate.getItemAt(cmbImportanceUpdate.getSelectedIndex()).toString();
-            String todoStatus = cmbStatus.getItemAt(cmbStatus.getSelectedIndex()).toString();
+            String todoCategory = cmbCategoryUpdate.getItemAt(cmbCategoryUpdate.getSelectedIndex());
+            String todoImportance = cmbImportanceUpdate.getItemAt(cmbImportanceUpdate.getSelectedIndex());
+            String todoStatus = cmbStatus.getItemAt(cmbStatus.getSelectedIndex());
 
             if (txtID.getText().equals("Enter a To-Do ID to Update")) {
                JOptionPane.showMessageDialog(frame, "Please Enter a Valid To-Do ID","Error", JOptionPane.ERROR_MESSAGE);
                return;
-            } else if (!GUIHelpers.isValid(todoDueDate + "T" + todoDueTime)) {
+            } else if (!GUIHelpers.isDateTimeValid(todoDueDate + "T" + todoDueTime)) {
                JOptionPane.showMessageDialog(frame, "Please Select a Valid Date and Time", "Error", JOptionPane.ERROR_MESSAGE);
                return;
             } else if (todoCategory.equals("Please select a category") ||
@@ -103,7 +103,7 @@ public class ActionEvents {
 
    public static void deleteTaskPerformed(JFrame frame, JTextField txtDeleteId, DefaultTableModel todoTableModel) {
       TodoDB dataSource = new TodoDB();
-      if (!dataSource.openConnection()) {
+      if (!dataSource.isConnected()) {
          System.out.println("Can't connect to the database");
          return;
       }

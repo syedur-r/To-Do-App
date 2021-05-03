@@ -40,12 +40,13 @@ public class GUIHelpers {
    }
 
    public static String getCurrentDate() {
-      LocalDateTime date = LocalDateTime.now();
-      return date.getDayOfWeek().toString().substring(0, 1).toUpperCase() +
-              date.getDayOfWeek().toString().substring(1).toLowerCase() + ", " +
-              date.getDayOfMonth() + " " +
-              date.getMonth().toString().substring(0, 1).toUpperCase() +
-              date.getMonth().toString().substring(1).toLowerCase() + " " + date.getYear();
+      LocalDateTime date = LocalDateTime.now(); // initialises a date variable which contains the current date-time
+      return date.getDayOfWeek().toString().substring(0, 1).toUpperCase() + // gets the first letter for the current day of the week, as a capital letter
+              date.getDayOfWeek().toString().substring(1).toLowerCase() + ", " + // gets the rest of the letters for the current day of the week, as lowercase letters
+              date.getDayOfMonth() + " " + // gets the day of the month
+              date.getMonth().toString().substring(0, 1).toUpperCase() + // gets the first letter for the current month, as a capital letter
+              date.getMonth().toString().substring(1).toLowerCase() + // gets the rest of the letters for the current month, as lowercase letters
+              " " + date.getYear(); // gets the current year
    }
 
    // sets the greeting message based on the time of the day
@@ -129,7 +130,7 @@ public class GUIHelpers {
    }
 
    // checks if a localDateTime format is valid
-   public static boolean isValid(String dateTime) {
+   public static boolean isDateTimeValid(String dateTime) {
       try {
          LocalDateTime.parse(dateTime); // parses the date string from the parameter into LocalDateTime
          return true; // returns true if successful

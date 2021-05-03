@@ -3,7 +3,6 @@ package view;
 import controller.Category;
 import model.Todo;
 import model.TodoDB;
-
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -73,7 +72,7 @@ public class GUITables {
       // aligning the cells the in the record to the center
       DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
       centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-      for (int i = 0; i < 6; i++) {
+      for (int i = 0; i < todoTable.getColumnModel().getColumnCount(); i++) {
          todoTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
       }
 
@@ -91,7 +90,7 @@ public class GUITables {
    public static void getTodoRows(DefaultTableModel todoTableModel) {
       Object[] rowData = new Object[6];
       TodoDB dataSource = new TodoDB();
-      if (!dataSource.openConnection()) {
+      if (!dataSource.isConnected()) {
          System.out.println("To-Do Database Connection Failed!");
          return;
       }
