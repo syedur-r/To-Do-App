@@ -20,7 +20,7 @@ public class KeyEvents {
                                              JComboBox<String> cmbStatus, JComponent updateTask, Font montserrat) {
       txtID.addKeyListener(new KeyAdapter() { // adds a key listener to the textbox
          @Override
-         public void keyTyped(KeyEvent e) { // overrides the keyTyped method
+         public void keyTyped(KeyEvent e) { // overrides the keyTyped method  for the update ID textfield
             if (!Character.isDigit(e.getKeyChar())) { // checks if the character entered in the textbox is not a digit
                e.consume(); // if the condition is met, the character will not be processed (it will not be shown on the textbox)
             } else if (txtID.getText().equals("Enter a To-Do ID to Update")) { // checks if the textbox contains the placeholder "Enter a To-Do ID to Update"
@@ -29,13 +29,13 @@ public class KeyEvents {
          }
 
          @Override
-         public void keyPressed(KeyEvent e) { // overrides the keyPressed method
+         public void keyPressed(KeyEvent e) { // overrides the keyPressed method for the update ID textfield
             // checks if the textbox contains the placeholder "Enter a To-Do ID to Update"
             if (txtID.getText().equals("Enter a To-Do ID to Update")) txtID.setText(""); // if it does, the text will be cleared
          }
 
          @Override
-         public void keyReleased(KeyEvent e) { // overrides the keyReleased method
+         public void keyReleased(KeyEvent e) { // overrides the keyReleased method for the update ID textfield
             TodoDB dataSource = new TodoDB(); // creates an instance of the TodoDB class
             if (!dataSource.isConnected()) { // checks if the dataSource instance is not connected to the database
                System.out.println("Can't connect to the database"); // if it isn't then a message will be logged to the console
@@ -86,7 +86,7 @@ public class KeyEvents {
                      JOptionPane.showMessageDialog(frame, "Please Check the List Task Page for To-Do ID", "Information", JOptionPane.INFORMATION_MESSAGE);
                      txtID.setText("Enter a To-Do ID to Update"); // the ID textbox will set its text to "Enter a To-Do ID to Update"
                   }
-               } else {
+               } else { // once the user has pressed backspace, and the textbox is empty, it should display the placeholder again
                   if (txtID.getText().equals("")) { // checks if the ID textbox is empty
                      // if it is, then
                      GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat); // the jSpinner which contains the time will be reset
@@ -104,9 +104,11 @@ public class KeyEvents {
    // this helper method populates the jxDatePicker in the update panel
    private static void populateDatePicker(String dbDate, JXDatePicker datePicker) {
       try {
-         Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dbDate);
-         datePicker.getEditor().setValue(date);
+         Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dbDate); // constructs a date pattern with the given format yyyy-MM-dd,
+         // which is part of LocalDateTime. The parse method is then chained along to produce the date for the datePicker
+         datePicker.getEditor().setValue(date); // sets the value of the datePicker as the date object
       } catch (ParseException parseException) {
+         // if the try block fails, the catch block will catch the exception and display an error message gracefully
          System.out.println("Unable to parse String object to Date");
       }
    }
@@ -114,9 +116,11 @@ public class KeyEvents {
    // this helper method populates the jSpinner in the update panel
    private static void populateTimeSpinner(String dbTime, JSpinner timeSpinner) {
       try {
-         Date date = new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(dbTime);
-         timeSpinner.getModel().setValue(date);
+         Date date = new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(dbTime); // constructs a date pattern with the given format HH:mm,
+         // which is part of LocalDateTime. The parse method is then chained along to produce the time for the jSpinner
+         timeSpinner.getModel().setValue(date); // sets the value of the jSpinner as the time from the date object
       } catch (ParseException parseException) {
+         // if the try block fails, the catch block will catch the exception and display an error message gracefully
          System.out.println("Unable to parse String object to Time Format");
       }
    }
@@ -125,31 +129,31 @@ public class KeyEvents {
    public static void getDeleteIdKeyListener(JTextField txtDeleteId) {
       txtDeleteId.addKeyListener(new KeyAdapter() { // adds a placeholder for the delete panel ID text field
          @Override
-         public void keyTyped(KeyEvent e) {
-            if (!Character.isDigit(e.getKeyChar())) {
-               e.consume();
-            } else if (txtDeleteId.getText().equals("Enter a To-Do ID")) {
-               txtDeleteId.setText("");
+         public void keyTyped(KeyEvent e) { // overrides the keyTyped method for the delete ID textfield
+            if (!Character.isDigit(e.getKeyChar())) { // checks if the user hasn't entered a digit for the ID
+               e.consume(); // if the user hasn't entered a digit, it will be consume (the textbox will not produce anything)
+            } else if (txtDeleteId.getText().equals("Enter a To-Do ID")) { // checks if the delete ID textbox contains the placeholder "Enter a To-Do ID"
+               txtDeleteId.setText(""); // clears the textbox
             }
          }
 
          @Override
-         public void keyPressed(KeyEvent e) {
-            if (txtDeleteId.getText().equals("Enter a To-Do ID")) {
-               txtDeleteId.setText("");
+         public void keyPressed(KeyEvent e) { // overrides the keyPressed method for the delete ID textfield
+            if (txtDeleteId.getText().equals("Enter a To-Do ID")) { // checks if the delete ID textbox contains the placeholder "Enter a To-Do ID"
+               txtDeleteId.setText(""); // clears the textbox
             }
          }
 
          @Override
-         public void keyReleased(KeyEvent e) {
-            if (e.getKeyChar() != KeyEvent.VK_BACK_SPACE) {
-               if (txtDeleteId.getText().equals("")) {
-                  e.consume();
-                  txtDeleteId.setText("Enter a To-Do ID");
+         public void keyReleased(KeyEvent e) { // overrides the keyReleased method for the delete ID textfield
+            if (e.getKeyChar() != KeyEvent.VK_BACK_SPACE) { // checks if the user hasn't pressed the backspace key
+               if (txtDeleteId.getText().equals("")) { // checks if the delete ID textbox is empty
+                  e.consume(); // any character entered by the user will not be processed
+                  txtDeleteId.setText("Enter a To-Do ID"); // resets the textfield to the original placeholder, "Enter a To-Do ID"
                }
-            } else {
-               if (txtDeleteId.getText().equals("")) {
-                  txtDeleteId.setText("Enter a To-Do ID");
+            } else { // once the user has pressed backspace, and the textbox is empty, it should display the placeholder again
+               if (txtDeleteId.getText().equals("")) { // checks if the delete ID textbox is empty
+                  txtDeleteId.setText("Enter a To-Do ID"); // resets the textfield to the original placeholder, "Enter a To-Do ID"
                }
             }
          }

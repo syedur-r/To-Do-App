@@ -56,8 +56,10 @@ public class GUITables {
       };
 
       TableColumn id = todoTable.getColumnModel().getColumn(0); // gets the ID column from the table
-      id.setMaxWidth(40); // sets the width of the ID column as 40
+      TableColumn text = todoTable.getColumnModel().getColumn(1); // gets the ID column from the table
+      id.setMaxWidth(40); // sets the maximum width of the ID column as 40
       id.setResizable(false); // doesn't allow the user to resize the ID column
+      text.setMinWidth(250); // sets the minimum width of the text column as 250
 
       // customising the columns of the jTable
       todoTable.setEnabled(false);
