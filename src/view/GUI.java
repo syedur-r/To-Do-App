@@ -32,8 +32,8 @@ public class GUI extends JFrame {
    JPanel navBar = new JPanel();
    JPanel mainContent = new JPanel();
    JPanel todoTable = new JPanel();
-   JPanel homeName = new JPanel();
-   JPanel homeText = new JPanel();
+   JPanel greetingText = new JPanel();
+   JPanel questionText = new JPanel();
    JPanel horizontalLine = new JPanel() {
       @Override
       protected void paintComponent(Graphics graphics) {
@@ -138,8 +138,8 @@ public class GUI extends JFrame {
       header.add(title, BorderLayout.CENTER);
       backgroundImage.add(Box.createRigidArea(new Dimension(100, 50)));
       backgroundImage.add(GUIPanels.createTodoTablePanel(todoTable, this), BorderLayout.CENTER);
-      backgroundImage.add(GUIPanels.createHomeMessagePanel(homeName, this), BorderLayout.CENTER);
-      backgroundImage.add(GUIPanels.createHomeTextPanel(homeText, this), BorderLayout.CENTER);
+      backgroundImage.add(GUIPanels.createGreetingTextPanel(greetingText, this), BorderLayout.CENTER);
+      backgroundImage.add(GUIPanels.createQuestionTextPanel(questionText, this), BorderLayout.CENTER);
       backgroundImage.add(GUIPanels.createHorizontalLinePanel(horizontalLine, this), BorderLayout.CENTER);
       backgroundImage.add(GUIPanels.createQuotePanel(motivationalQuote, this), BorderLayout.CENTER);
       backgroundImage.add(GUIPanels.createAddInputPanel(addInput, this), BorderLayout.NORTH); // add task
@@ -148,8 +148,8 @@ public class GUI extends JFrame {
       backgroundImage.add(GUIPanels.createAddBtnPanel(addBtnPanel), BorderLayout.SOUTH); // add button
       backgroundImage.add(GUIPanels.createUpdateBtnPanel(updateBtnPanel), BorderLayout.SOUTH); // update button
       backgroundImage.add(GUIPanels.createDeleteBtnPanel(deleteBtnPanel), BorderLayout.SOUTH); // delete button
-      homeName.add(welcomeText);
-      homeText.add(introText);
+      greetingText.add(welcomeText);
+      questionText.add(introText);
       motivationalQuote.add(quote);
       addBtnPanel.add(addTask, BorderLayout.SOUTH);
       updateBtnPanel.add(updateTask, BorderLayout.SOUTH); // update button
@@ -247,8 +247,8 @@ public class GUI extends JFrame {
          GUIHelpers.displayPanel(
                  title, GUIHelpers.getCurrentDate(),
                  todoTable, false,
-                 homeName, true,
-                 homeText, true,
+                 greetingText, true,
+                 questionText, true,
                  horizontalLine, true,
                  motivationalQuote, true,
                  addInput, false,
@@ -267,8 +267,8 @@ public class GUI extends JFrame {
          GUIHelpers.displayPanel(
                  title, "Add Task",
                  todoTable, false,
-                 homeName, false,
-                 homeText, false,
+                 greetingText, false,
+                 questionText, false,
                  horizontalLine, false,
                  motivationalQuote, false,
                  addInput, true,
@@ -287,8 +287,8 @@ public class GUI extends JFrame {
          GUIHelpers.displayPanel(
                  title, "List Tasks",
                  todoTable, true,
-                 homeName, false,
-                 homeText, false,
+                 greetingText, false,
+                 questionText, false,
                  horizontalLine, false,
                  motivationalQuote, false,
                  addInput, false,
@@ -307,8 +307,8 @@ public class GUI extends JFrame {
          GUIHelpers.displayPanel(
                  title, "Update Task",
                  todoTable, false,
-                 homeName, false,
-                 homeText, false,
+                 greetingText, false,
+                 questionText, false,
                  horizontalLine, false,
                  motivationalQuote, false,
                  addInput, false,
@@ -330,8 +330,8 @@ public class GUI extends JFrame {
          GUIHelpers.displayPanel(
                  title, "Delete Task",
                  todoTable, false,
-                 homeName, false,
-                 homeText, false,
+                 greetingText, false,
+                 questionText, false,
                  horizontalLine, false,
                  motivationalQuote, false,
                  addInput, false,

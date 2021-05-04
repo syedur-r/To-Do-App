@@ -85,6 +85,8 @@ public class KeyEvents {
                      // another dialogue box is displayed asking the user to check the list task page for the to-do id
                      JOptionPane.showMessageDialog(frame, "Please Check the List Task Page for To-Do ID", "Information", JOptionPane.INFORMATION_MESSAGE);
                      txtID.setText("Enter a To-Do ID to Update"); // the ID textbox will set its text to "Enter a To-Do ID to Update"
+                     txtID.setFocusable(false); // removes the highlighted text from the placeholder by disabling the focus
+                     txtID.setFocusable(true); // re-enables the focus to the ID textbox
                   }
                } else { // once the user has pressed backspace, and the textbox is empty, it should display the placeholder again
                   if (txtID.getText().equals("")) { // checks if the ID textbox is empty

@@ -35,23 +35,23 @@ public class GUIPanels {
    }
 
    // this method creates the homeName panel which displays the greeting message e.g. "Good Morning"
-   public static JPanel createHomeMessagePanel(JPanel homeName, JFrame frame) {
+   public static JPanel createGreetingTextPanel(JPanel greetingText, JFrame frame) {
       // sets the maximum size of the homeMessage panel as the (jFrame width + height /2) x 200
-      homeName.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight()) / 2, 200));
-      homeName.setLayout(new BorderLayout()); // sets the layout manager of the homeMessage panel as a border layout
-      homeName.setOpaque(false); // makes the homeMessage panel transparent
-      homeName.setVisible(true); // enables the visibility of the homeName panel
-      return homeName; // returns the homeName panel
+      greetingText.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight()) / 2, 200));
+      greetingText.setLayout(new BorderLayout()); // sets the layout manager of the homeMessage panel as a border layout
+      greetingText.setOpaque(false); // makes the homeMessage panel transparent
+      greetingText.setVisible(true); // enables the visibility of the homeName panel
+      return greetingText; // returns the homeName panel
    }
 
    // this method creates the homeText panel which displays the message "what are your tasks for today?"
-   public static JPanel createHomeTextPanel(JPanel homeText, JFrame frame) {
+   public static JPanel createQuestionTextPanel(JPanel questionText, JFrame frame) {
       // sets the maximum size of the homeText panel as the (jFrame width + height /2) x 400
-      homeText.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight()) / 2, 400));
-      homeText.setLayout(new BorderLayout()); // sets the layout manager of the homeText panel as a border layout
-      homeText.setOpaque(false); // makes the homeText panel transparent
-      homeText.setVisible(true); // enables the visibility of the homeText panel
-      return homeText; // returns the homeText panel
+      questionText.setMaximumSize(new Dimension((frame.getWidth() + frame.getHeight()) / 2, 400));
+      questionText.setLayout(new BorderLayout()); // sets the layout manager of the homeText panel as a border layout
+      questionText.setOpaque(false); // makes the homeText panel transparent
+      questionText.setVisible(true); // enables the visibility of the homeText panel
+      return questionText; // returns the homeText panel
    }
 
    // this method creates the horizontalLine panel which displays the solid line underneath the welcome text

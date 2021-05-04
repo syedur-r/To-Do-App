@@ -86,14 +86,13 @@ public class TodoDB {
 
          // iterates through the result set to get each result
          while (results.next()) {
-            Todo todo = new Todo(); // creates an object of type todo called todo
-            todo.setTaskID(results.getInt(INDEX_TODO_ID)); // sets the todo ID as the results ID index
-            todo.setText(results.getString(INDEX_TODO_NAME)); // sets the todo name as the results ID index
-            todo.setDue(LocalDateTime.parse(results.getString(INDEX_TODO_DUE_DATE))); // sets the todo due date as the results due date index
-            todo.setCat(Category.valueOf(results.getString(INDEX_TODO_CATEGORY))); // sets the todo category as the results category index
-            todo.setImportance(Importance.valueOf(results.getString(INDEX_TODO_IMPORTANCE))); // sets the todo importance as the results importance index
-            todo.setCompletion(Status.valueOf(results.getString(INDEX_TODO_STATUS))); // sets the todo status as the results status index
-            todoList.add(todo); // adds the todo object to the arraylist
+            int taskID = results.getInt(INDEX_TODO_ID); // sets the task ID as the results ID index
+            String text = results.getString(INDEX_TODO_NAME); // sets the text as the results name index
+            LocalDateTime dueDate = LocalDateTime.parse(results.getString(INDEX_TODO_DUE_DATE)); // sets the due date as the results due date index
+            Category category = Category.valueOf(results.getString(INDEX_TODO_CATEGORY)); // sets the category as the results category index
+            Importance importance = Importance.valueOf(results.getString(INDEX_TODO_IMPORTANCE)); // sets the importance as the results importance index
+            Status status = Status.valueOf(results.getString(INDEX_TODO_STATUS)); // sets the status as the results status index
+            todoList.add(new Todo(taskID, text, dueDate, category, importance, status)); // adds the properties to the arraylist as a new Todo object
          }
          return todoList; // returns the arraylist
       } catch (SQLException e) {
@@ -149,7 +148,7 @@ public class TodoDB {
 
    // this method will execute the insert statement, to insert a record into the database
    public void insertTodo(String text, String dueDate, String category, String importance) throws SQLException {
-      Statement statement = dbConnect.createStatement(); // executes the getTodoColumns query using a statement object
+      Statement statement = dbConnect.createStatement(); // stores the database connection inside a statement object
       // executes the insert statement
       statement.execute("INSERT INTO " + TODO_TABLE + " (" + // inserts into todoList
               TODO_NAME + ", " + // inserts into the name column

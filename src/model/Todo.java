@@ -13,6 +13,16 @@ public class Todo {
    private Importance importance; // creates a private instance for the todolist importance
    private Status completion; // creates a private instance for the todolist completion status
 
+   // creates a constructor for the todolist class
+   Todo(int taskID, String text, LocalDateTime due, Category cat, Importance importance, Status status) {
+      this.taskID = taskID; // sets the current instance of the taskID as the parameters instance of the taskID
+      this.text = text; // sets the current instance of text as the parameters instance of text
+      this.due = due; // sets the current instance of due as the parameters instance of due
+      this.cat = cat; // sets the current instance of cat as the parameters instance of cat
+      this.importance = importance; // sets the current instance of importance as the parameters instance of importance
+      this.completion = status; // sets the current instance of status as the parameters instance of status
+   }
+
    // getter method for taskID
    public int getTaskID() {
       return taskID; // returns the task ID as a string
