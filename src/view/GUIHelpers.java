@@ -60,12 +60,12 @@ public class GUIHelpers {
       Calendar date = Calendar.getInstance(); // stores the current date inside a Calendar object
       int hourOfDay = date.get(Calendar.HOUR_OF_DAY); // stores the hour of the day from the calendar instance, inside an integer
 
-      if (hourOfDay <= 6) { // checks if the hour of the day is less than or equal to 6am
-         return "Good Morning,"; // a good morning message will be returned
-      } else if (hourOfDay <= 17) { // checks if the hour of the day is less than or equal to 5pm
-         return "Good Afternoon,"; // a good afternoon message will be returned
+      if (hourOfDay < 12) { // checks if the hour of the day is less than 12pm
+         return "Good Morning "; // a good morning message will be returned
+      } else if (hourOfDay < 18) { // checks if the hour of the day is less than 6pm
+         return "Good Afternoon "; // a good afternoon message will be returned
       }
-      return "Good Evening,"; // if no conditions are met above, a good evening message will be returned
+      return "Good Evening "; // if no conditions are met above, a good evening message will be returned
    }
 
    // this helper method sets the coordinates of the grid constraints in the grid layout
