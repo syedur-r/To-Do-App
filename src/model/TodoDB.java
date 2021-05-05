@@ -9,9 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class TodoDB {
-   public static final String DATA_SOURCE = "todo.db"; // represents the source of the backend data, e.g. the database
-   public static final String DATA_CONNECTION = "jdbc:sqlite:datapath/" + DATA_SOURCE; // represents the connection to the database via the jdbc driver
-
    public static final String TODO_TABLE = "todoList"; // represents the names of the table in the database
    public static final String TODO_ID = "_id"; // represents the ID column of the todoList table
    public static final String TODO_NAME = "name"; // represents the name column of the todoList table
@@ -36,16 +33,29 @@ public class TodoDB {
            TODO_IMPORTANCE + " text, " + // creates an importance text field to store all the todo importance
            TODO_STATUS + " text" + ")"; // creates a status text field to store all the todo status
 
+   public static final String insertTodoQuery = "INSERT INTO " + TODO_TABLE + '(' + // inserts into the todoList table
+           TODO_NAME + ", " + // inserts into the name column
+           TODO_DUE_DATE + ", " + // inserts into the dueDate column
+           TODO_CATEGORY + ", " + // inserts into the category column
+           TODO_IMPORTANCE + ", " + // inserts into the importance column
+           TODO_STATUS + // inserts into the status column
+           " ) VALUES(?, ?, ?, ?, ?)"; // uses user input as values parameter to prevent SQL injection attacks
+
    public static final String selectTableQuery = "SELECT * FROM " + TODO_TABLE; // query to select all elements from the todoList table
    public static final String selectIdQuery = "SELECT _id AS identifier FROM " + TODO_TABLE; // query to select all id's from the todoList table
    public static final String rowCountQuery = "SELECT COUNT(*) AS count FROM " + TODO_TABLE; // query to select the total number of rows from the todoList table
 
+   public static final String DATA_SOURCE = "todo.db"; // represents the source of the backend data, e.g. the database
+   public static final String DATA_CONNECTION = "jdbc:sqlite:datapath/" + DATA_SOURCE; // represents the connection to the database via the jdbc driver
+
+   private PreparedStatement insertIntoTodo; // creates a prepared statement object for executing a pre-compiled SQL statement
    private Connection dbConnect; // creates an instance of the database connection
 
    // this method will check if a database connection has been established
    public boolean isConnected() {
       try {
          dbConnect = DriverManager.getConnection(DATA_CONNECTION); // gets the database connection from the source of the database
+         insertIntoTodo = dbConnect.prepareStatement(insertTodoQuery); // initialises the prepared statement object for executing parameterised SQL insert into the database
          return true; // if a connection is established, the method will return true
       } catch(SQLException e) {
          // otherwise an error message will be displayed
@@ -57,6 +67,9 @@ public class TodoDB {
    // this method will close the database connection
    public void closeConnection() {
       try {
+         if (insertIntoTodo != null) { // checks if the insertIntoTodo preparedStatement doesn't contain any null queries
+            insertIntoTodo.close(); // if the condition is met, the statement will close
+         }
          if(dbConnect != null) { // checks if the database connection is not null
             dbConnect.close(); // if the condition is met, the database connection will close
          }
@@ -148,21 +161,16 @@ public class TodoDB {
 
    // this method will execute the insert statement, to insert a record into the database
    public void insertTodo(String text, String dueDate, String category, String importance) throws SQLException {
-      Statement statement = dbConnect.createStatement(); // stores the database connection inside a statement object
-      // executes the insert statement
-      statement.execute("INSERT INTO " + TODO_TABLE + " (" + // inserts into todoList
-              TODO_NAME + ", " + // inserts into the name column
-              TODO_DUE_DATE + ", " + // inserts into the dueDate column
-              TODO_CATEGORY + ", " + // inserts into the category column
-              TODO_IMPORTANCE + ", " + // inserts into the importance column
-              TODO_STATUS + " ) " + // inserts into the status column
-              "VALUES(" + "'" + text + "', " + // retrieves the text to be stored in the name column
-              "'" + LocalDateTime.parse(dueDate) + "', " + // retrieves the dueDate to be stored in the dueDate column
-              "'" + Category.valueOf(category) + "', " + // retrieves the category to be stored in the category column
-              "'" + Importance.valueOf(importance) + "', " + // retrieves the importance to be stored in the importance column
-              "'" + Status.Pending + "')"); // stores the status as pending by default, into the status column
+      insertIntoTodo.setString(1, text); // sets the first parameter of the prepared statement as the To-Do text
+      insertIntoTodo.setString(2, dueDate); // sets the second parameter of the prepared statement as the Due Date
+      insertIntoTodo.setString(3, category); // sets the third parameter of the prepared statement as the Category
+      insertIntoTodo.setString(4, importance); // sets the fourth parameter of the prepared statement as the Importance
+      insertIntoTodo.setString(5, String.valueOf(Status.Pending)); // sets the fifth parameter of the prepared statement as the Status
+      int rowsAffected = insertIntoTodo.executeUpdate(); // stores the execution of the preparedStatement inside an integer to see if a row has been affected (should be 1)
+      if(rowsAffected != 1) throw new SQLException("Unable to insert To-Do task"); // if the rows haven't been affected, an SQL exception error will be thrown
    }
 
+   // this method will execute the update query, to update a record in the database
    public void updateTodo(String todoColumn, String setTodo, int ID) throws SQLException {
       Statement statement = dbConnect.createStatement(); // stores the database connection inside a statement object
       // executes the statement to update a record from where the ID is specified
