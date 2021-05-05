@@ -45,6 +45,8 @@ public class KeyEvents {
                // if there are no records, a dialogue box will appear saying that the To-Do List is Empty
                JOptionPane.showMessageDialog(frame,"Your To-Do List is Empty!","Empty", JOptionPane.WARNING_MESSAGE);
                txtID.setText("Enter a To-Do ID to Update"); // the ID textbox will set its text to "Enter a To-Do ID to Update"
+               txtID.setFocusable(false); // removes the highlighted text from the placeholder by disabling the focus
+               txtID.setFocusable(true); // re-enables the focus to the ID textbox
             } else {
                if (e.getKeyChar() != KeyEvent.VK_BACK_SPACE) { // checks if the user hasn't pressed the backspace key
                   int index = -1; // intialises an index as a offset value
