@@ -60,9 +60,9 @@ public class GUIHelpers {
       Calendar date = Calendar.getInstance(); // stores the current date inside a Calendar object
       int hourOfDay = date.get(Calendar.HOUR_OF_DAY); // stores the hour of the day from the calendar instance, inside an integer
 
-      if (hourOfDay < 12) { // checks if the hour of the day is less than 12pm
+      if (hourOfDay > 0 && hourOfDay < 12) { // checks if the hour of the day is more than 12am and less than 12pm
          return "Good Morning "; // a good morning message will be returned
-      } else if (hourOfDay < 18) { // checks if the hour of the day is less than 6pm
+      } else if (hourOfDay > 12 && hourOfDay < 18) { // checks if the hour of the day is more than 12pm less than 6pm
          return "Good Afternoon "; // a good afternoon message will be returned
       }
       return "Good Evening "; // if no conditions are met above, a good evening message will be returned

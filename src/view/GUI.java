@@ -112,69 +112,73 @@ public class GUI extends JFrame {
 
    // constructor
    public GUI() {
-      setTitle("To-Do List App");
-      setSize(1270, 790);
-      setLocationRelativeTo(null);
-      setLayout(new BorderLayout());
-      setResizable(false);
-      setVisible(true);
-      addWindowListener(new WindowAdapter() {
+      setTitle("To-Do List App"); // sets the title of the jFrame
+      setSize(1270, 790); // sets the width and height of the jFrame
+      setLocationRelativeTo(null); // sets the location of the jFrame
+      setLayout(new BorderLayout()); // sets the layout manager of the jFrame as a border layout
+      setResizable(false); // doesn't allow the user to resize the window
+      setVisible(true); // makes the jFrame visible to the user
+      addWindowListener(new WindowAdapter() { // adds a window listener to the jFrame
          @Override
-         public void windowOpened(WindowEvent e) {
-            super.windowOpened(e);
-            setVisible(false);
-            String inputName = JOptionPane.showInputDialog("Welcome","Please enter your name");
-            if (inputName == null || inputName.trim().length() == 0) {
-               welcomeText.setText(GUIHelpers.setGreetingMessage());
-               setVisible(true);
+         public void windowOpened(WindowEvent e) { // overrides the windowOpened method to add an event before opening the app
+//            super.windowOpened(e);
+            setVisible(false); // hides the visibility of the window
+            String inputName = JOptionPane.showInputDialog("Welcome","Please enter your name"); // displays an input dialogue box, asking the user to enter their name
+            if (inputName == null || inputName.trim().length() == 0) { // checks if the input is empty or contains empty whitespaces
+               welcomeText.setText(GUIHelpers.setGreetingMessage()); // if this is the case, the welcome text will display "Good Morning/Afternoon/Evening" without a name
+               setVisible(true); // makes the jFrame visible to the user
             } else {
-               welcomeText.setText(GUIHelpers.setGreetingMessage() + inputName + ",");
-               setVisible(true);
+               welcomeText.setText(GUIHelpers.setGreetingMessage() + inputName + ","); // otherwise, the welcome text will be displayed with the user's name
+               setVisible(true); // makes the jFrame visible to the user
             }
          }
 
          @Override
-         public void windowClosing(WindowEvent onCloseEvent) {
+         public void windowClosing(WindowEvent onCloseEvent) { // overrides the method for closing the app
+            // upon closing the app, the user will be displayed with a confirmation dialogue box with a yes or no option
             int exitApp = JOptionPane.showConfirmDialog(getParent(),"Are you sure you wish to exit?", "Exit", JOptionPane.YES_NO_OPTION);
+            // if the user click yes, the app will close. However, if they click no the app will continue running
             setDefaultCloseOperation(exitApp == JOptionPane.YES_OPTION ? JFrame.DISPOSE_ON_CLOSE : JFrame.DO_NOTHING_ON_CLOSE);
          }
       });
 
-      try {
-         GraphicsEnvironment fontGraphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
-         montserrat = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Montserrat.ttf"));
-         fontGraphics.registerFont(montserrat);
-      } catch (IOException | FontFormatException e) {
-         System.out.println("Couldn't register this font");
+      try { // using try and catch to register a custom font and handle errors gracefully, without breaking the app
+         GraphicsEnvironment fontGraphics = GraphicsEnvironment.getLocalGraphicsEnvironment(); // returns the graphics environment to allow font registration
+         montserrat = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Montserrat.ttf")); // initialises a new font from the provided file path
+         fontGraphics.registerFont(montserrat); // registers the font into the graphics environment
+      } catch (IOException | FontFormatException e) { // catches any input/out exception or font format exception
+         System.out.println("Couldn't register this font"); // if the try block fails, the catch block will output an error message
       }
 
-      backgroundImage.setLayout(new BoxLayout(backgroundImage, BoxLayout.Y_AXIS));
-      GUIStyles.setHomePanelLabelForeground(welcomeText, introText, quote, title);
-      GUIStyles.setHomePanelLabelFont(title, welcomeText, introText, quote, montserrat);
+      backgroundImage.setLayout(new BoxLayout(backgroundImage, BoxLayout.Y_AXIS)); // sets the layout manager for the background image as a box layout
+      GUIStyles.setHomePanelLabelForeground(welcomeText, introText, quote, title); // sets the foreground colours for all the components in the home panel,
+      // using the GUIStyles helper class
+      GUIStyles.setHomePanelLabelFont(title, welcomeText, introText, quote, montserrat); // sets the font styles of all the labels in the home panel,
+      // using the GUIStyles helper class
 
-      add(GUIPanels.createMainContentPanel(mainContent), BorderLayout.CENTER);
-      mainContent.add(GUIPanels.createHeaderPanel(header), BorderLayout.NORTH);
-      mainContent.add(backgroundImage, BorderLayout.CENTER);
-      header.add(GUIPanels.createNavBarPanel(navBar), BorderLayout.SOUTH);
-      header.add(title, BorderLayout.CENTER);
-      backgroundImage.add(Box.createRigidArea(new Dimension(100, 50)));
-      backgroundImage.add(GUIPanels.createTodoTablePanel(todoTable, this), BorderLayout.CENTER);
-      backgroundImage.add(GUIPanels.createGreetingTextPanel(greetingText, this), BorderLayout.CENTER);
-      backgroundImage.add(GUIPanels.createQuestionTextPanel(questionText, this), BorderLayout.CENTER);
-      backgroundImage.add(GUIPanels.createHorizontalLinePanel(horizontalLine, this), BorderLayout.CENTER);
-      backgroundImage.add(GUIPanels.createQuotePanel(motivationalQuote, this), BorderLayout.CENTER);
-      backgroundImage.add(GUIPanels.createAddInputPanel(addInput, this), BorderLayout.NORTH); // add task
-      backgroundImage.add(GUIPanels.createUpdateInputPanel(updateInput, this), BorderLayout.NORTH); // update task
-      backgroundImage.add(GUIPanels.createDeleteInputPanel(deleteInput, this), BorderLayout.NORTH); // delete task
-      backgroundImage.add(GUIPanels.createAddBtnPanel(addBtnPanel), BorderLayout.SOUTH); // add button
-      backgroundImage.add(GUIPanels.createUpdateBtnPanel(updateBtnPanel), BorderLayout.SOUTH); // update button
-      backgroundImage.add(GUIPanels.createDeleteBtnPanel(deleteBtnPanel), BorderLayout.SOUTH); // delete button
-      greetingText.add(welcomeText);
-      questionText.add(introText);
-      motivationalQuote.add(quote);
-      addBtnPanel.add(addTask, BorderLayout.SOUTH);
-      updateBtnPanel.add(updateTask, BorderLayout.SOUTH); // update button
-      deleteBtnPanel.add(deleteTask, BorderLayout.SOUTH);
+      add(GUIPanels.createMainContentPanel(mainContent), BorderLayout.CENTER); // adds the mainContent jPanel to the center of the jFrame
+      mainContent.add(GUIPanels.createHeaderPanel(header), BorderLayout.NORTH); // adds the header to the top of the mainContent panel
+      mainContent.add(backgroundImage, BorderLayout.CENTER); // adds the background image to the center of the mainContent panel
+      header.add(GUIPanels.createNavBarPanel(navBar), BorderLayout.SOUTH); // adds the navbar to the bottom of the header panel
+      header.add(title, BorderLayout.CENTER); // adds the title for the navbar sections to the center of the header panel
+      backgroundImage.add(Box.createRigidArea(new Dimension(100, 50))); // adds space between the top and left of the background image panel
+      backgroundImage.add(GUIPanels.createTodoTablePanel(todoTable, this), BorderLayout.CENTER); // adds the todoTable to the center of the background image panel
+      backgroundImage.add(GUIPanels.createGreetingTextPanel(greetingText, this), BorderLayout.CENTER); // adds the "Good Morning/Afternoon/Evening" text to the center of the background image panel
+      backgroundImage.add(GUIPanels.createQuestionTextPanel(questionText, this), BorderLayout.CENTER); // adds the "What are your tasks for today?" text to the center of the background image panel
+      backgroundImage.add(GUIPanels.createHorizontalLinePanel(horizontalLine, this), BorderLayout.CENTER); // adds the thick border line to the center of the background image panel
+      backgroundImage.add(GUIPanels.createQuotePanel(motivationalQuote, this), BorderLayout.CENTER); // adds the motivational quote to the center of the background image panel
+      backgroundImage.add(GUIPanels.createAddInputPanel(addInput, this), BorderLayout.NORTH); // adds the add task input panel to the top of the background image panel
+      backgroundImage.add(GUIPanels.createUpdateInputPanel(updateInput, this), BorderLayout.NORTH); // adds the update task input panel to the top of the background image panel
+      backgroundImage.add(GUIPanels.createDeleteInputPanel(deleteInput, this), BorderLayout.NORTH); // adds the delete task input panel to the top of the background image panel
+      backgroundImage.add(GUIPanels.createAddBtnPanel(addBtnPanel), BorderLayout.SOUTH); // adds the 'Add Task' panel to the bottom of the background image panel
+      backgroundImage.add(GUIPanels.createUpdateBtnPanel(updateBtnPanel), BorderLayout.SOUTH); // adds the 'Update Task' panel to the bottom of the background image panel
+      backgroundImage.add(GUIPanels.createDeleteBtnPanel(deleteBtnPanel), BorderLayout.SOUTH); // adds the 'Delete Task' panel to the bottom of the background image panel
+      greetingText.add(welcomeText); // the label which contains "Good Morning/Afternoon/Evening" is added to the greeting text panel
+      questionText.add(introText); // the label which contains "What are your tasks for today?" is added to the question text panel
+      motivationalQuote.add(quote); // adds the quotes label to the motivationalQuote panel
+      addBtnPanel.add(addTask, BorderLayout.SOUTH); // adds the 'Add Task' button to the bottom of the addBtn panel
+      updateBtnPanel.add(updateTask, BorderLayout.SOUTH); // adds the 'Update Task' button to the bottom of the updateBtn panel
+      deleteBtnPanel.add(deleteTask, BorderLayout.SOUTH); // adds the 'Delete Task' button to the bottom of the deleteBtn panel
       todoTable.add(new JScrollPane(GUITables.createTodoTable(montserrat, todoTableModel))); // creates the JTable to view all the to-do list tasks as rows
       navBar.add(homeBtn); // adds the home button onto navBar panel
       navBar.add(addBtn); // adds the add button onto navBar panel
@@ -184,76 +188,77 @@ public class GUI extends JFrame {
 
       // add styling to buttons
       GUIStyles.setNavButtonStyles(homeBtn);
+      // since home page is the first active page upon loading, its nav button will be set to bold
       homeBtn.setFont(montserrat.deriveFont(Font.BOLD,20f)); // this must stay here, otherwise "Home" will not be bold
-      // since home page is the first active page upon loading, its button will be bold
-      GUIStyles.setNavButtonStyles(listBtn);
-      GUIStyles.setNavButtonStyles(addBtn);
-      GUIStyles.setNavButtonStyles(updateBtn);
-      GUIStyles.setNavButtonStyles(deleteBtn);
-      GUIStyles.setTaskButtonStyles(addTask, montserrat);
-      GUIStyles.setTaskButtonStyles(updateTask, montserrat);
-      GUIStyles.setTaskButtonStyles(deleteTask, montserrat);
-      GUIStyles.setLabelStyle(lblID, montserrat, "To-Do ID");
-      GUIStyles.setLabelStyle(lblDeleteId, montserrat, "To-Do ID");
-      GUIStyles.setLabelStyle(lblTextAdd, montserrat, "To-Do text");
-      GUIStyles.setLabelStyle(lblDueDateAdd, montserrat, "Due Date");
-      GUIStyles.setLabelStyle(lblDueTimeAdd, montserrat, "Due Time");
-      GUIStyles.setLabelStyle(lblCategoryAdd, montserrat, "Category");
-      GUIStyles.setLabelStyle(lblImportanceAdd, montserrat, "Importance");
-      GUIStyles.setLabelStyle(lblStatus, montserrat, "Status");
-      GUIStyles.setLabelStyle(lblTextUpdate, montserrat, "To-Do text");
-      GUIStyles.setLabelStyle(lblDueDateUpdate, montserrat, "Due Date");
-      GUIStyles.setLabelStyle(lblDueTimeUpdate, montserrat, "Due Time");
-      GUIStyles.setLabelStyle(lblCategoryUpdate, montserrat, "Category");
-      GUIStyles.setLabelStyle(lblImportanceUpdate, montserrat, "Importance");
-      GUIStyles.setTextStyle(txtID, montserrat);
-      GUIStyles.setTextStyle(txtDeleteId, montserrat);
-      GUIStyles.setTextStyle(txtTextAdd, montserrat);
-      GUIStyles.setTextStyle(txtTextUpdate, montserrat);
-      GUIStyles.setSelectionBoxStyle(cmbCategoryAdd, montserrat);
-      GUIStyles.setSelectionBoxStyle(cmbImportanceAdd, montserrat);
-      GUIStyles.setSelectionBoxStyle(cmbCategoryUpdate, montserrat);
-      GUIStyles.setSelectionBoxStyle(cmbImportanceUpdate, montserrat);
-      GUIStyles.setSelectionBoxStyle(cmbStatus, montserrat);
-      GUIStyles.setDatePickerStyle(dtDueDateAdd, montserrat);
-      GUIStyles.setDatePickerStyle(dtDueDateUpdate, montserrat);
-      GUIStyles.setSpinnerStyle(spDueTimeAdd, montserrat);
-      GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat);
+      GUIStyles.setNavButtonStyles(listBtn); // sets the button style for the 'List Tasks' nav button
+      GUIStyles.setNavButtonStyles(addBtn); // sets the button style for the 'Add Task' nav button
+      GUIStyles.setNavButtonStyles(updateBtn); // sets the button style for the 'Update Task' nav button
+      GUIStyles.setNavButtonStyles(deleteBtn); // sets the button style for the 'Delete Task' nav button
+      GUIStyles.setTaskButtonStyles(addTask, montserrat);  // sets the button style for the 'Add Task' action button
+      GUIStyles.setTaskButtonStyles(updateTask, montserrat); // sets the button style for the 'Update Task' action button
+      GUIStyles.setTaskButtonStyles(deleteTask, montserrat); // sets the button style for the 'Delete Task' action button
+      GUIStyles.setLabelStyle(lblTextAdd, montserrat, "To-Do text"); // sets the label style for the To-Do text label in the add task panel
+      GUIStyles.setLabelStyle(lblDueDateAdd, montserrat, "Due Date"); // sets the label style for the due date label in the add task panel
+      GUIStyles.setLabelStyle(lblDueTimeAdd, montserrat, "Due Time"); // sets the label style for the due time label in the add task panel
+      GUIStyles.setLabelStyle(lblCategoryAdd, montserrat, "Category"); // sets the label style for the category label in the add task panel
+      GUIStyles.setLabelStyle(lblImportanceAdd, montserrat, "Importance"); // sets the label style for the importance label in the add task panel
+      GUIStyles.setLabelStyle(lblID, montserrat, "To-Do ID"); // sets the label style for the To-Do ID label in the update task panel
+      GUIStyles.setLabelStyle(lblTextUpdate, montserrat, "To-Do text"); // sets the label style for the To-Do text label in the update task panel
+      GUIStyles.setLabelStyle(lblDueDateUpdate, montserrat, "Due Date"); // sets the label style for the due date label in the update task panel
+      GUIStyles.setLabelStyle(lblDueTimeUpdate, montserrat, "Due Time"); // sets the label style for the due time label in the update task panel
+      GUIStyles.setLabelStyle(lblCategoryUpdate, montserrat, "Category"); // sets the label style for the category label in the update task panel
+      GUIStyles.setLabelStyle(lblImportanceUpdate, montserrat, "Importance"); // sets the label style for the importance label in the update task panel
+      GUIStyles.setLabelStyle(lblStatus, montserrat, "Status"); // sets the label style for the status label in the update task panel
+      GUIStyles.setLabelStyle(lblDeleteId, montserrat, "To-Do ID"); // sets the label style for the To-Do ID label in the delete task panel
+      GUIStyles.setTextStyle(txtID, montserrat); // sets the text style for the To-Do ID textbox in the update task panel
+      GUIStyles.setTextStyle(txtDeleteId, montserrat); // sets the text style for the To-Do ID textbox in the delete task panel
+      GUIStyles.setTextStyle(txtTextAdd, montserrat); // sets the text style for the To-Do text textbox in the add task panel
+      GUIStyles.setTextStyle(txtTextUpdate, montserrat); // sets the text style for the To-Do text textbox in the update task panel
+      GUIStyles.setSelectionBoxStyle(cmbCategoryAdd, montserrat); // sets the style for the category drop-down box in the add task panel
+      GUIStyles.setSelectionBoxStyle(cmbImportanceAdd, montserrat); // sets the style for the importance drop-down box in the add task panel
+      GUIStyles.setSelectionBoxStyle(cmbCategoryUpdate, montserrat); // sets the style for the category drop-down box in the update task panel
+      GUIStyles.setSelectionBoxStyle(cmbImportanceUpdate, montserrat); // sets the style for the importance drop-down box in the update task panel
+      GUIStyles.setSelectionBoxStyle(cmbStatus, montserrat); // sets the style for the status drop-down box in the update task panel
+      GUIStyles.setDatePickerStyle(dtDueDateAdd, montserrat); // sets the style for the date picker in the add task panel
+      GUIStyles.setDatePickerStyle(dtDueDateUpdate, montserrat); // sets the style for the date picker in the update task panel
+      GUIStyles.setSpinnerStyle(spDueTimeAdd, montserrat); // sets the style for the jSpinner in the add task panel
+      GUIStyles.setSpinnerStyle(spDueTimeUpdate, montserrat); // sets the style for the jSpinner in the update task panel
 
-      GridBagConstraints gridConst = new GridBagConstraints();
-      gridConst.insets = new Insets(10, 10, 10, 10);
-      gridConst.fill = GridBagConstraints.HORIZONTAL;
+      GridBagConstraints gridConst = new GridBagConstraints(); // creates a GridBagConstraint object to set the layout of the components
+      gridConst.insets = new Insets(10, 10, 10, 10); // represents the top, left, bottom, right borders of the grid bag constraints
+      gridConst.fill = GridBagConstraints.HORIZONTAL; // resizes the grid bag component horizontally
 
       // add task components
-      GUIHelpers.setGridCoord(gridConst, 0, 0, addInput, lblTextAdd);
-      GUIHelpers.setGridCoord(gridConst, 1, 0, addInput, txtTextAdd);
-      GUIHelpers.setGridCoord(gridConst, 0, 1, addInput, lblDueDateAdd);
-      GUIHelpers.setGridCoord(gridConst, 1, 1, addInput, dtDueDateAdd);
-      GUIHelpers.setGridCoord(gridConst, 0, 2, addInput, lblDueTimeAdd);
-      GUIHelpers.setGridCoord(gridConst, 1, 2, addInput, spDueTimeAdd);
-      GUIHelpers.setGridCoord(gridConst, 0, 3, addInput, lblCategoryAdd);
-      GUIHelpers.setGridCoord(gridConst, 1, 3, addInput, cmbCategoryAdd);
-      GUIHelpers.setGridCoord(gridConst, 0, 4, addInput, lblImportanceAdd);
-      GUIHelpers.setGridCoord(gridConst, 1, 4, addInput, cmbImportanceAdd);
+      GUIHelpers.setGridCoord(gridConst, 0, 0, addInput, lblTextAdd); // sets the grid coordinates for the 'To-Do Text' label in the addInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 0, addInput, txtTextAdd); // sets the grid coordinates for the 'To-Do Text' textbox in the addInput panel
+      GUIHelpers.setGridCoord(gridConst, 0, 1, addInput, lblDueDateAdd); // sets the grid coordinates for the 'Due Date' label in the addInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 1, addInput, dtDueDateAdd); // sets the grid coordinates for the 'Due Date' datePicker in the addInput panel
+      GUIHelpers.setGridCoord(gridConst, 0, 2, addInput, lblDueTimeAdd); // sets the grid coordinates for the 'Due Time' label in the addInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 2, addInput, spDueTimeAdd); // sets the grid coordinates for the 'Due Time' jSpinner in the addInput panel
+      GUIHelpers.setGridCoord(gridConst, 0, 3, addInput, lblCategoryAdd); // sets the grid coordinates for the 'Category' label in the addInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 3, addInput, cmbCategoryAdd); // sets the grid coordinates for the 'Category' drop-down box in the addInput panel
+      GUIHelpers.setGridCoord(gridConst, 0, 4, addInput, lblImportanceAdd); // sets the grid coordinates for the 'Importance' label in the addInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 4, addInput, cmbImportanceAdd); // sets the grid coordinates for the 'Importance' drop-down box in the addInput panel
       // update task components
-      GUIHelpers.setGridCoord(gridConst, 0, 0, updateInput, lblID);
-      GUIHelpers.setGridCoord(gridConst, 1, 0, updateInput, txtID);
-      GUIHelpers.setGridCoord(gridConst, 0, 1, updateInput, lblTextUpdate);
-      GUIHelpers.setGridCoord(gridConst, 1, 1, updateInput, txtTextUpdate);
-      GUIHelpers.setGridCoord(gridConst, 0, 2, updateInput, lblDueDateUpdate);
-      GUIHelpers.setGridCoord(gridConst, 1, 2, updateInput, dtDueDateUpdate);
-      GUIHelpers.setGridCoord(gridConst, 0, 3, updateInput, lblDueTimeUpdate);
-      GUIHelpers.setGridCoord(gridConst, 1, 3, updateInput, spDueTimeUpdate);
-      GUIHelpers.setGridCoord(gridConst, 0, 4, updateInput, lblCategoryUpdate);
-      GUIHelpers.setGridCoord(gridConst, 1, 4, updateInput, cmbCategoryUpdate);
-      GUIHelpers.setGridCoord(gridConst, 0, 5, updateInput, lblImportanceUpdate);
-      GUIHelpers.setGridCoord(gridConst, 1, 5, updateInput, cmbImportanceUpdate);
-      GUIHelpers.setGridCoord(gridConst, 0, 6, updateInput, lblStatus);
-      GUIHelpers.setGridCoord(gridConst, 1, 6, updateInput, cmbStatus);
+      GUIHelpers.setGridCoord(gridConst, 0, 0, updateInput, lblID); // sets the grid coordinates for the 'To-Do ID' label in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 0, updateInput, txtID); // sets the grid coordinates for the 'To-Do ID' textbox in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 0, 1, updateInput, lblTextUpdate); // sets the grid coordinates for the 'To-Do Text' label in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 1, updateInput, txtTextUpdate); // sets the grid coordinates for the 'To-Do Text' textbox in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 0, 2, updateInput, lblDueDateUpdate); // sets the grid coordinates for the 'Due Date' label in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 2, updateInput, dtDueDateUpdate); // sets the grid coordinates for the 'Due Date' datePicker in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 0, 3, updateInput, lblDueTimeUpdate); // sets the grid coordinates for the 'Due Time' label in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 3, updateInput, spDueTimeUpdate); // sets the grid coordinates for the 'Due Time' jSpinner in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 0, 4, updateInput, lblCategoryUpdate); // sets the grid coordinates for the 'Category' label in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 4, updateInput, cmbCategoryUpdate); // sets the grid coordinates for the 'Category' drop-down box in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 0, 5, updateInput, lblImportanceUpdate); // sets the grid coordinates for the 'Importance' label in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 5, updateInput, cmbImportanceUpdate); // sets the grid coordinates for the 'Importance' drop-down box in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 0, 6, updateInput, lblStatus); // sets the grid coordinates for the 'Status' label in the updateInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 6, updateInput, cmbStatus); // sets the grid coordinates for the 'Status' drop-down box in the updateInput panel
       // delete task components
-      GUIHelpers.setGridCoord(gridConst, 0, 0, deleteInput, lblDeleteId);
-      GUIHelpers.setGridCoord(gridConst, 1, 0, deleteInput, txtDeleteId);
+      GUIHelpers.setGridCoord(gridConst, 0, 0, deleteInput, lblDeleteId); // sets the grid coordinates for the 'To-Do ID' label in the deleteInput panel
+      GUIHelpers.setGridCoord(gridConst, 1, 0, deleteInput, txtDeleteId); // sets the grid coordinates for the 'To-Do ID' textbox in the deleteInput panel
 
+      // disables all the components in the update panel, until a valid ID is entered
       GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
       GUITables.getTodoRows(todoTableModel); // populates the jTable
 
@@ -262,107 +267,111 @@ public class GUI extends JFrame {
       KeyEvents.getDeleteIdKeyListener(txtDeleteId); // adds a placeholder for the delete panel ID text field
 
       /* DISPLAY HOME PANEL */
-      homeBtn.addActionListener(e -> {
-         GUIStyles.setActiveNavButton(montserrat, homeBtn);
-         GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), listBtn, addBtn, updateBtn, deleteBtn);
-         GUIHelpers.displayPanel(
-                 title, GUIHelpers.getCurrentDate(),
-                 todoTable, false,
-                 greetingText, true,
-                 questionText, true,
-                 horizontalLine, true,
-                 motivationalQuote, true,
-                 addInput, false,
-                 updateInput, false,
-                 deleteInput, false,
-                 addBtnPanel, false,
-                 updateBtnPanel, false,
-                 deleteBtnPanel, false
+      homeBtn.addActionListener(e -> { // adds an action to the home button, to navigate to the home panel
+         GUIStyles.setActiveNavButton(montserrat, homeBtn); // sets the active nav button as bold font
+         GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), listBtn, addBtn, updateBtn, deleteBtn); // sets the inactive nav buttons as a plain font
+         GUIHelpers.displayPanel( // displays all the panels and their components for the home panel, as well as hiding the panels that are not needed
+                 title, GUIHelpers.getCurrentDate(), // displays the title as the current data
+                 todoTable, false, // hides the to-do list table
+                 greetingText, true, // displays the "Good Morning/Afternoon/Evening" text
+                 questionText, true, // displays the "what are your tasks for today?" text
+                 horizontalLine, true, // displays the solid horizontal line
+                 motivationalQuote, true, // displays the motivational quotes
+                 addInput, false, // hides input fields for adding a task
+                 updateInput, false, // hides input fields for updating a task
+                 deleteInput, false, // hides input fields for deleting a task
+                 addBtnPanel, false, // hides the 'Add Task' button
+                 updateBtnPanel, false, // hides the 'Update Task' button
+                 deleteBtnPanel, false // hides the 'Delete Task' button
          );
       });
 
       /* DISPLAY ADD TASK PANEL */
-      addBtn.addActionListener(e -> {
-         GUIStyles.setActiveNavButton(montserrat, addBtn);
-         GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), listBtn, homeBtn, updateBtn, deleteBtn);
-         GUIHelpers.displayPanel(
-                 title, "Add Task",
-                 todoTable, false,
-                 greetingText, false,
-                 questionText, false,
-                 horizontalLine, false,
-                 motivationalQuote, false,
-                 addInput, true,
-                 updateInput, false,
-                 deleteInput, false,
-                 addBtnPanel, true,
-                 updateBtnPanel, false,
-                 deleteBtnPanel, false
+      addBtn.addActionListener(e -> { // adds an action to the add button, to navigate to the 'Add Task' panel
+         GUIStyles.setActiveNavButton(montserrat, addBtn); // sets the active nav button as bold font
+         GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), listBtn, homeBtn, updateBtn, deleteBtn); // sets the inactive nav buttons as a plain font
+         GUIHelpers.displayPanel( // displays all the panels and their components for the addBtn panel, as well as hiding the panels that are not needed
+                 title, "Add Task", // displays the title as the 'Add Task'
+                 todoTable, false, // hides the to-do list table
+                 greetingText, false, // hides the "Good Morning/Afternoon/Evening" text
+                 questionText, false, // hides the "what are your tasks for today?" text
+                 horizontalLine, false, // hides the solid horizontal line
+                 motivationalQuote, false, // hides the motivational quotes
+                 addInput, true, // displays input fields for adding a task
+                 updateInput, false, // hides input fields for updating a task
+                 deleteInput, false, // hides input fields for deleting a task
+                 addBtnPanel, true, // displays the 'Add Task' button
+                 updateBtnPanel, false, // hides the 'Update Task' button
+                 deleteBtnPanel, false // hides the 'Delete Task' button
          );
       });
 
       /* DISPLAY LIST TASKS PANEL */
-      listBtn.addActionListener(e -> {
-         GUIStyles.setActiveNavButton(montserrat, listBtn);
-         GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), homeBtn, addBtn, updateBtn, deleteBtn);
-         GUIHelpers.displayPanel(
-                 title, "List Tasks",
-                 todoTable, true,
-                 greetingText, false,
-                 questionText, false,
-                 horizontalLine, false,
-                 motivationalQuote, false,
-                 addInput, false,
-                 updateInput, false,
-                 deleteInput, false,
-                 addBtnPanel, false,
-                 updateBtnPanel, false,
-                 deleteBtnPanel, false
+      listBtn.addActionListener(e -> { // adds an action to the list button, to navigate to the 'List Tasks' panel
+         GUIStyles.setActiveNavButton(montserrat, listBtn); // sets the active nav button as bold font
+         GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), homeBtn, addBtn, updateBtn, deleteBtn); // sets the inactive nav buttons as a plain font
+         GUIHelpers.displayPanel( // displays all the panels and their components for the listBtn panel, as well as hiding the panels that are not needed
+                 title, "List Tasks", // displays the title as the 'List Tasks'
+                 todoTable, true, // displays the to-do list table
+                 greetingText, false, // hides the "Good Morning/Afternoon/Evening" text
+                 questionText, false, // hides the "what are your tasks for today?" text
+                 horizontalLine, false, // hides the solid horizontal line
+                 motivationalQuote, false, // hides the motivational quotes
+                 addInput, false, // hides input fields for adding a task
+                 updateInput, false, // hides input fields for updating a task
+                 deleteInput, false, // hides input fields for deleting a task
+                 addBtnPanel, false, // hides the 'Add Task' button
+                 updateBtnPanel, false, // hides the 'Update Task' button
+                 deleteBtnPanel, false // hides the 'Delete Task' button
          );
       });
 
       /* DISPLAY UPDATE TASK PANEL */
-      updateBtn.addActionListener(e -> {
-         GUIStyles.setActiveNavButton(montserrat, updateBtn);
-         GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), addBtn, listBtn, homeBtn, deleteBtn);
-         GUIHelpers.displayPanel(
-                 title, "Update Task",
-                 todoTable, false,
-                 greetingText, false,
-                 questionText, false,
-                 horizontalLine, false,
-                 motivationalQuote, false,
-                 addInput, false,
-                 updateInput, true,
-                 deleteInput, false,
-                 addBtnPanel, false,
-                 updateBtnPanel, true,
-                 deleteBtnPanel, false
+      updateBtn.addActionListener(e -> { // adds an action to the update button, to navigate to the 'Update Task' panel
+         GUIStyles.setActiveNavButton(montserrat, updateBtn); // sets the active nav button as bold font
+         GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), addBtn, listBtn, homeBtn, deleteBtn); // sets the inactive nav buttons as a plain font
+         GUIHelpers.displayPanel( // displays all the panels and their components for the updateBtn panel, as well as hiding the panels that are not needed
+                 title, "Update Task", // displays the title as the 'Update Task'
+                 todoTable, false, // hides the to-do list table
+                 greetingText, false, // hides the "Good Morning/Afternoon/Evening" text
+                 questionText, false, // hides the "what are your tasks for today?" text
+                 horizontalLine, false, // hides the solid horizontal line
+                 motivationalQuote, false, // hides the motivational quotes
+                 addInput, false, // hides input fields for adding a task
+                 updateInput, true, // displays input fields for updating a task
+                 deleteInput, false, // hides input fields for deleting a task
+                 addBtnPanel, false, // hides the 'Add Task' button
+                 updateBtnPanel, true, // displays the 'Update Task' button
+                 deleteBtnPanel, false // hides the 'Delete Task' button
          );
-         if (txtID.getText().equals("")) {
+         // displays the placeholder text in the update panel, each time the app is loaded
+         if (txtID.getText().equals("")) { // checks if the update ID textfield is empty
             txtID.setText("Enter a To-Do ID to Update"); // sets the text for the update ID textfield as "Enter a To-Do ID to Update" to represent a placeholder
          }
       });
 
       /* DISPLAY DELETE TASK PANEL */
-      deleteBtn.addActionListener(e -> {
-         GUIStyles.setActiveNavButton(montserrat, deleteBtn);
-         GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), updateBtn, addBtn, listBtn, homeBtn);
-         GUIHelpers.displayPanel(
-                 title, "Delete Task",
-                 todoTable, false,
-                 greetingText, false,
-                 questionText, false,
-                 horizontalLine, false,
-                 motivationalQuote, false,
-                 addInput, false,
-                 updateInput, false,
-                 deleteInput, true,
-                 addBtnPanel, false,
-                 updateBtnPanel, false,
-                 deleteBtnPanel, true
+      deleteBtn.addActionListener(e -> { // adds an action to the delete button, to navigate to the 'Delete Task' panel
+         GUIStyles.setActiveNavButton(montserrat, deleteBtn); // sets the active nav button as bold font
+         GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), updateBtn, addBtn, listBtn, homeBtn); // sets the inactive nav buttons as a plain font
+         GUIHelpers.displayPanel( // displays all the panels and their components for the deleteBtn panel, as well as hiding the panels that are not needed
+                 title, "Delete Task", // displays the title as the 'Delete Task'
+                 todoTable, false, // hides the to-do list table
+                 greetingText, false, // hides the "Good Morning/Afternoon/Evening" text
+                 questionText, false, // hides the "what are your tasks for today?" text
+                 horizontalLine, false, // hides the solid horizontal line
+                 motivationalQuote, false, // hides the motivational quotes
+                 addInput, false, // hides input fields for adding a task
+                 updateInput, false, // hides input fields for updating a task
+                 deleteInput, true, // displays input fields for deleting a task
+                 addBtnPanel, false, // hides the 'Add Task' button
+                 updateBtnPanel, false, // hides the 'Update Task' button
+                 deleteBtnPanel, true // displays the 'Delete Task' button
          );
-         txtDeleteId.setText("Enter a To-Do ID"); // sets the text for the delete ID textfield as "Enter a To-Do ID" to represent a placeholder
+         // displays the placeholder text in the delete panel, each time the app is loaded
+         if (txtDeleteId.getText().equals("")) { // checks if the delete ID textfield is empty
+            txtDeleteId.setText("Enter a To-Do ID"); // sets the text for the delete ID textfield as "Enter a To-Do ID" to represent a placeholder
+         }
       });
 
       // adds an action listener to the 'Add Task' button, to perform the add task operation
