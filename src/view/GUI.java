@@ -9,7 +9,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Timer;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GUI extends JFrame {
    Font montserrat; // creates a custom font called montserrat
@@ -121,10 +124,9 @@ public class GUI extends JFrame {
       addWindowListener(new WindowAdapter() { // adds a window listener to the jFrame
          @Override
          public void windowOpened(WindowEvent e) { // overrides the windowOpened method to add an event before opening the app
-//            super.windowOpened(e);
             setVisible(false); // hides the visibility of the window
             String inputName = JOptionPane.showInputDialog("Welcome","Please enter your name"); // displays an input dialogue box, asking the user to enter their name
-            if (inputName == null || inputName.trim().length() == 0) { // checks if the input is empty or contains empty whitespaces
+            if (inputName == null || inputName.trim().length() == 0 || inputName.equals("Please enter your name")) { // checks if the input is empty or contains empty whitespaces
                welcomeText.setText(GUIHelpers.setGreetingMessage()); // if this is the case, the welcome text will display "Good Morning/Afternoon/Evening" without a name
                setVisible(true); // makes the jFrame visible to the user
             } else {
@@ -266,6 +268,15 @@ public class GUI extends JFrame {
               cmbImportanceUpdate, cmbStatus, updateTask, montserrat); // adds a placeholder for the update panel ID text field
       KeyEvents.getDeleteIdKeyListener(txtDeleteId); // adds a placeholder for the delete panel ID text field
 
+      AtomicReference<Timer> timer = new AtomicReference<>(new Timer()); // creates a new timer object, to be updated atomically
+      timer.get().scheduleAtFixedRate(new TimerTask() { // schedules a timer task at a fixed rate
+         @Override // overrides the run method for the timer task
+         public void run() {
+            String currentTime = new SimpleDateFormat("HH:mma").format(new Date()); // creates a new SimpleDateFormat object and sets it in current time format
+            title.setText(GUIHelpers.getCurrentDate() + "  " + currentTime); // sets the title in the home page as the current date and time, along with auto update
+         }
+      }, 0, 1000); // sets the delay as 0 milli-seconds and period as 1000 milli-seconds
+
       /* DISPLAY HOME PANEL */
       homeBtn.addActionListener(e -> { // adds an action to the home button, to navigate to the home panel
          GUIStyles.setActiveNavButton(montserrat, homeBtn); // sets the active nav button as bold font
@@ -284,10 +295,20 @@ public class GUI extends JFrame {
                  updateBtnPanel, false, // hides the 'Update Task' button
                  deleteBtnPanel, false // hides the 'Delete Task' button
          );
+
+         timer.set(new Timer()); // resets the timer object, by re-instantiating it
+         timer.get().scheduleAtFixedRate(new TimerTask() { // schedules a timer task at a fixed rate
+            @Override // overrides the run method for the timer task
+            public void run() {
+               String currentTime = new SimpleDateFormat("HH:mma").format(new Date()); // creates a new SimpleDateFormat object and sets it in current time format
+               title.setText(GUIHelpers.getCurrentDate() + "  " + currentTime); // sets the title in the home page as the current date and time, along with auto update
+            }
+         }, 0, 1000); // sets the delay as 0 milli-seconds and period as 1000 milli-seconds
       });
 
       /* DISPLAY ADD TASK PANEL */
       addBtn.addActionListener(e -> { // adds an action to the add button, to navigate to the 'Add Task' panel
+         timer.get().cancel(); // stops the timer
          GUIStyles.setActiveNavButton(montserrat, addBtn); // sets the active nav button as bold font
          GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), listBtn, homeBtn, updateBtn, deleteBtn); // sets the inactive nav buttons as a plain font
          GUIHelpers.displayPanel( // displays all the panels and their components for the addBtn panel, as well as hiding the panels that are not needed
@@ -308,6 +329,7 @@ public class GUI extends JFrame {
 
       /* DISPLAY LIST TASKS PANEL */
       listBtn.addActionListener(e -> { // adds an action to the list button, to navigate to the 'List Tasks' panel
+         timer.get().cancel(); // stops the timer
          GUIStyles.setActiveNavButton(montserrat, listBtn); // sets the active nav button as bold font
          GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), homeBtn, addBtn, updateBtn, deleteBtn); // sets the inactive nav buttons as a plain font
          GUIHelpers.displayPanel( // displays all the panels and their components for the listBtn panel, as well as hiding the panels that are not needed
@@ -328,6 +350,7 @@ public class GUI extends JFrame {
 
       /* DISPLAY UPDATE TASK PANEL */
       updateBtn.addActionListener(e -> { // adds an action to the update button, to navigate to the 'Update Task' panel
+         timer.get().cancel(); // stops the timer
          GUIStyles.setActiveNavButton(montserrat, updateBtn); // sets the active nav button as bold font
          GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), addBtn, listBtn, homeBtn, deleteBtn); // sets the inactive nav buttons as a plain font
          GUIHelpers.displayPanel( // displays all the panels and their components for the updateBtn panel, as well as hiding the panels that are not needed
@@ -352,6 +375,7 @@ public class GUI extends JFrame {
 
       /* DISPLAY DELETE TASK PANEL */
       deleteBtn.addActionListener(e -> { // adds an action to the delete button, to navigate to the 'Delete Task' panel
+         timer.get().cancel(); // stops the timer
          GUIStyles.setActiveNavButton(montserrat, deleteBtn); // sets the active nav button as bold font
          GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), updateBtn, addBtn, listBtn, homeBtn); // sets the inactive nav buttons as a plain font
          GUIHelpers.displayPanel( // displays all the panels and their components for the deleteBtn panel, as well as hiding the panels that are not needed
