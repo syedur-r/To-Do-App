@@ -140,7 +140,7 @@ public class GUI extends JFrame {
             // upon closing the app, the user will be displayed with a confirmation dialogue box with a yes or no option
             int exitApp = JOptionPane.showConfirmDialog(getParent(),"Are you sure you wish to exit?", "Exit", JOptionPane.YES_NO_OPTION);
             // if the user click yes, the app will close. However, if they click no the app will continue running
-            setDefaultCloseOperation(exitApp == JOptionPane.YES_OPTION ? JFrame.DISPOSE_ON_CLOSE : JFrame.DO_NOTHING_ON_CLOSE);
+            setDefaultCloseOperation(exitApp == JOptionPane.YES_OPTION ? JFrame.EXIT_ON_CLOSE : JFrame.DO_NOTHING_ON_CLOSE);
          }
       });
 
