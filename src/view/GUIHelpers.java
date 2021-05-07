@@ -29,18 +29,18 @@ public class GUIHelpers {
    // in that index will be displayed in the home panel
    public static String[] setMotivationalQuote() {
       return new String[] { // returns an anonymous string array containing quotes
-              "“All growth starts at the end of your comfort zone” - Tony Robbins", // quote 1
-              "“Doing less is not being lazy. Don’t give in to a culture that values personal sacrifice over personal productivity.” - Tim Ferriss", // quote 2
-              "“Get things done: Think big but start small.” - Oumar Dieng", // quote 3
-              "“Nothing is particularly hard if you divide it into small jobs.” - Henry Ford", // quote 4
-              "“It always seems impossible until it’s done.” - Nelson Mandela", // quote 5
-              "“Only put off until tomorrow what you are willing to die having left undone.” - Pablo Picasso", // quote 6
-              "“Procrastination is opportunity’s assassin.” - Victor Kiam", // quote 7
-              "“Until we can manage time, we can manage nothing else.” - Peter Drucker", // quote 8
-              "“The secret to getting ahead is getting started.” - Mark Twain", // quote 9
-              "“Your mind is for having ideas, not holding them.” - David Allen", // quote 10
-              "“You can do anything, but not everything.” - David Allen", // quote 11
-              "“Without hustle, talent will only carry you so far.” - Gary Vaynerchuk", // quote 12
+              "'All growth starts at the end of your comfort zone' - Tony Robbins", // quote 1
+              "'Doing less is not being lazy. Don’t give in to a culture that values personal sacrifice over personal productivity.' - Tim Ferriss", // quote 2
+              "'Get things done: Think big but start small.' - Oumar Dieng", // quote 3
+              "'Nothing is particularly hard if you divide it into small jobs.' - Henry Ford", // quote 4
+              "'It always seems impossible until it’s done.' - Nelson Mandela", // quote 5
+              "'Only put off until tomorrow what you are willing to die having left undone.' - Pablo Picasso", // quote 6
+              "'Procrastination is opportunity’s assassin.' - Victor Kiam", // quote 7
+              "'Until we can manage time, we can manage nothing else.' - Peter Drucker", // quote 8
+              "'The secret to getting ahead is getting started.' - Mark Twain", // quote 9
+              "'Your mind is for having ideas, not holding them.' - David Allen", // quote 10
+              "'You can do anything, but not everything.' - David Allen", // quote 11
+              "'Without hustle, talent will only carry you so far.' - Gary Vaynerchuk", // quote 12
       };
    }
 
