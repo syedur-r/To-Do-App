@@ -272,7 +272,7 @@ public class GUI extends JFrame {
       timer.get().scheduleAtFixedRate(new TimerTask() { // schedules a timer task at a fixed rate
          @Override // overrides the run method for the timer task
          public void run() {
-            String currentTime = new SimpleDateFormat("HH:mma").format(new Date()); // creates a new SimpleDateFormat object and sets it in current time format
+            String currentTime = new SimpleDateFormat("hh:mma").format(new Date()); // creates a new SimpleDateFormat object and sets it in current time format
             title.setText(GUIHelpers.getCurrentDate() + "  " + currentTime); // sets the title in the home page as the current date and time, along with auto update
          }
       }, 0, 1000); // sets the delay as 0 milli-seconds and period as 1000 milli-seconds
@@ -300,7 +300,7 @@ public class GUI extends JFrame {
          timer.get().scheduleAtFixedRate(new TimerTask() { // schedules a timer task at a fixed rate
             @Override // overrides the run method for the timer task
             public void run() {
-               String currentTime = new SimpleDateFormat("HH:mma").format(new Date()); // creates a new SimpleDateFormat object and sets it in current time format
+               String currentTime = new SimpleDateFormat("hh:mma").format(new Date()); // creates a new SimpleDateFormat object and sets it in current time format
                title.setText(GUIHelpers.getCurrentDate() + "  " + currentTime); // sets the title in the home page as the current date and time, along with auto update
             }
          }, 0, 1000); // sets the delay as 0 milli-seconds and period as 1000 milli-seconds
