@@ -42,6 +42,10 @@ public class KeyEvents {
                return; // the return statement will exit out the method
             }
             if (dataSource.getTodoCount() == 0) { // checks if there are no records in the database
+               // clears all the inputs in the update panel
+               GUIHelpers.clearUpdateInputs(txtID, "", txtTextUpdate, dtDueDateUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus);
+               // disables all the components in the update panel, until a valid ID is entered
+               GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
                // if there are no records, a dialogue box will appear saying that the To-Do List is Empty
                JOptionPane.showMessageDialog(frame,"Your To-Do List is Empty!","Empty", JOptionPane.WARNING_MESSAGE);
                txtID.setText("Enter a To-Do ID to Update"); // the ID textbox will set its text to "Enter a To-Do ID to Update"
