@@ -25,6 +25,10 @@ public class ActionEvents {
          if (!dataSource.isConnected()) { // checks if the dataSource is connected to the database or not
             System.out.println("Can't connect to the database"); // if it isn't, an error message will be outputted to the console
             return; // the add task method will terminate after this statement
+         } else if (todoText.trim().length() == 0) { // checks if the To-Do text is empty (including whitespaces)
+            // if it isn't an error message dialogue will be displayed asking the user to enter a To-Do text
+            JOptionPane.showMessageDialog(frame, "Please Enter a To-Do text for the Task","Error", JOptionPane.ERROR_MESSAGE);
+            return; // the method will be terminated after this statement
          } else if (!GUIHelpers.isDateTimeValid(concatDateTime)) { // checks if the Due Date and Due Time concatenated, is not a valid LocalDateTime format
             // if it isn't an error message dialogue will be displayed asking the user to select a valid date and time
             JOptionPane.showMessageDialog(frame, "Please Select a Valid Date and Time","Error", JOptionPane.ERROR_MESSAGE);
@@ -86,6 +90,10 @@ public class ActionEvents {
             if (txtID.getText().equals("Enter a To-Do ID to Update")) { // checks if the to-do ID input does not contain the placeholder
                // if it does, an error message will be displayed asking the user to enter a valid ID
                JOptionPane.showMessageDialog(frame, "Please Enter a Valid To-Do ID","Error", JOptionPane.ERROR_MESSAGE);
+               return; // the method will be terminated after this statement
+            } else if (todoText.trim().length() == 0) { // checks if the To-Do text is empty (including whitespaces)
+               // if it isn't an error message dialogue will be displayed asking the user to enter a To-Do text
+               JOptionPane.showMessageDialog(frame, "Please Enter a To-Do text for the Task","Error", JOptionPane.ERROR_MESSAGE);
                return; // the method will be terminated after this statement
             } else if (!GUIHelpers.isDateTimeValid(concatDateTime)) { // checks if the Due Date and Due Time concatenated, is not a valid LocalDateTime format
                // if the Due Date and Due Time concatenated, does not produce a valid LocalDateTime format, an error message will be displayed asking the user
