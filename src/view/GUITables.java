@@ -17,7 +17,7 @@ public class GUITables {
             return false; // disables editing of cells
          }
 
-         // overriding prepareRenderer to change the colour of the cell based on the category entered by the user
+         // overriding prepareRenderer to change the colour of the cell based on the category selected by the user
 //         @Override
 //         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 //            // stores the table to be rendered, the row to be rendered, and the column to be rendered
@@ -55,7 +55,7 @@ public class GUITables {
 //            return comp; // returns the component
 //         }
 
-         // overriding prepareRenderer to change the colour of the row based on the category entered by the user
+         // overriding prepareRenderer to change the colour of the row based on the category selected by the user
          public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
             Component comp = super.prepareRenderer(renderer, row, column); // this will be used to render the state of the row
             String colourVal = (this.getModel().getValueAt(row, 3)).toString(); // stores the value of a row containing a colour value
