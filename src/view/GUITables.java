@@ -18,11 +18,47 @@ public class GUITables {
          }
 
          // overriding prepareRenderer to change the colour of the cell based on the category entered by the user
-         @Override
+//         @Override
+//         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+//            // stores the table to be rendered, the row to be rendered, and the column to be rendered
+//            Component comp = super.prepareRenderer(renderer, row, column); // this will be used to render the state of the cell
+//            Object value = getModel().getValueAt(row, column); // stores the value of a specific cell in the todoTable
+//            Category red = Category.Red; // stores the red category enum
+//            Category white = Category.White; // stores the white category enum
+//            Category blue = Category.Blue; // stores the blue category enum
+//            Category purple = Category.Purple; // stores the purple category enum
+//            Category yellow = Category.Yellow; // stores the yellow category enum
+//            Category green = Category.Green; // stores the green category enum
+//
+//            if (value.equals(red)) { // checks if the cell value contains the string Red
+//               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
+//               comp.setBackground(red.getColour()); // sets the background colour of the cell as red
+//            } else if (value.equals(white)) { // checks if the cell value contains the string White
+//               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
+//               comp.setBackground(white.getColour()); // sets the background colour of the cell as white (grey)
+//            } else if (value.equals(blue)) { // checks if the cell value contains the string Blue
+//               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
+//               comp.setBackground(blue.getColour()); // sets the background colour of the cell as blue
+//            } else if (value.equals(purple)) { // checks if the cell value contains the string Purple
+//               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
+//               comp.setBackground(purple.getColour()); // sets the background colour of the cell as purple
+//            } else if (value.equals(yellow)) { // checks if the cell value contains the string Yellow
+//               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
+//               comp.setBackground(yellow.getColour()); // sets the background colour of the cell as yellow
+//            } else if (value.equals(green)) { // checks if the cell value contains the string Green
+//               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
+//               comp.setBackground(green.getColour()); // sets the background colour of the cell as green
+//            } else { // otherwise if the cell doesn't contain neither values
+//               comp.setForeground(Color.BLACK); // sets the foreground colour of the cell as black
+//               comp.setBackground(Color.WHITE); // sets the background colour of the cell as white
+//            }
+//            return comp; // returns the component
+//         }
+
+         // overriding prepareRenderer to change the colour of the row based on the category entered by the user
          public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-            // stores the table to be rendered, the row to be rendered, and the column to be rendered
-            Component comp = super.prepareRenderer(renderer, row, column); // this will be used to render the state of the cell
-            Object value = getModel().getValueAt(row, column); // stores the value of a specific cell in the todoTable
+            Component comp = super.prepareRenderer(renderer, row, column); // this will be used to render the state of the row
+            String colourVal = (this.getModel().getValueAt(row, 3)).toString(); // stores the value of a row containing a colour value
             Category red = Category.Red; // stores the red category enum
             Category white = Category.White; // stores the white category enum
             Category blue = Category.Blue; // stores the blue category enum
@@ -30,29 +66,33 @@ public class GUITables {
             Category yellow = Category.Yellow; // stores the yellow category enum
             Category green = Category.Green; // stores the green category enum
 
-            if (value.equals(red)) { // checks if the cell value contains the string Red
-               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
-               comp.setBackground(red.getColour()); // sets the background colour of the cell as red
-            } else if (value.equals(white)) { // checks if the cell value contains the string White
-               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
-               comp.setBackground(white.getColour()); // sets the background colour of the cell as white (grey)
-            } else if (value.equals(blue)) { // checks if the cell value contains the string Blue
-               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
-               comp.setBackground(blue.getColour()); // sets the background colour of the cell as blue
-            } else if (value.equals(purple)) { // checks if the cell value contains the string Purple
-               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
-               comp.setBackground(purple.getColour()); // sets the background colour of the cell as purple
-            } else if (value.equals(yellow)) { // checks if the cell value contains the string Yellow
-               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
-               comp.setBackground(yellow.getColour()); // sets the background colour of the cell as yellow
-            } else if (value.equals(green)) { // checks if the cell value contains the string Green
-               comp.setForeground(Color.WHITE); // sets the foreground colour of the cell as white
-               comp.setBackground(green.getColour()); // sets the background colour of the cell as green
-            } else { // otherwise if the cell doesn't contain neither values
-               comp.setForeground(Color.BLACK); // sets the foreground colour of the cell as black
-               comp.setBackground(Color.WHITE); // sets the background colour of the cell as white
+            switch (colourVal) { // switch statement used to switch between different colours
+               case "Red" -> { // checks if the row value contains the string Red
+                  comp.setForeground(white.getColour()); // sets the foreground colour of the row as white
+                  comp.setBackground(red.getColour()); // sets the background colour of the row as red
+               }
+               case "White" -> { // checks if the row value contains the string White
+                  comp.setForeground(Color.BLACK); // sets the foreground colour of the row as black
+                  comp.setBackground(white.getColour()); // sets the background colour of the row as white
+               }
+               case "Blue" -> { // checks if the row value contains the string Blue
+                  comp.setForeground(white.getColour()); // sets the foreground colour of the row as white
+                  comp.setBackground(blue.getColour()); // sets the background colour of the row as blue
+               }
+               case "Purple" -> { // checks if the row value contains the string Purple
+                  comp.setForeground(white.getColour()); // sets the foreground colour of the row as white
+                  comp.setBackground(purple.getColour()); // sets the background colour of the row as purple
+               }
+               case "Yellow" -> { // checks if the row value contains the string Yellow
+                  comp.setForeground(white.getColour()); // sets the foreground colour of the row as white
+                  comp.setBackground(yellow.getColour()); // sets the background colour of the row as yellow
+               }
+               case "Green" -> { // checks if the row value contains the string Green
+                  comp.setForeground(white.getColour()); // sets the foreground colour of the row as white
+                  comp.setBackground(green.getColour()); // sets the background colour of the row as green
+               }
             }
-            return comp; // returns the component
+            return comp;
          }
       };
 

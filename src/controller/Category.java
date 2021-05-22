@@ -3,8 +3,8 @@ import java.awt.*;
 
 public enum Category {
    Red(Color.RED), // enum constant which represents the red colour category
-   White(Color.GRAY), // enum constant which represents the white colour category
-   Blue(new Color(0, 128, 255)), // enum constant which represents the blue colour category
+   White(Color.WHITE), // enum constant which represents the white colour category
+   Blue(Color.BLUE), // enum constant which represents the blue colour category
    Purple(new Color(128, 0, 128)), // enum constant which represents the purple colour category
    Yellow(new Color(230, 191, 0)), // enum constant which represents the yellow colour category
    Green(new Color(39, 144, 39)); // enum constant which represents the green colour category
