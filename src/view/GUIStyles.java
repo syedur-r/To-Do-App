@@ -32,10 +32,10 @@ public class GUIStyles {
    }
 
    // this method sets the JTextField styles
-   public static void setTextStyle(JTextField text, Font font) {
+   public static void setTextStyle(JTextField text, Font font, float fontSize, int txtWidth) {
       text.setForeground(Color.BLACK); // sets the foreground of the textbox as black
-      text.setFont(font.deriveFont(18f)); // sets the font of the textbox as the font from the parameter to a size of 18
-      text.setColumns(10); // sets the number of columns for the textbox as 10 (the width of the textbox)
+      text.setFont(font.deriveFont(fontSize)); // sets the font of the textbox as the font from the parameter to a size of the fontSize parameter
+      text.setColumns(txtWidth); // sets the number of columns for the textbox as the txtWidth parameter (the width of the textbox)
    }
 
    // this method sets the JComboBox styles

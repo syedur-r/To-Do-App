@@ -48,7 +48,7 @@ public class TodoDB {
    public static final String DATA_SOURCE = "todo.db"; // represents the source of the backend data, e.g. the database
    public static final String DATA_CONNECTION = "jdbc:sqlite:datapath/" + DATA_SOURCE; // represents the connection to the database via the jdbc driver
 
-   private PreparedStatement insertIntoTodo; // creates a prepared statement object for executing a pre-compiled SQL statement
+   private PreparedStatement insertIntoTodo; // creates a prepared statement object for executing a pre-compiled SQL statement for inserting a todo
    private Connection dbConnect; // creates an instance of the database connection
 
    // this method will check if a database connection has been established
@@ -111,6 +111,32 @@ public class TodoDB {
       } catch (SQLException e) {
          // if the try statement fails, the catch statement will output an error message and return null
          System.out.println("Table Selection Query Failed: " + e.getMessage());
+         return null;
+      }
+   }
+
+   // this method will execute the search query to select the searched values in a table
+   public ArrayList<Todo> querySearchTodo(String todoText) {
+      try(Statement statement = dbConnect.createStatement();
+          // executes the createTableQuery using a statement object
+          // and stores the results in a resultSet object
+          ResultSet results = statement.executeQuery("SELECT * FROM " + TODO_TABLE + " WHERE " + TODO_NAME + " LIKE '%" + todoText + "%'")) {
+         ArrayList<Todo> todoList = new ArrayList<>(); // creates an arraylist of type todo to store the todo-lists
+
+         // iterates through the result set to get each result
+         while (results.next()) {
+            int taskID = results.getInt(INDEX_TODO_ID); // sets the task ID as the results ID index
+            String text = results.getString(INDEX_TODO_NAME); // sets the text as the results name index
+            LocalDateTime dueDate = LocalDateTime.parse(results.getString(INDEX_TODO_DUE_DATE)); // sets the due date as the results due date index
+            Category category = Category.valueOf(results.getString(INDEX_TODO_CATEGORY)); // sets the category as the results category index
+            Importance importance = Importance.valueOf(results.getString(INDEX_TODO_IMPORTANCE)); // sets the importance as the results importance index
+            Status status = Status.valueOf(results.getString(INDEX_TODO_STATUS)); // sets the status as the results status index
+            todoList.add(new Todo(taskID, text, dueDate, category, importance, status)); // adds the properties to the arraylist as a new Todo object
+         }
+         return todoList; // returns the arraylist
+      } catch (SQLException e) {
+         // if the try statement fails, the catch statement will output an error message and return null
+         System.out.println("Search Query Failed: " + e.getMessage());
          return null;
       }
    }

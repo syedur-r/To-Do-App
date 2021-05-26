@@ -77,9 +77,9 @@ public class GUIHelpers {
 
    // this helper method displays a panel for a specific page each time the user navigates to it, by pressing its button
    public static void displayPanel(JLabel title, String text, JPanel todoTable, boolean state1, JPanel greetingText, boolean state2, JPanel questionText, boolean state3,
-                                   JPanel horizontalLine, boolean state4, JPanel quote, boolean state5, JPanel addInput, boolean state6, JPanel updateInput,
-                                   boolean state7, JPanel deleteInput, boolean state8, JPanel addBtnPanel, boolean state9, JPanel updateBtnPanel, boolean state10,
-                                   JPanel deleteBtnPanel, boolean state11) {
+                                   JPanel horizontalLine, boolean state4, JPanel quote, boolean state5, JPanel addInput, boolean state6, JPanel searchTask,
+                                   boolean state7, JPanel updateInput, boolean state8, JPanel deleteInput, boolean state9, JPanel addBtnPanel, boolean state10, JPanel updateBtnPanel,
+                                   boolean state11, JPanel deleteBtnPanel, boolean state12) {
       title.setText(text); // sets the text for the title via the parameters
       todoTable.setVisible(state1); // sets the visibility state for the table of records via the parameters
       greetingText.setVisible(state2); // sets the visibility state for the greeting text panel via the parameters
@@ -87,11 +87,12 @@ public class GUIHelpers {
       horizontalLine.setVisible(state4); // sets the visibility state for the horizontal line panel via the parameters
       quote.setVisible(state5); // sets the visibility state for the quote panel via the parameters
       addInput.setVisible(state6); // sets the visibility state for the add input panel via the parameters
-      updateInput.setVisible(state7); // sets the visibility state for the update input panel via the parameters
-      deleteInput.setVisible(state8); // sets the visibility state for the delete input panel via the parameters
-      addBtnPanel.setVisible(state9); // sets the visibility state for the 'Add Task' button panel via the parameters
-      updateBtnPanel.setVisible(state10); // sets the visibility state for the 'Update Task' button panel via the parameters
-      deleteBtnPanel.setVisible(state11); // sets the visibility state for the 'Delete Task' button panel via the parameters
+      searchTask.setVisible(state7); // sets the visibility state for the search task panel via the parameters
+      updateInput.setVisible(state8); // sets the visibility state for the update input panel via the parameters
+      deleteInput.setVisible(state9); // sets the visibility state for the delete input panel via the parameters
+      addBtnPanel.setVisible(state10); // sets the visibility state for the 'Add Task' button panel via the parameters
+      updateBtnPanel.setVisible(state11); // sets the visibility state for the 'Update Task' button panel via the parameters
+      deleteBtnPanel.setVisible(state12); // sets the visibility state for the 'Delete Task' button panel via the parameters
    }
 
    // this helper method enables all the components in the update panel

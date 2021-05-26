@@ -64,6 +64,42 @@ public class ActionEvents {
       }
    }
 
+   // this method performs the task of searching a To-Do task in the To-Do list
+   public static void searchTaskPerformed(JFrame frame, JTextField txtSearch, DefaultTableModel todoTableModel) {
+      try {
+         String todoText = txtSearch.getText(); // stores the To-Do text inside a string
+         TodoDB dataSource = new TodoDB(); // creates a new instance of the TodoDB class, to carry out database queries
+         if (!dataSource.isConnected()) { // checks if the dataSource is connected to the database or not
+            System.out.println("Can't connect to the database"); // if it isn't, an error message will be outputted to the console
+            return; // the add task method will terminate after this statement
+         } else if (dataSource.getTodoCount() == 0) {  // checks if the todoList is not empty by getting the number of rows
+            // if the row count is 0, it means the todoList is empty. If this is the case, an error message will be displayed saying the To-Do list is empty
+            JOptionPane.showMessageDialog(frame,"Your To-Do List is Empty!","Empty", JOptionPane.WARNING_MESSAGE);
+            txtSearch.setText("Search for a To-Do Task"); // resets the search textbox to its placeholder text
+         } else if (todoText.trim().length() == 0 || todoText.equals("Search for a To-Do Task")) {  // checks if the To-Do text is empty (including whitespaces) or if it contains the placeholder text
+            // if the condition is met, an error message dialogue will be displayed asking the user to enter a To-Do text
+            JOptionPane.showMessageDialog(frame, "Please Enter a To-Do text for the Task","Error", JOptionPane.ERROR_MESSAGE);
+            txtSearch.setText("Search for a To-Do Task"); // resets the search textbox to its placeholder text
+            txtSearch.setFocusable(false); // removes the highlighted text from the placeholder by disabling the focus
+            txtSearch.setFocusable(true); // re-enables the focus to the search textbox
+            return; // the method will be terminated after this statement
+         } else {
+            todoTableModel.setRowCount(0); // clears the todoTable, which contains the records of all the To-Do tasks
+            GUITables.getSearchedRows(todoTableModel, todoText); // re-populates the todoTable with the searched To-Do tasks
+         }
+         dataSource.closeConnection(); // closes the database connection
+      } catch (Exception e) { // if the try block fails, the exception will handle the error gracefully
+         // displays an error message dialogue box, asking the user to enter a valid to-do text
+         JOptionPane.showMessageDialog(frame, "Please Enter A Valid To-Do Text","Error", JOptionPane.ERROR_MESSAGE);
+      }
+   }
+
+   public static void resetTaskPerformed(DefaultTableModel todoTableModel, JTextField txtSearch) {
+      todoTableModel.setRowCount(0); // clears the todoTable, which contains the records of all the To-Do tasks
+      GUITables.getTodoRows(todoTableModel); // re-populates the todoTable with the updated To-Do tasks
+      txtSearch.setText("Search for a To-Do Task"); // resets the search textbox to its placeholder text
+   }
+
    // this method performs the task of updating a To-Do task in the To-Do list
    public static void updateTaskPerformed(JFrame frame, JTextField txtID, JTextField txtTextUpdate, JXDatePicker dtDueDateUpdate,
                                           JSpinner spDueTimeUpdate, JComboBox<String> cmbCategoryUpdate, JComboBox<String> cmbImportanceUpdate,

@@ -53,6 +53,7 @@ public class GUI extends JFrame {
    JPanel addBtnPanel = new JPanel(); // creates a jPanel to contain the 'Add Task' button
    JPanel updateBtnPanel = new JPanel(); // creates a jPanel to contain the 'Update Task' button
    JPanel deleteBtnPanel = new JPanel(); // creates a jPanel to contain the 'Delete Task' button
+   JPanel searchPanel = new JPanel(); // creates a jPanel to contain the 'Search Task' button
 
    // JLABELS
    // creates a jLabel to contain an image icon, which will be set to a random background image file path based on the index given from the array in the GUI Helpers class
@@ -81,6 +82,7 @@ public class GUI extends JFrame {
    JTextField txtTextAdd = new JTextField(); // creates a jTextfield to display a textbox for entering a To-Do text in the Add Task panel
    JTextField txtTextUpdate = new JTextField(); // creates a jTextfield to display a textbox for entering a To-Do text in the Update Task panel
    JTextField txtDeleteId = new JTextField(); // creates a jTextfield to display a textbox for entering ID in the Delete Task panel
+   JTextField txtSearchTask = new JTextField(); // creates a jTextfield to display a textbox for entering the task in the Search Task panel
 
    // JXDATEPICKERS
    JXDatePicker dtDueDateAdd = new JXDatePicker(); // creates a jxDatePicker to store the due date in the Add Task panel
@@ -111,6 +113,8 @@ public class GUI extends JFrame {
    JButton addTask = new JButton("Add Task"); // creates an Add Task button to invoke the addTask method in the ActionListeners class
    JButton updateTask = new JButton("Update Task"); // creates an Update Task button to invoke the updateTask method in the ActionListeners class
    JButton deleteTask = new JButton("Delete Task"); // creates an Delete Task button to invoke the deleteTask method in the ActionListeners class
+   JButton searchTask = new JButton("Search"); // creates a Search Task button to invoke the searchTask method in the ActionListeners class
+   JButton resetSearch = new JButton("Reset"); // creates a Reset button to invoke the resetSearch method in the ActionListeners class
 
 
    // constructor
@@ -163,8 +167,10 @@ public class GUI extends JFrame {
       mainContent.add(backgroundImage, BorderLayout.CENTER); // adds the background image to the center of the mainContent panel
       header.add(GUIPanels.createNavBarPanel(navBar), BorderLayout.SOUTH); // adds the navbar to the bottom of the header panel
       header.add(title, BorderLayout.CENTER); // adds the title for the navbar sections to the center of the header panel
-      backgroundImage.add(Box.createRigidArea(new Dimension(100, 50))); // adds space between the top and left of the background image panel
+      backgroundImage.add(Box.createRigidArea(new Dimension(100, 10)));
+      backgroundImage.add(GUIPanels.createSearchPanel(searchPanel), BorderLayout.NORTH); // adds the 'Search Task' panel to the bottom of the background image panel
       backgroundImage.add(GUIPanels.createTodoTablePanel(todoTable, this), BorderLayout.CENTER); // adds the todoTable to the center of the background image panel
+      backgroundImage.add(Box.createRigidArea(new Dimension(100, 50))); // adds space between the top and left of the background image panel
       backgroundImage.add(GUIPanels.createGreetingTextPanel(greetingText, this), BorderLayout.CENTER); // adds the "Good Morning/Afternoon/Evening" text to the center of the background image panel
       backgroundImage.add(GUIPanels.createQuestionTextPanel(questionText, this), BorderLayout.CENTER); // adds the "What are your tasks for today?" text to the center of the background image panel
       backgroundImage.add(GUIPanels.createHorizontalLinePanel(horizontalLine, this), BorderLayout.CENTER); // adds the thick border line to the center of the background image panel
@@ -197,8 +203,11 @@ public class GUI extends JFrame {
       GUIStyles.setNavButtonStyles(updateBtn); // sets the button style for the 'Update Task' nav button
       GUIStyles.setNavButtonStyles(deleteBtn); // sets the button style for the 'Delete Task' nav button
       GUIStyles.setTaskButtonStyles(addTask, montserrat);  // sets the button style for the 'Add Task' action button
+      GUIStyles.setTaskButtonStyles(searchTask, montserrat); // sets the button style for the 'Search Task' action button
+      GUIStyles.setTaskButtonStyles(resetSearch, montserrat); // sets the button style for the 'Reset' action button
       GUIStyles.setTaskButtonStyles(updateTask, montserrat); // sets the button style for the 'Update Task' action button
       GUIStyles.setTaskButtonStyles(deleteTask, montserrat); // sets the button style for the 'Delete Task' action button
+
       GUIStyles.setLabelStyle(lblTextAdd, montserrat, "To-Do text"); // sets the label style for the To-Do text label in the add task panel
       GUIStyles.setLabelStyle(lblDueDateAdd, montserrat, "Due Date"); // sets the label style for the due date label in the add task panel
       GUIStyles.setLabelStyle(lblDueTimeAdd, montserrat, "Due Time"); // sets the label style for the due time label in the add task panel
@@ -212,10 +221,12 @@ public class GUI extends JFrame {
       GUIStyles.setLabelStyle(lblImportanceUpdate, montserrat, "Importance"); // sets the label style for the importance label in the update task panel
       GUIStyles.setLabelStyle(lblStatus, montserrat, "Status"); // sets the label style for the status label in the update task panel
       GUIStyles.setLabelStyle(lblDeleteId, montserrat, "To-Do ID"); // sets the label style for the To-Do ID label in the delete task panel
-      GUIStyles.setTextStyle(txtID, montserrat); // sets the text style for the To-Do ID textbox in the update task panel
-      GUIStyles.setTextStyle(txtDeleteId, montserrat); // sets the text style for the To-Do ID textbox in the delete task panel
-      GUIStyles.setTextStyle(txtTextAdd, montserrat); // sets the text style for the To-Do text textbox in the add task panel
-      GUIStyles.setTextStyle(txtTextUpdate, montserrat); // sets the text style for the To-Do text textbox in the update task panel
+      GUIStyles.setTextStyle(txtID, montserrat, 18f,10); // sets the text style for the To-Do ID textbox in the update task panel
+      GUIStyles.setTextStyle(txtDeleteId, montserrat, 18f, 10); // sets the text style for the To-Do ID textbox in the delete task panel
+      GUIStyles.setTextStyle(txtTextAdd, montserrat, 18f, 10); // sets the text style for the To-Do text textbox in the add task panel
+      GUIStyles.setTextStyle(txtTextUpdate, montserrat, 18f, 10); // sets the text style for the To-Do text textbox in the update task panel
+      GUIStyles.setTextStyle(txtSearchTask, montserrat, 23f, 30); // sets the text style for the To-Do text textbox in the search task panel
+
       GUIStyles.setSelectionBoxStyle(cmbCategoryAdd, montserrat); // sets the style for the category drop-down box in the add task panel
       GUIStyles.setSelectionBoxStyle(cmbImportanceAdd, montserrat); // sets the style for the importance drop-down box in the add task panel
       GUIStyles.setSelectionBoxStyle(cmbCategoryUpdate, montserrat); // sets the style for the category drop-down box in the update task panel
@@ -260,10 +271,16 @@ public class GUI extends JFrame {
       GUIHelpers.setGridCoord(gridConst, 0, 0, deleteInput, lblDeleteId); // sets the grid coordinates for the 'To-Do ID' label in the deleteInput panel
       GUIHelpers.setGridCoord(gridConst, 1, 0, deleteInput, txtDeleteId); // sets the grid coordinates for the 'To-Do ID' textbox in the deleteInput panel
 
+      // search task components
+      GUIHelpers.setGridCoord(gridConst, 0, 0, searchPanel, txtSearchTask); // sets the grid coordinates for the search textbox in the searchPanel panel
+      GUIHelpers.setGridCoord(gridConst, 1, 0, searchPanel, searchTask); // sets the grid coordinates for the search button in the searchPanel panel
+      GUIHelpers.setGridCoord(gridConst, 2, 0, searchPanel, resetSearch); // sets the grid coordinates for the reset button in the searchPanel panel
+
       // disables all the components in the update panel, until a valid ID is entered
       GUIHelpers.disableUpdateInputs(txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate, cmbImportanceUpdate, cmbStatus, updateTask);
       GUITables.getTodoRows(todoTableModel); // populates the jTable
 
+      KeyEvents.getSearchTodoKeyListener(this, txtSearchTask, todoTableModel);
       KeyEvents.getUpdateIdKeyListener(txtID, this, txtTextUpdate, dtDueDateUpdate, spDueTimeUpdate, cmbCategoryUpdate,
               cmbImportanceUpdate, cmbStatus, updateTask, montserrat); // adds a placeholder for the update panel ID text field
       KeyEvents.getDeleteIdKeyListener(txtDeleteId); // adds a placeholder for the delete panel ID text field
@@ -281,6 +298,7 @@ public class GUI extends JFrame {
       homeBtn.addActionListener(e -> { // adds an action to the home button, to navigate to the home panel
          GUIStyles.setActiveNavButton(montserrat, homeBtn); // sets the active nav button as bold font
          GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), listBtn, addBtn, updateBtn, deleteBtn); // sets the inactive nav buttons as a plain font
+         searchPanel.setVisible(false);
          GUIHelpers.displayPanel( // displays all the panels and their components for the home panel, as well as hiding the panels that are not needed
                  title, GUIHelpers.getCurrentDate(), // displays the title as the current data
                  todoTable, false, // hides the to-do list table
@@ -289,6 +307,7 @@ public class GUI extends JFrame {
                  horizontalLine, true, // displays the solid horizontal line
                  motivationalQuote, true, // displays the motivational quotes
                  addInput, false, // hides input fields for adding a task
+                 searchPanel, false, // hides input fields for searching a task
                  updateInput, false, // hides input fields for updating a task
                  deleteInput, false, // hides input fields for deleting a task
                  addBtnPanel, false, // hides the 'Add Task' button
@@ -311,6 +330,7 @@ public class GUI extends JFrame {
          timer.get().cancel(); // stops the timer
          GUIStyles.setActiveNavButton(montserrat, addBtn); // sets the active nav button as bold font
          GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), listBtn, homeBtn, updateBtn, deleteBtn); // sets the inactive nav buttons as a plain font
+         searchPanel.setVisible(false);
          GUIHelpers.displayPanel( // displays all the panels and their components for the addBtn panel, as well as hiding the panels that are not needed
                  title, "Add Task", // displays the title as the 'Add Task'
                  todoTable, false, // hides the to-do list table
@@ -319,6 +339,7 @@ public class GUI extends JFrame {
                  horizontalLine, false, // hides the solid horizontal line
                  motivationalQuote, false, // hides the motivational quotes
                  addInput, true, // displays input fields for adding a task
+                 searchPanel, false, // hides input fields for searching a task
                  updateInput, false, // hides input fields for updating a task
                  deleteInput, false, // hides input fields for deleting a task
                  addBtnPanel, true, // displays the 'Add Task' button
@@ -340,12 +361,17 @@ public class GUI extends JFrame {
                  horizontalLine, false, // hides the solid horizontal line
                  motivationalQuote, false, // hides the motivational quotes
                  addInput, false, // hides input fields for adding a task
+                 searchPanel, true, // displays input fields for searching a task
                  updateInput, false, // hides input fields for updating a task
                  deleteInput, false, // hides input fields for deleting a task
                  addBtnPanel, false, // hides the 'Add Task' button
                  updateBtnPanel, false, // hides the 'Update Task' button
                  deleteBtnPanel, false // hides the 'Delete Task' button
          );
+         // displays the placeholder text in the search panel, each time the app is loaded
+         if (txtSearchTask.getText().equals("")) { // checks if the search textfield is empty
+            txtSearchTask.setText("Search for a To-Do Task"); // sets the text for the search textfield as "Search for a To-Do Task" to represent a placeholder
+         }
       });
 
       /* DISPLAY UPDATE TASK PANEL */
@@ -353,6 +379,7 @@ public class GUI extends JFrame {
          timer.get().cancel(); // stops the timer
          GUIStyles.setActiveNavButton(montserrat, updateBtn); // sets the active nav button as bold font
          GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), addBtn, listBtn, homeBtn, deleteBtn); // sets the inactive nav buttons as a plain font
+         searchPanel.setVisible(false);
          GUIHelpers.displayPanel( // displays all the panels and their components for the updateBtn panel, as well as hiding the panels that are not needed
                  title, "Update Task", // displays the title as the 'Update Task'
                  todoTable, false, // hides the to-do list table
@@ -361,6 +388,7 @@ public class GUI extends JFrame {
                  horizontalLine, false, // hides the solid horizontal line
                  motivationalQuote, false, // hides the motivational quotes
                  addInput, false, // hides input fields for adding a task
+                 searchPanel, false, // hides input fields for searching a task
                  updateInput, true, // displays input fields for updating a task
                  deleteInput, false, // hides input fields for deleting a task
                  addBtnPanel, false, // hides the 'Add Task' button
@@ -378,6 +406,7 @@ public class GUI extends JFrame {
          timer.get().cancel(); // stops the timer
          GUIStyles.setActiveNavButton(montserrat, deleteBtn); // sets the active nav button as bold font
          GUIStyles.setInActiveNavButtons(new Font("Arial",Font.PLAIN,20), updateBtn, addBtn, listBtn, homeBtn); // sets the inactive nav buttons as a plain font
+         searchPanel.setVisible(false);
          GUIHelpers.displayPanel( // displays all the panels and their components for the deleteBtn panel, as well as hiding the panels that are not needed
                  title, "Delete Task", // displays the title as the 'Delete Task'
                  todoTable, false, // hides the to-do list table
@@ -386,6 +415,7 @@ public class GUI extends JFrame {
                  horizontalLine, false, // hides the solid horizontal line
                  motivationalQuote, false, // hides the motivational quotes
                  addInput, false, // hides input fields for adding a task
+                 searchPanel, false, // hides input fields for searching a task
                  updateInput, false, // hides input fields for updating a task
                  deleteInput, true, // displays input fields for deleting a task
                  addBtnPanel, false, // hides the 'Add Task' button
@@ -401,6 +431,12 @@ public class GUI extends JFrame {
       // adds an action listener to the 'Add Task' button, to perform the add task operation
       addTask.addActionListener(e -> ActionEvents.addTaskPerformed(this, txtTextAdd, dtDueDateAdd,
               spDueTimeAdd, cmbCategoryAdd, cmbImportanceAdd, todoTableModel, montserrat)); // add task button event
+
+      // adds an action listener to the 'Search' button, to perform the search task operation
+      searchTask.addActionListener(e -> ActionEvents.searchTaskPerformed(this, txtSearchTask, todoTableModel));
+
+      // adds an action listener to the 'Reset' button, to perform the reset task operation
+      resetSearch.addActionListener(e -> ActionEvents.resetTaskPerformed(todoTableModel, txtSearchTask));
 
       // adds an action listener to the 'Update Task' button, to perform the update task operation
       updateTask.addActionListener(e -> ActionEvents.updateTaskPerformed(this, txtID, txtTextUpdate,

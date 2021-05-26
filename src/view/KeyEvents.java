@@ -3,6 +3,7 @@ import model.TodoDB;
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -13,6 +14,35 @@ import java.util.Date;
 import java.util.Locale;
 
 public class KeyEvents {
+   public static void getSearchTodoKeyListener(JFrame frame, JTextField txtSearchTodo, DefaultTableModel todoTableModel) {
+      txtSearchTodo.addKeyListener(new KeyAdapter() {
+         @Override
+         public void keyTyped(KeyEvent e) { // overrides the keyTyped method  for the search textfield
+            if (txtSearchTodo.getText().equals("Search for a To-Do Task")) { // checks if the textbox contains the placeholder "Search for a To-Do Task"
+               txtSearchTodo.setText(""); // clears the search textbox
+            }
+         }
+
+         @Override
+         public void keyPressed(KeyEvent e) { // overrides the keyPressed method  for the search textfield
+            if (e.getKeyChar() == KeyEvent.VK_ENTER) { // checks if the user has pressed the enter key
+               ActionEvents.searchTaskPerformed(frame, txtSearchTodo, todoTableModel); // performs the search task using the ActionEvents helper class
+            } else {
+               if (txtSearchTodo.getText().equals("Search for a To-Do Task")) { // checks if the textbox contains the placeholder "Search for a To-Do Task"
+                  txtSearchTodo.setText(""); // clears the search textbox
+               }
+            }
+         }
+
+         @Override
+         public void keyReleased(KeyEvent e) { // overrides the keyReleased method  for the search textfield
+            if (txtSearchTodo.getText().equals("")) { // checks if the search textbox is empty
+               txtSearchTodo.setText("Search for a To-Do Task"); // resets the search textbox to its placeholder value
+            }
+         }
+      });
+   }
+
    // this method adds a key listener to the ID textfield of the update panel
    public static void getUpdateIdKeyListener(JTextField txtID, JFrame frame, JTextField txtTextUpdate,
                                              JXDatePicker dtDueDateUpdate, JSpinner spDueTimeUpdate,

@@ -128,4 +128,11 @@ public class GUIPanels {
       deleteBtnPanel.setVisible(false); // hides the deleteBtn panel
       return deleteBtnPanel; // returns the deleteBtn panel
    }
+
+   // this method creates the searchBtn panel which displays the 'Search Task' button in the Search Task Panel
+   public static JPanel createSearchPanel(JPanel searchBtnPanel) {
+      searchBtnPanel.setOpaque(false); // makes the searchBtn panel transparent
+      searchBtnPanel.setVisible(false); // hides the searchBtn panel
+      return searchBtnPanel;
+   }
 }

@@ -156,4 +156,31 @@ public class GUITables {
       }
       dataSource.closeConnection(); // closes the database connection
    }
+
+   // retrieves all the records from the database and stores it inside an object to be displayed on the jTable
+   public static void getSearchedRows(DefaultTableModel todoTableModel, String todoText) {
+      Object[] rowData = new Object[6]; // initialises a new object to store the row date, the the length of the number of columns in the table
+      TodoDB dataSource = new TodoDB(); // creates a new instance of the TodoDB class
+      if (!dataSource.isConnected()) { // checks if the instance is not connected to the database
+         System.out.println("To-Do Database Connection Failed!"); // if it isn't, an error message will be displayed
+         return; // exits the method
+      }
+
+      ArrayList<Todo> todoList = dataSource.querySearchTodo(todoText); // stores all the searched rows from the database, inside an arraylist of type Todo called todoList
+      if(todoList == null) { // checks if the todoList is empty
+         System.out.println("Your To-Do List is Empty!"); // if it is, a message will appear saying that the users to-do list is empty
+         return; // exits the method
+      }
+
+      for (Todo todo : todoList) { // iterates through the todoList arraylist
+         rowData[0] = todo.getTaskID(); // sets the first index of the row as the ID number of the to-do row
+         rowData[1] = todo.getText(); // sets the second index of the row as the text of the to-do row
+         rowData[2] = todo.getDue(); // sets the third index of the row as the due date of the to-do row
+         rowData[3] = todo.getCat(); // sets the fourth index of the row as the category of the to-do row
+         rowData[4] = todo.getImportance(); // sets the fifth index of the row as the importance of the to-do row
+         rowData[5] = todo.getCompletion(); // sets the sixth index of the row as the status of the to-do row
+         todoTableModel.addRow(rowData); // adds the row onto the todoTable
+      }
+      dataSource.closeConnection(); // closes the database connection
+   }
 }

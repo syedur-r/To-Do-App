@@ -1,3 +1,5 @@
+**Note:** In order for the app to be fully functional, ensure you have added all the dependencies to the project structure.
+
 **Home Page**
 ![](images/home.png)
 
