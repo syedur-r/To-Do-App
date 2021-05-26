@@ -156,7 +156,6 @@ public class GUITables {
       }
       dataSource.closeConnection(); // closes the database connection
    }
-<<<<<<< HEAD
 
    // retrieves all the records from the database and stores it inside an object to be displayed on the jTable
    public static void getSearchedRows(DefaultTableModel todoTableModel, String todoText) {
@@ -185,6 +184,3 @@ public class GUITables {
       dataSource.closeConnection(); // closes the database connection
    }
 }
-=======
-}
->>>>>>> 62e6a9cb8a166fe0ac6acdcdb9208c197ec13b00
