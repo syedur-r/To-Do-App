@@ -78,7 +78,7 @@ public class ActionEvents {
             txtSearch.setText("Search for a To-Do Task"); // resets the search textbox to its placeholder text
          } else if (todoText.trim().length() == 0 || todoText.equals("Search for a To-Do Task")) {  // checks if the To-Do text is empty (including whitespaces) or if it contains the placeholder text
             // if the condition is met, an error message dialogue will be displayed asking the user to enter a To-Do text
-            JOptionPane.showMessageDialog(frame, "Please Enter a To-Do text for the Task","Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Please Enter a To-Do Text","Error", JOptionPane.ERROR_MESSAGE);
             txtSearch.setText("Search for a To-Do Task"); // resets the search textbox to its placeholder text
             txtSearch.setFocusable(false); // removes the highlighted text from the placeholder by disabling the focus
             txtSearch.setFocusable(true); // re-enables the focus to the search textbox
